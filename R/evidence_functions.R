@@ -174,3 +174,18 @@ compute_specificity_S <- function(E_target, competitor_same_direction, stress_sa
     competitor_mimicry_C = C
   )
 }
+
+
+score_dictionary_genes <- function(effect_tbl, dictionary_tbl) {
+  # dictionary_tbl requires: gene, direction
+  effect_tbl %>%
+    inner_join(
+      dictionary_tbl %>% select(gene, direction),
+      by = "gene"
+    ) %>%
+    add_effect_magnitude() %>%
+    mutate(
+      signed_alignment = sign(direction * beta),
+      e = signed_alignment * magnitude * confidence
+    )
+}
