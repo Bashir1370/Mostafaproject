@@ -1,0 +1,10 @@
+Package,Purpose
+DESeq2,Count-based differential expression
+ashr,Adaptive shrinkage and local false sign rate
+GEOquery,GEO metadata and supplementary data retrieval
+dplyr,Tabular transformations
+tibble,Tidy result tables
+readr,Delimited file import/export
+data.table,Fast matrix import
+ggplot2,QC plots
+pheatmap,Sample-correlation heatmaps
