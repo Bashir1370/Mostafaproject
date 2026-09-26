@@ -1,0 +1,10 @@
+parameter,value,notes
+min_count,10,"Gene must reach this raw count threshold"
+min_samples_rule,smallest_group,"Require min_count in at least the size of the smallest biological group"
+effect_engine,DESeq2,"Negative-binomial differential expression for count-ready datasets"
+shrinkage_engine,ashr,"Adaptive shrinkage of effect estimates"
+confidence_metric,lfsr,"Local false sign rate from ashr; confidence = 1-lfsr"
+magnitude_metric,within_study_percentile,"Percentile rank of absolute shrunken effect among tested genes"
+hard_pvalue_cutoff,NONE,"No p-value threshold is used to define empirical evidence"
+study_replication_unit,independent_study,"Multiple contrasts/cell lines are aggregated within study"
+epsilon,1e-08,"Numerical stability for specificity and DSI denominators"
