@@ -59,10 +59,15 @@ Completed:
 - primary mechanistic reference library
 - CORE / EXTENDED / MECHANISTIC / EMPIRICAL_ONLY / PENDING classes
 
-Next:
+Completed additionally:
 - critical review of provisional CORE genes
-- reference-dataset inspection
-- empirical calibration of RNA informativeness before any final weight is frozen.
+- locked GSE182638 primary rescue-analysis design
+- executable GSE182638 DESeq2 + ashr + Fer-1 rescue calibration script
+
+Next:
+- run GSE182638 locally
+- review QC/PCA and rescue-validated gene evidence
+- only then proceed to the independent/cross-inducer datasets.
 
 See:
 - [GENE_CURATION.md](docs/GENE_CURATION.md)
