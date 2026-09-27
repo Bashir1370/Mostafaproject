@@ -521,11 +521,11 @@ for (cl in c("MM1R", "MM1S")) {
 
     scored <- score_dictionary_genes(
       eff,
-      fpt_universe %>% select(gene, direction)
+      fpt_universe %>% dplyr::select(gene, direction)
     ) %>%
       left_join(
         fpt_universe %>%
-          select(
+          dplyr::select(
             gene, module, role, provisional_status,
             evidence_tier, mechanistic_prior_M
           ),
@@ -562,7 +562,7 @@ message("[8/9] Computing rescue-validated evidence...")
 
 # Mechanistic, direction-aware evidence.
 mech_wide <- mech_e %>%
-  select(
+  dplyr::select(
     gene, cell_line, contrast_id, e,
     module, role, provisional_status,
     evidence_tier, mechanistic_prior_M, direction
@@ -611,7 +611,7 @@ effect_strength <- effects %>%
   mutate(
     unsigned_strength = magnitude * confidence
   ) %>%
-  select(
+  dplyr::select(
     gene, cell_line, contrast_id,
     beta, lfsr, magnitude, confidence, unsigned_strength
   ) %>%
