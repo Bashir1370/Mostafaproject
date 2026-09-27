@@ -122,6 +122,31 @@ if (anyNA(meta$cell_line) || anyNA(meta$condition) || anyNA(meta$replicate)) {
   stop("Could not reconstruct all cell_line/condition/replicate labels. See metadata_parse_failure.csv")
 }
 
+verified_short_names <- tibble::tribble(
+  ~sample,      ~verified_short_name,
+  "GSM5534024", "MM1R-T3-P4-FR",
+  "GSM5534025", "MM1R-T3-P4-RSL3",
+  "GSM5534026", "MM1R-T3-P4-UT",
+  "GSM5534027", "MM1R-T3-P6-FR",
+  "GSM5534028", "MM1R-T3-P6-RSL3",
+  "GSM5534029", "MM1R-T3-P6-UT",
+  "GSM5534030", "MM1R-T3-P7-FR",
+  "GSM5534031", "MM1R-T3-P7-RSL3",
+  "GSM5534032", "MM1R-T3-P7-UT",
+  "GSM5534033", "MM1S-T3-P16-FR",
+  "GSM5534034", "MM1S-T3-P16-RSL3",
+  "GSM5534035", "MM1S-T3-P16-UT",
+  "GSM5534036", "MM1S-T3-P22-FR",
+  "GSM5534037", "MM1S-T3-P22-RSL3",
+  "GSM5534038", "MM1S-T3-P22-UT",
+  "GSM5534039", "MM1S-T3-P23-FR",
+  "GSM5534040", "MM1S-T3-P23-RSL3",
+  "GSM5534041", "MM1S-T3-P23-UT"
+)
+
+meta <- meta %>%
+  left_join(verified_short_names, by = "sample")
+
 expected_design <- meta %>%
   count(cell_line, condition, name = "n")
 
@@ -190,7 +215,12 @@ sample_fields <- bind_rows(
   meta %>% transmute(sample, key = clean_key(sample), key_type = "GSM"),
   meta %>% transmute(sample, key = clean_key(title), key_type = "title"),
   meta %>% filter(!is.na(description), nzchar(description)) %>%
-    transmute(sample, key = clean_key(description), key_type = "description")
+    transmute(sample, key = clean_key(description), key_type = "description"),
+  meta %>% transmute(
+    sample,
+    key = clean_key(verified_short_name),
+    key_type = "verified_short_name"
+  )
 ) %>%
   filter(nzchar(key)) %>%
   distinct()
@@ -574,7 +604,9 @@ write_csv(
 # ALL-GENE rescue-concordance table for future ESR signature derivation.
 # No literature direction is imposed here.
 effect_strength <- effects %>%
+  group_by(cell_line, contrast_id) %>%
   add_effect_magnitude() %>%
+  ungroup() %>%
   mutate(
     unsigned_strength = magnitude * confidence
   ) %>%
@@ -618,8 +650,8 @@ write_csv(
 study_esr_candidates <- effect_strength %>%
   group_by(gene) %>%
   summarise(
-    signed_rescue_score = median(signed_rescue_score, na.rm = TRUE),
-    rescue_strength = abs(signed_rescue_score),
+    study_signed_rescue_score = median(signed_rescue_score, na.rm = TRUE),
+    study_rescue_strength = abs(study_signed_rescue_score),
     MM1R_signed = signed_rescue_score[cell_line == "MM1R"][1],
     MM1S_signed = signed_rescue_score[cell_line == "MM1S"][1],
     cross_cell_direction_agreement =
@@ -630,7 +662,7 @@ study_esr_candidates <- effect_strength %>%
       MM1S_signed != 0,
     .groups = "drop"
   ) %>%
-  arrange(desc(rescue_strength))
+  arrange(desc(study_rescue_strength))
 
 write_csv(
   study_esr_candidates,
