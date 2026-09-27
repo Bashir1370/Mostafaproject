@@ -239,14 +239,14 @@ choose_count_column <- function(tbl, gene_col) {
   selected <- score_tbl$column[1]
 
   if (
-    score_tbl$integer_fraction[1] < 0.99 ||
-    score_tbl$nonnegative_fraction[1] < 0.99
+    score_tbl$nonnegative_fraction[1] < 0.99 ||
+    score_tbl$finite_fraction[1] < 0.99
   ) {
     stop(
-      "Could not identify a sufficiently integer-like nonnegative raw-count column. ",
+      "Could not identify a valid nonnegative raw-count column. ",
       "Top candidate: ", selected,
-      "; integer fraction = ", round(score_tbl$integer_fraction[1], 4),
-      "; nonnegative fraction = ", round(score_tbl$nonnegative_fraction[1], 4)
+      "; nonnegative fraction = ", round(score_tbl$nonnegative_fraction[1], 4),
+      "; finite fraction = ", round(score_tbl$finite_fraction[1], 4)
     )
   }
 
