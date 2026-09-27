@@ -24,18 +24,20 @@ We do **not** infer ferroptosis from one mechanistic gene such as GPX4, ACSL4, o
 
 Instead we ask whether several independent transcriptomic resources converge.
 
+All inferential gene-set memberships are **version-locked in `config/`**. The MSigDB-derived memberships were frozen from MSigDB 2026.1.Hs via msigdbr 26.1.1 human→rat computational ortholog mapping. See `docs/GENE_SET_AUDIT.md` and `config/gene_set_manifest.csv` for the full provenance/species audit.
+
 ### Primary directional state signature
 **Vinik 2024 — 24 validated ferroptosis-vs-apoptosis biomarkers**
 
 This set was derived from transcriptomic ferroptosis/apoptosis datasets and experimentally validated with multiple ferroptosis inducers, apoptosis inducers, qRT-PCR, and in vivo experiments.
 
-For the rat DRG analysis, human biomarkers are mapped to rat orthologs.
+For the rat DRG analysis, the human biomarkers are mapped to rat orthologs using a **locked, audited mapping table**. The analysis does not perform live ortholog mapping. Two reconciliations are recorded explicitly: GARS1/Gars legacy naming and CALM2→rat Calm2.
 
 ### Supporting ferroptosis pathways
-- KEGG Ferroptosis
+- Gene Ontology GOBP_FERROPTOSIS
 - WikiPathways Ferroptosis (WP_FERROPTOSIS)
 
-These contain mechanistic pathway genes and are treated as supporting pathway-level evidence, not as a directional execution signature.
+These contain mechanistic/process genes and are treated as supporting pathway-level evidence. In particular, GOBP_FERROPTOSIS contains both ferroptosis-promoting and ferroptosis-limiting genes, so its NES is reported descriptively and is **not** treated as a direct activation/deactivation vote.
 
 ### Specificity/context controls
 - HALLMARK_APOPTOSIS
@@ -61,7 +63,7 @@ whole-transcriptome ranking by DESeq2 Wald statistic
         ↓
 fgsea
  ├─ VINIK_2024_24_FERROPTOSIS_BIOMARKERS
- ├─ KEGG_FERROPTOSIS
+ ├─ GOBP_FERROPTOSIS
  ├─ WP_FERROPTOSIS
  ├─ HALLMARK_APOPTOSIS
  └─ HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY
@@ -78,13 +80,12 @@ compact evidence summary
 The workflow uses four practical labels:
 
 - **STRONG_SUPPORT**  
-  Vinik-24 has positive FDR-significant enrichment and at least one mechanistic ferroptosis pathway is also positively FDR-significant.
+  Vinik-24 has positive FDR-significant enrichment and WP_FERROPTOSIS is also positively FDR-significant.
 
 - **SUGGESTIVE_SUPPORT**  
-  Ferroptosis signatures trend positively but do not meet the stronger convergence rule.
+  Vinik-24 is positively nominally significant and/or WP_FERROPTOSIS is positively enriched at FDR < 0.10, without meeting the strong convergence rule.
 
-- **MIXED_NON_SPECIFIC**  
-  Ferroptosis signatures are positive, but apoptosis/general ROS programs are comparably strong and interpretation requires caution.
+Apoptosis and ROS are reported separately as context/specificity flags rather than being folded into the ferroptosis evidence label.
 
 - **NO_TRANSCRIPTOMIC_SUPPORT**  
   No reproducible positive enrichment of the ferroptosis resources is observed.
@@ -115,6 +116,7 @@ cipn-ferroptosis-screening/results/GSE160543/
 - `gsea_all_signatures.csv`
 - `signature_members_used.csv`
 - `vinik24_ortholog_mapping.csv`
+- `gene_set_manifest_used.csv`
 - `sample_level_signature_scores.csv`
 - `sample_level_score_tests.csv`
 - `mechanistic_panel_heatmap.png`
@@ -125,7 +127,7 @@ cipn-ferroptosis-screening/results/GSE160543/
 ## Key references
 
 - GEO GSE160543: rat DRG vehicle/paclitaxel/oxaliplatin RNA-seq.
-- KEGG Ferroptosis pathway: hsa/rno04216.
+- Gene Ontology GOBP_FERROPTOSIS pathway: hsa/rno04216.
 - WikiPathways Ferroptosis: WP4313 / MSigDB WP_FERROPTOSIS.
 - Vinik Y et al. Advanced Science 2024. DOI: 10.1002/advs.202307263.
 
@@ -137,7 +139,7 @@ Install CRAN packages:
 ```r
 install.packages(c(
   "data.table", "dplyr", "tidyr", "readr", "tibble",
-  "ggplot2", "pheatmap", "msigdbr", "babelgene"
+  "ggplot2", "pheatmap"
 ))
 ```
 
