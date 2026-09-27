@@ -180,7 +180,7 @@ score_dictionary_genes <- function(effect_tbl, dictionary_tbl) {
   # dictionary_tbl requires: gene, direction
   effect_tbl %>%
     inner_join(
-      dictionary_tbl %>% select(gene, direction),
+      dictionary_tbl %>% dplyr::select(gene, direction),
       by = "gene"
     ) %>%
     add_effect_magnitude() %>%
