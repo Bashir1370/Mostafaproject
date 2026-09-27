@@ -26,6 +26,5 @@ if(sum(!is.na(idx))>=10){keep<-!is.na(idx);m<-m[,keep,drop=FALSE];idx<-idx[keep]
   if(ncol(m)!=10)stop("Could not map raw-count columns to GEO samples unambiguously.");cg<-rep(NA_character_,10);cg[grepl("control|vehicle|ctrl|con",colnames(m),ignore.case=TRUE)]<-"Vehicle";cg[grepl("oxa|oxaliplatin|10mg",colnames(m),ignore.case=TRUE)]<-"Oxaliplatin";meta<-tibble(sample=colnames(m),gsm=NA_character_,geo_title=colnames(m),group=cg)
 }
 if(sum(meta$group=="Vehicle",na.rm=TRUE)!=5||sum(meta$group=="Oxaliplatin",na.rm=TRUE)!=5)stop("GSE286387 design audit failed: expected 5 Vehicle + 5 Oxaliplatin RNA-seq samples. Review GEO_sample_metadata_audit.csv before proceeding.")
-meta<-tibble(sample=colnames(m),group=meta$group)
 meta<-meta |> filter(!is.na(group)) |> mutate(replicate=ave(seq_along(group),group,FUN=seq_along));m<-m[,meta$sample,drop=FALSE];write_csv(meta,file.path(project_dir,"config","GSE286387_samples_runtime_audited.csv"))
 run_mouse_ferroptosis_screen(m,meta,accession,result_dir,dataset_note="Chronic C57BL/6 male mouse OIPN; bilateral lumbar DRG; 10 mg/kg oxaliplatin i.p. weekly for 8 weeks vs vehicle; n=5/group RNA-seq. Raw-count source and GEO sample mapping are audited at runtime and exported.")
