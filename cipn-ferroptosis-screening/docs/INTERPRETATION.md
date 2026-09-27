@@ -29,9 +29,9 @@ Prefer:
 
 ## Why the Vinik-24 set is primary
 
-KEGG and WikiPathways contain mechanistic components with mixed biological directions. For example, anti-ferroptotic defense genes may increase as a compensatory response during ferroptotic stress.
+GOBP_FERROPTOSIS and WikiPathways contain mechanistic/process components that are not uniformly directional. For example, GOBP_FERROPTOSIS includes ferroptosis-limiting genes such as GPX4/NFE2L2 as well as pro-ferroptotic components. Therefore GOBP NES is descriptive and is not counted as a direct activation vote in the evidence classifier.
 
-The Vinik-24 panel is used as the primary directional transcriptomic signature because it was selected for ferroptosis-vs-apoptosis discrimination and validated as an induced biomarker panel.
+The Vinik-24 panel is used as the primary directional transcriptomic signature because it was selected for ferroptosis-vs-apoptosis discrimination and validated as an induced biomarker panel. It is a human panel, not a rat-validated signature; this project uses the explicitly audited human→rat mapping in `config/vinik_2024_24_human_to_rat_locked.csv`.
 
 ## Why apoptosis and ROS are included
 
@@ -59,3 +59,7 @@ The computational result becomes much stronger if supported by one or more ortho
 - GPX4 protein/activity
 - ACSL4 protein
 - Ferrostatin-1 or Liproxstatin-1 rescue
+
+## Species and provenance rule
+
+All inferential gene-set memberships are loaded from locked CSV files. The MSigDB sets were frozen from MSigDB 2026.1.Hs / msigdbr 26.1.1 after computational human→rat ortholog mapping. Live database retrieval is not used in the main inferential run. See `GENE_SET_AUDIT.md` and `../config/gene_set_manifest.csv`.
