@@ -77,8 +77,10 @@ Freeze:
 ## Current empirical-calibration checkpoint
 - GSE182638 primary rescue analysis completed locally.
 - GSE182638 exposed the need to separate mechanistic susceptibility direction from acute transcriptional response.
-- GSE247883 is locked as an independent replication dataset; no discovery re-selection is permitted.
-- Raw SRA/ENA -> Salmon -> tximport -> DESeq2/ashr workflow prepared for GSE247883.
+- GSE247883 remains available as an additional independent bulk rescue dataset; no discovery re-selection is permitted.
+- GSE287284 is now the next direct neuronal validation dataset: RA-differentiated N2a, DMSO n=3 vs RSL3 n=3.
+- GSE287284 is analyzed from processed mRNA FPKM with log2(FPKM+1) -> limma -> ashr, not DESeq2.
+- Cross-species ESR validation uses cached Ensembl release 101 one-to-one human-mouse orthologs.
 
 ## Phase 1 current checkpoint
 - Master gene universe expanded and referenced.
