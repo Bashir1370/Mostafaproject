@@ -1,0 +1,12 @@
+gene,module,mechanistic_strength,universality_across_inducers,rna_interpretability,review_decision,rationale
+NCOA4,F1_Iron,A+,MEDIUM,MODERATE,EXTENDED_ANCHOR,"Strong ferritinophagy mechanism but not a universal route to labile iron in every ferroptosis context"
+TFRC,F1_Iron,A,LOW_TO_MEDIUM,MODERATE,EXTENDED,"Iron uptake and protein-level ferroptosis marker evidence are strong, but transcript is confounded by iron demand and proliferation"
+ACSL4,F2_PUFA_PL,A+,MEDIUM_TO_HIGH,HIGH,CORE,"Strong genetic/lipidomic evidence and useful expression-sensitivity relationship; retained with explicit context-dependence caveat"
+LPCAT3,F2_PUFA_PL,A,MEDIUM,HIGH,CORE,"Direct lipid-remodeling contribution and interpretable RNA abundance; universality still requires empirical calibration"
+POR,F3_Peroxidation,A+,MEDIUM,MODERATE,CORE,"Direct genetic/lipidomic evidence for phospholipid oxidation; retained as peroxidation anchor but not assumed universally required"
+CYB5R1,F3_Peroxidation,A+,MEDIUM,MODERATE,EXTENDED,"Direct knockout evidence is strong but cross-context replication is narrower than POR"
+SLC7A11,F4_Defense,A+,LOW_TO_MEDIUM,MODERATE,EXTENDED,"Central to cystine-dependent defense and erastin response but direct GPX4 inhibition bypasses this upstream node"
+GPX4,F4_Defense,A+,HIGH,CAUTIOUS,CORE,"Canonical ferroptosis defense enzyme; transcript abundance reflects defense capacity but not direct GPX4 activity or RSL3 inhibition"
+AIFM2,F4_Defense,A+,MEDIUM,MODERATE_TO_HIGH,EXTENDED,"Major parallel FSP1-CoQ defense system but not universally dominant across cell states"
+DHODH,F4_Defense,A+,LOW_TO_MEDIUM,MODERATE,EXTENDED,"Strong mitochondrial defense mechanism with pronounced context dependence, especially GPX4-low states"
+GCH1,F4_Defense,A+,MEDIUM,MODERATE_TO_HIGH,EXTENDED,"Strong BH4 defense axis and expression-sensitivity evidence, but not a universal prerequisite for ferroptosis resistance"
