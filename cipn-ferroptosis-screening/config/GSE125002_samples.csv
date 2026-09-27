@@ -1,0 +1,7 @@
+sample,group,replicate,geo_title
+GSM3560840,Vehicle,1,DRG_WT_veh_Ox_Cis_1
+GSM3560841,Vehicle,2,DRG_WT_veh_Ox_Cis_2
+GSM3560842,Vehicle,3,DRG_WT_veh_Ox_Cis_3
+GSM3560843,Oxaliplatin,1,DRG_WT_Oxalipl_1
+GSM3560844,Oxaliplatin,2,DRG_WT_Oxalipl_2
+GSM3560845,Oxaliplatin,3,DRG_WT_Oxalipl_3
