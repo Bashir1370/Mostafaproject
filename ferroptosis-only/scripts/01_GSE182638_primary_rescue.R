@@ -26,7 +26,7 @@
 #   source("ferroptosis-only/scripts/01_GSE182638_primary_rescue.R")
 
 required_pkgs <- c(
-  "GEOquery", "DESeq2", "ashr", "dplyr", "tidyr", "readr", "tibble",
+  "DESeq2", "ashr", "dplyr", "tidyr", "readr", "tibble",
   "data.table", "ggplot2", "pheatmap", "AnnotationDbi", "org.Hs.eg.db"
 )
 
@@ -43,7 +43,6 @@ if (length(missing_pkgs) > 0) {
 }
 
 suppressPackageStartupMessages({
-  library(GEOquery)
   library(DESeq2)
   library(ashr)
   library(dplyr)
@@ -112,30 +111,67 @@ write_csv(meta, file.path(result_dir, "sample_metadata_locked.csv"))
 # 2. Download and read raw count matrix
 # -------------------------------------------------------------------------
 
-message("[2/9] Downloading raw supplementary counts...")
+message("[2/9] Downloading raw supplementary counts directly from NCBI...")
 
-GEOquery::getGEOSuppFiles(
+count_filename <- paste0(accession, "_raw_readcounts_allsamples.txt.gz")
+count_file <- file.path(raw_dir, count_filename)
+
+count_url <- paste0(
+  "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE182nnn/",
   accession,
-  makeDirectory = FALSE,
-  baseDir = raw_dir,
-  fetch_files = TRUE
+  "/suppl/",
+  count_filename
 )
 
-count_files <- list.files(
-  raw_dir,
-  pattern = "raw_readcounts_allsamples.*\\.(txt|tsv)(\\.gz)?$",
-  full.names = TRUE,
-  ignore.case = TRUE
-)
+options(timeout = max(1200, getOption("timeout")))
 
-if (length(count_files) != 1) {
-  stop(
-    "Expected exactly one raw read-count file; found ",
-    length(count_files),
-    ". Files: ",
-    paste(basename(count_files), collapse = ", ")
+if (!file.exists(count_file) || file.info(count_file)$size == 0) {
+  message("Downloading: ", count_filename)
+
+  download_ok <- tryCatch(
+    {
+      utils::download.file(
+        url = count_url,
+        destfile = count_file,
+        mode = "wb",
+        method = "libcurl",
+        quiet = FALSE
+      )
+      TRUE
+    },
+    error = function(e) {
+      message("libcurl download failed: ", conditionMessage(e))
+      FALSE
+    }
   )
+
+  if (!download_ok && .Platform$OS.type == "windows") {
+    message("Retrying with Windows download method...")
+    utils::download.file(
+      url = count_url,
+      destfile = count_file,
+      mode = "wb",
+      method = "wininet",
+      quiet = FALSE
+    )
+  }
+} else {
+  message("Raw count file already exists; skipping download.")
 }
+
+if (!file.exists(count_file) || file.info(count_file)$size == 0) {
+  stop("Raw count file was not downloaded successfully.")
+}
+
+message(
+  "Raw count file ready: ",
+  basename(count_file),
+  " (",
+  round(file.info(count_file)$size / 1024, 1),
+  " KB)"
+)
+
+count_files <- count_file
 
 raw_tbl <- data.table::fread(
   count_files[1],
