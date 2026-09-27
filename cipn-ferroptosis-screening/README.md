@@ -128,3 +128,28 @@ cipn-ferroptosis-screening/results/GSE160543/
 - KEGG Ferroptosis pathway: hsa/rno04216.
 - WikiPathways Ferroptosis: WP4313 / MSigDB WP_FERROPTOSIS.
 - Vinik Y et al. Advanced Science 2024. DOI: 10.1002/advs.202307263.
+
+
+## R dependencies
+
+Install CRAN packages:
+
+```r
+install.packages(c(
+  "data.table", "dplyr", "tidyr", "readr", "tibble",
+  "ggplot2", "pheatmap", "msigdbr", "babelgene"
+))
+```
+
+Install Bioconductor packages:
+
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install(c(
+  "DESeq2", "fgsea", "AnnotationDbi", "org.Rn.eg.db"
+))
+```
+
+The analysis script stops before analysis if a required package is missing.
