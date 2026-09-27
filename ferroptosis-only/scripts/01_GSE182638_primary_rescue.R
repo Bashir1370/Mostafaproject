@@ -190,7 +190,7 @@ if (nrow(raw_tbl) == 0 || ncol(raw_tbl) < 19) {
 message("[3/9] Matching count columns to GEO samples...")
 
 clean_key <- function(x) {
-  tolower(gsub("[^a-z0-9]", "", x))
+  gsub("[^a-z0-9]", "", tolower(x))
 }
 
 sample_fields <- bind_rows(
