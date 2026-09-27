@@ -1,15 +1,15 @@
-# Protocol Blueprint
+# Protocol Blueprint — NEC–FPT Framework
 
 ## 1. Objective
 
-Develop a reproducible transcriptome-based framework that distinguishes **disulfidptosis (DPT)** from **ferroptosis (FPT)** while separately measuring:
+Develop a reproducible transcriptome-based framework that distinguishes **necroptosis (NEC)** from **ferroptosis (FPT)** while separately measuring:
 
 - mechanistic permissiveness,
 - mechanistic completeness,
-- empirical resemblance to experimentally confirmed states,
-- and DPT-vs-FPT specificity.
+- empirical resemblance to confirmed perturbation states,
+- and mechanism-specific dominance.
 
-The framework is deliberately disease-agnostic.
+The framework is disease-agnostic.
 
 ---
 
@@ -17,98 +17,86 @@ The framework is deliberately disease-agnostic.
 
 Each candidate gene is assigned:
 
-- program: DPT or FPT
+- program
 - mechanistic stage
 - mechanistic role
 - expected RNA direction
 - evidence tier
 - mechanistic prior `M`
 - MPS eligibility
-- DSI eligibility
+- NFSI eligibility
 - empirical reproducibility `E`
 - specificity `S`
 - final MPS weight
-- final DSI weight
+- final NFSI weight
 
 ### Evidence tiers
 
-| Tier | Operational definition | Mechanistic prior M |
+| Tier | Operational definition | M |
 |---|---|---:|
 | A+ | Direct perturbation plus mechanistic phenotype and/or rescue | 1.00 |
 | A | Direct functional perturbation with relevant phenotype | 0.80 |
-| B | Strong screen/proteomics/pathway evidence with limited gene-specific functional validation | 0.50 |
-| C | Context/pathway evidence without strong direct functional validation | 0.25 |
+| B | Strong pathway/screen evidence with limited gene-specific validation | 0.50 |
+| C | Context association without strong direct validation | 0.25 |
 
-These are **priors**, not final weights.
+These are priors, not final weights.
 
 ---
 
-## 3. DPT architecture
+## 3. Necroptosis architecture
 
-### D1 — Cystine-loading permissiveness
-
-Core:
-- SLC7A11
-- SLC3A2
-
-Interpretation: capacity for cystine loading. This stage is critical for DPT permissiveness but is not DPT-specific by itself.
-
-### D2 — Reducing-capacity vulnerability
+### N1 — Necrosome competence
 
 Core:
-- G6PD — protective, inverse direction
-- TXNRD1 — protective, inverse direction
+- **RIPK3**
+- **RIPK1**
+
+Interpretation:
+- RIPK3 is the central necroptotic kinase.
+- RIPK1 is important in canonical TNFR1-driven necroptosis but is not universally required because RIPK3 can also be activated through other RHIM-containing routes.
+
+RNA interpretation:
+higher expression may increase molecular competence, but phosphorylation/complex formation is required for execution.
+
+### N2 — MLKL execution competence
+
+Core:
+- **MLKL**
+
+Interpretation:
+RIPK3-mediated MLKL activation, oligomerization and membrane localization form the terminal execution module.
+
+RNA interpretation:
+MLKL expression indicates execution capacity; it does **not** demonstrate pMLKL or MLKL oligomerization.
+
+### Trigger-context / route annotations
 
 Extended:
-- PGD
-- TKT
-- TALDO1
-- SLC2A1
-- SLC2A3
+- ZBP1
+- TICAM1
+- TNFRSF1A
+- CYLD
 
-Interpretation: lower glucose/PPP/thioredoxin reducing support increases susceptibility to disulfide stress.
+These provide upstream route context but do not define necroptosis by themselves.
 
-### D3 — WRC/actin execution permissiveness
+### Checkpoint annotations not directly scored from bulk RNA
 
-Core:
-- NCKAP1
-- WASF2
-- CYFIP1
-- ABI2
-- BRK1
+- CASP8
+- FADD
+- CFLAR
 
-Mechanistic annotation:
-- RAC1 activity is mechanistically important, but RAC1 mRNA is not treated as a direct activity readout.
+Reason:
+their necroptosis-related effects depend heavily on catalytic state, complex composition and/or isoform balance. Bulk transcript direction is not safely interpretable as execution activity.
 
-### D4 — Empirical DPT State Resemblance
+### NEC empirical state
 
-This is learned from experimentally confirmed DPT perturbation transcriptomes and is not defined by a hand-picked literature list.
-
-### DPT target-availability annotation
-
-Examples:
-- ACTB
-- MYH9
-- MYH10
-- FLNA
-- FLNB
-- TLN1
-- ACTN4
-- IQGAP1
-- MYL6
-- DSTN
-- CAPZB
-- CD2AP
-- PDLIM1
-
-These are **not** treated as direct RNA activity markers because the defining DPT evidence is primarily abnormal protein disulfide bonding and actin-cytoskeleton collapse rather than transcriptional induction.
+`NEC-ESR` is learned from experimentally confirmed necroptosis perturbation transcriptomes, especially rescue-validated and orthogonal induction designs.
 
 ---
 
-## 4. FPT architecture
+## 4. Ferroptosis architecture
 
 ### F1 — Iron availability
-
 Core:
 - NCOA4
 - TFRC
@@ -119,43 +107,45 @@ Extended protective/context:
 - SLC40A1
 
 ### F2 — PUFA-phospholipid susceptibility
-
 Core:
 - ACSL4
 - LPCAT3
 
 ### F3 — Lipid-peroxidation machinery
-
 Core:
 - POR
 
 Extended:
 - ALOX15
 
-### F4 — Anti-ferroptotic defense failure
-
+### F4 — Anti-ferroptotic defense
 Core protective genes scored inversely:
+- SLC7A11
 - GPX4
 - AIFM2 / FSP1
 - DHODH
 - GCH1
 
 Extended:
+- SLC3A2
 - DHFR
 
 ---
 
-## 5. Shared biology
+## 5. Mechanistic boundary
 
-The following can contribute strongly to biological context but should not directly dominate DPT-vs-FPT specificity:
+The primary distinction is:
 
-- SLC7A11 / SLC3A2
-- GSH-related machinery
-- NRF2 response
-- generic ROS response
-- broad NADPH/redox programs
+```text
+NEC:
+RIPK3 -> MLKL -> membrane permeabilization
 
-Shared components remain usable for permissiveness and interaction terms.
+FPT:
+iron-dependent PUFA-phospholipid peroxidation
++ failure of lipid-antioxidant defense
+```
+
+Generic inflammatory or oxidative stress is not sufficient to classify either state.
 
 ---
 
@@ -163,323 +153,301 @@ Shared components remain usable for permissiveness and interaction terms.
 
 Reference data are divided into:
 
-1. experimentally supported DPT perturbations
-2. experimentally supported FPT perturbations
-3. generic/competing stress controls
+1. rescue-validated NEC calibration studies
+2. orthogonal NEC validation studies
+3. rescue/cross-inducer FPT calibration studies
+4. orthogonal/neural FPT validation studies
+5. generic stress comparators
 
-The seed library is stored in `config/reference_datasets.csv`.
+See `config/reference_datasets.csv`.
 
-### DPT factorial design
+### Primary NEC calibration: GSE108621
 
-For TXNRD1 loss × glucose deprivation, avoid a naïve final-state contrast because it mixes genotype effects, glucose-starvation effects, and DPT.
+Use three aligned comparisons:
+- TSZ vs DMSO
+- TSZ vs TNF
+- TSZ vs TSZ+Nec-1s
 
-Use the interaction:
+A strong NEC empirical feature should:
+1. appear under TSZ;
+2. exceed TNF-only inflammatory behavior;
+3. be reversed by Nec-1s.
 
-```text
-(KO_GluMinus - KO_Regular) - (EV_GluMinus - EV_Regular)
-```
+### NEC replication
 
-This aims to isolate the response specific to reducing-defense failure under glucose deprivation.
+GSE172027:
+- TSZ vs DMSO
+- TSZ vs TSZ+Nec-1s
+in human astrocytes.
 
-### FPT rescue design
+GSE154230:
+- microglia and astrocytes;
+- TSZ and an additional RIPK1-activating route;
+- Nec-1s rescue.
 
-For an inducer + Ferrostatin-1 dataset:
+### Orthogonal NEC validation
 
-- induction contrast: inducer vs control
-- rescue contrast: inducer vs inducer + Ferrostatin-1
+GSE134234:
+direct chemical dimerization of engineered RIPK3 with TNF-only inflammatory control.
 
-High-confidence empirical FPT behavior should be induced by the FPT trigger and reversed by rescue.
+GSE268650:
+optogenetic RIPK3 oligomerization with dark/light and RIPK3-inhibitor controls.
+
+GSE287439:
+single-cell human iPSC neuron/astrocyte/microglia tri-culture for cell-type-specific validation.
+
+### FPT calibration
+
+Primary rescue:
+- GSE182638: two human lines, RSL3 ± Ferrostatin-1.
+
+Independent rescue:
+- GSE247883: A549, RSL3 ± Ferrostatin-1.
+
+Cross-inducer:
+- GSE255459: Erastin and RSL3 across three human lines.
+
+Orthogonal held-out validation:
+- GSE319384: Erastin, RSL3 and Ferroptocide in isogenic PANC-1 backgrounds.
+
+Neural validation:
+- GSE287284
+- GSE152988
 
 ---
 
-## 7. Anti-circularity rule
+## 7. Anti-circularity
 
-A directly manipulated gene cannot use the same experiment to validate its own RNA behavior.
+A directly manipulated gene cannot use the same experiment to validate its own transcriptomic behavior.
 
 Examples:
-- TXNRD1 KO does not validate TXNRD1 as a transcriptomic DPT marker.
-- GPX4 KO does not validate GPX4 as a transcriptomic FPT marker.
-- SLC7A11 KO does not validate SLC7A11 as a transcriptomic marker.
-
-This rule is mandatory.
+- engineered RIPK3 activation datasets do not validate RIPK3 RNA as an empirical marker of itself;
+- a GPX4 knockout experiment cannot validate GPX4 transcript behavior;
+- PSAP-KO cannot validate PSAP itself.
 
 ---
 
-## 8. Empirical per-study evidence
+## 8. Per-contrast empirical evidence
 
-For gene `g` in study `j`:
-
-1. estimate a shrunken effect size `beta(g,j)`
-2. estimate sign confidence, preferably local false-sign rate (`lfsr`)
-3. rank `|beta|` within the same study
+For gene `g` in contrast `j`:
 
 ```text
 Magnitude(g,j)  = percentile_rank(|beta(g,j)|)
 Confidence(g,j) = 1 - lfsr(g,j)
-```
 
-Let `d(g)` be the expected direction:
-- +1 = higher RNA supports the state
-- -1 = protective gene; lower RNA supports the state
-- 0 = do not score RNA direction directly
-
-```text
 e(g,j) =
-  sign[d(g) × beta(g,j)]
-  × Magnitude(g,j)
-  × Confidence(g,j)
+  sign[d(g) * beta(g,j)]
+  * Magnitude(g,j)
+  * Confidence(g,j)
 ```
 
-Range: -1 to +1.
+Range: [-1,+1].
 
-Positive values support the expected biology.
-Negative values are contradictions and must not be silently discarded.
-
-If several contrasts are from one study, aggregate those contrasts first so one study does not dominate replication.
+Negative evidence is retained as contradiction.
 
 ---
 
-## 9. Empirical reproducibility score E
+## 9. Rescue-validated evidence
 
-Across independent studies:
+For an induction/rescue pair:
 
 ```text
-Positive(g)      = mean(max(e(g,j), 0))
-Contradiction(g) = mean(max(-e(g,j), 0))
+support =
+  min(max(e_induction,0),
+      max(e_reversal,0))
+
+contradiction =
+  max(max(-e_induction,0),
+      max(-e_reversal,0))
+
+e_rescue = support - contradiction
+```
+
+### Three-way NEC control in GSE108621
+
+For:
+- TSZ vs DMSO
+- TSZ vs TNF
+- TSZ vs TSZ+Nec-1s
+
+use:
+
+```text
+support =
+  min(
+    max(e_TSZ_DMSO,0),
+    max(e_TSZ_TNF,0),
+    max(e_Nec1s_reversal,0)
+  )
+
+contradiction =
+  max(
+    max(-e_TSZ_DMSO,0),
+    max(-e_TSZ_TNF,0),
+    max(-e_Nec1s_reversal,0)
+  )
+
+e_rvNEC = support - contradiction
+```
+
+This strongly penalizes generic TNF inflammatory genes.
+
+---
+
+## 10. Across-study empirical reproducibility E
+
+Each independent study contributes at most one signed value per gene.
+
+```text
+Positive(g)      = mean(max(e_study,0))
+Contradiction(g) = mean(max(-e_study,0))
 
 E(g) = max(0, Positive(g) - Contradiction(g))
 ```
 
-Range: 0 to 1.
-
-Independent-study count is reported separately as replication depth.
+Study count is reported separately as replication depth.
 
 ---
 
-## 10. Specificity score S
+## 11. Specificity S
 
-For a DPT gene, compare target-state evidence against **same-direction** behavior in FPT and generic stress datasets.
+For a NEC gene, evaluate the **same NEC direction** in FPT and generic-stress datasets.
+
+For an FPT gene, evaluate the **same FPT direction** in NEC and generic-stress datasets.
 
 ```text
 C(g) = max(
-  FPT_same_direction(g),
-  Stress_same_direction(g)
+  competing_program_same_direction,
+  generic_stress_same_direction
 )
+
+S(g) =
+  max(
+    0,
+    (E_target(g)-C(g)) /
+    (E_target(g)+C(g)+epsilon)
+  )
 ```
 
-```text
-S(g) = max(
-  0,
-  [E_target(g) - C(g)] /
-  [E_target(g) + C(g) + epsilon]
-)
-```
-
-Range: 0 to 1.
-
-The same logic is mirrored for FPT.
-
-Opposite-direction behavior in a competing program is not treated as mimicry.
+Opposite-direction behavior in the competing program is not mimicry.
 
 ---
 
-## 11. Final gene weights
-
-Permissiveness:
+## 12. Final weights
 
 ```text
-W_MPS(g) = M(g) × E(g)
+W_MPS(g)  = M(g) * E(g)
+W_NFSI(g) = M(g) * E(g) * S(g)
 ```
-
-Specificity:
-
-```text
-W_DSI(g) = M(g) × E(g) × S(g)
-```
-
-A gene can therefore remain mechanistically important while receiving little RNA diagnostic weight.
 
 ---
 
-## 12. Single-sample scoring
+## 13. Single-sample scoring
 
-Within each sample, rank genes independently:
+Within each sample:
 
 ```text
 r(g,s) in [0,1]
 ```
 
-For promoter genes:
-
+Promoter:
 ```text
-q(g,s) = r(g,s)
+q(g,s)=r(g,s)
 ```
 
-For protective genes:
-
+Protective:
 ```text
-q(g,s) = 1 - r(g,s)
+q(g,s)=1-r(g,s)
 ```
 
-Thus `q` near 1 always means stronger support for the corresponding death-state mechanism.
+Stage:
+```text
+Stage_k(s)=sum(W_g*q_gs)/sum(W_g)
+```
 
 ---
 
-## 13. Stage scores
+## 14. NEC aggregation
 
 ```text
-Stage_k(s) =
-  sum[W(g) × q(g,s)] /
-  sum[W(g)]
+N1 = Necrosome competence
+N2 = MLKL execution competence
+
+NEC-MPS = (N1 + N2) / 2
+NEC-MCI = sqrt(N1 * N2)
 ```
 
-Range: 0 to 1.
+MPS captures overall permissiveness.
 
----
+MCI is weakest-link sensitive: high RIPK1/RIPK3 competence without MLKL execution competence, or vice versa, cannot produce a high complete-mechanism score.
 
-## 14. DPT aggregation
-
-### Initiation gate
-
-```text
-DPT_init = sqrt(D1 × D2)
-```
-
-This prevents high cystine-loading evidence from being interpreted as strong DPT permissiveness when reducing-capacity vulnerability is absent.
-
-### Molecular permissiveness
-
-```text
-DPT-MPS = (DPT_init + D3) / 2
-```
-
-### Mechanistic completeness
-
-```text
-DPT-MCI = (D1 × D2 × D3)^(1/3)
-```
-
-MCI is deliberately weakest-link sensitive.
+`NEC-ESR` remains independent.
 
 ---
 
 ## 15. FPT aggregation
 
 ```text
-FPT_init = (F1 × F2 × F3)^(1/3)
-
-FPT-MPS =
-  (FPT_init + F4) / 2
-
-FPT-MCI =
-  (F1 × F2 × F3 × F4)^(1/4)
+FPT_init = (F1 * F2 * F3)^(1/3)
+FPT-MPS  = (FPT_init + F4) / 2
+FPT-MCI  = (F1 * F2 * F3 * F4)^(1/4)
 ```
 
----
-
-## 16. Empirical State Resemblance
-
-Keep empirical transcriptomic resemblance separate from mechanistic permissiveness:
-
-- DPT-ESR
-- FPT-ESR
-
-Primary implementation should be rank-based and single-sample. Alternative methods such as ssGSEA/GSVA may be used for sensitivity analysis.
+`FPT-ESR` remains independent.
 
 ---
 
-## 17. Disulfidptosis Specificity Index
-
-Build `D_specific` and `F_specific` from high-specificity evidence only.
-
-Shared redox components are excluded or strongly down-weighted.
+## 16. Necroptosis–Ferroptosis Specificity Index
 
 ```text
-DSI =
-  (D_specific - F_specific) /
-  (D_specific + F_specific + epsilon)
+NFSI =
+  (NEC_specific - FPT_specific) /
+  (NEC_specific + FPT_specific + epsilon)
 ```
 
-Range: -1 to +1.
-
-- positive = DPT-skewed
+Range [-1,+1]:
+- positive = NEC-skewed
 - negative = FPT-skewed
-- near zero = no mechanism-specific dominance
+- near zero = no clear mechanism-specific dominance
 
-DSI is **not a probability**.
+NFSI is not a probability.
 
 ---
 
-## 18. Classification rules
+## 17. Final classes
 
-Each program is considered supported only when its calibrated criteria for:
-- MPS
-- MCI
-- ESR
-
-are satisfied.
-
-| DPT support | FPT support | Final class |
+| NEC support | FPT support | Class |
 |---|---|---|
-| yes | no | DPT-dominant |
+| yes | no | NEC-dominant |
 | no | yes | FPT-dominant |
 | yes | yes | Mixed |
 | no | no | Indeterminate / Neither |
 
-For Mixed samples, DSI may annotate:
-- Mixed — DPT-skewed
-- Mixed — balanced
-- Mixed — FPT-skewed
-
-Partial states are explicitly reportable:
-- partial DPT permissiveness
-- incomplete FPT mechanism
+Support requires calibrated MPS, MCI and ESR criteria.
 
 ---
 
-## 19. Threshold calibration
+## 18. Calibration
 
-Thresholds are not hard-coded.
+No manual final thresholds.
 
-Recommended:
-- ROC-based candidate thresholds
-- bootstrap threshold stability
-- leave-one-study-out validation
+Use:
+- reference-positive/negative distributions;
+- bootstrap threshold stability;
+- leave-one-study-out validation;
+- whole-study holdout rather than random sample split.
 
-The held-out unit must be an **entire study**, not random samples from the same experiment.
-
-If a threshold is unstable, retain the score as continuous evidence and mark classification as insufficiently calibrated.
-
----
-
-## 20. Required output
-
-For every scored sample:
-
-- D1, D2, D3
-- DPT-MPS
-- DPT-MCI
-- DPT-ESR
-- F1, F2, F3, F4
-- FPT-MPS
-- FPT-MCI
-- FPT-ESR
-- D_specific
-- F_specific
-- DSI
-- final class
-- reference-depth/confidence annotation
+Unstable thresholds remain continuous evidence rather than forced classes.
 
 ---
 
-## 21. Freeze policy
+## 19. Freeze policy
 
-Before any future application:
+Before any external application:
+- freeze dictionaries;
+- freeze equations;
+- freeze empirical signatures;
+- freeze thresholds;
+- freeze software version.
 
-- freeze gene dictionaries
-- freeze stage definitions
-- freeze equations
-- freeze calibration procedure
-- version every later change
-
-No future application dataset may be used to redesign the classifier after its results are seen.
+No external application dataset may be used to redesign the classifier after results are seen.
