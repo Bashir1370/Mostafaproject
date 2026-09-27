@@ -49,4 +49,4 @@ manifest <- bind_rows(
 )
 write_csv(manifest,out_manifest)
 message("Mouse gene-set audit locked successfully.")
-print(manifest |> select(signature,source_member_count,locked_mouse_member_count,version))
+print(manifest |> dplyr::select(signature, source_member_count, locked_mouse_member_count, version))
