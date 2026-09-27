@@ -1,58 +1,95 @@
-# Roadmap
+# Roadmap — NEC–FPT Framework
 
-## Milestone 1 — Reference-data ingestion
-- download verified processed/raw reference datasets
-- record platform, genome build, sample metadata and contrasts
-- establish reproducible preprocessing per study
+## Milestone 0 — Redesign completed
+- replace DPT with NEC
+- create necroptosis gene dictionary
+- redefine specificity index as NFSI
+- rebuild reference dataset library
+- rebuild contrast registry
+- retain FPT architecture with improved rescue/orthogonal references
+
+## Milestone 1 — Reference-data inspection
+- run `scripts/00_inspect_reference_datasets.R`
+- record public file types and dimensions
+- verify sample labels and replicate structure
+- classify studies as READY_COUNTS / RAW_REPROCESS_REQUIRED / validation-only
 - never merge raw expression across studies
 
-## Milestone 2 — Differential analysis
-- estimate per-study effect sizes
-- apply shrinkage where appropriate
-- quantify sign confidence
-- build standardized per-study effect tables
+## Milestone 2 — NEC primary calibration
+Start with:
+- GSE108621
 
-## Milestone 3 — Empirical reproducibility E
-- compute direction-aware per-study evidence
-- aggregate multiple contrasts within a study
-- calculate positive support and contradiction penalty
-- report independent-study depth separately
+Required evidence:
+- TSZ vs DMSO
+- TSZ vs TNF
+- TSZ vs TSZ+Nec-1s
 
-## Milestone 4 — Specificity S
-- compare DPT evidence against same-direction FPT and generic-stress behavior
-- mirror the procedure for FPT
-- identify shared/non-discriminating genes
+Then replicate with:
+- GSE172027
+- GSE154230
 
-## Milestone 5 — Final gene weights
-- W_MPS = M × E
-- W_DSI = M × E × S
-- document genes removed from RNA scoring despite high mechanistic relevance
+## Milestone 3 — FPT primary calibration
+Start with:
+- GSE182638
 
-## Milestone 6 — ESR signatures
-- derive empirical DPT signature
-- derive rescue-validated and cross-inducer FPT signatures
-- build rank-based single-sample ESR scoring
+Then:
+- GSE247883
+- GSE255459
 
-## Milestone 7 — Calibration
-- calculate MPS/MCI/ESR on all reference samples
-- derive candidate thresholds
+Hold:
+- GSE319384 for orthogonal multi-inducer validation
+
+## Milestone 4 — Empirical reproducibility E
+- DESeq2 effect estimation
+- ashr shrinkage / lfsr
+- direction-aware evidence e
+- hierarchical within-study aggregation
+- cross-study positive support and contradiction penalty
+
+## Milestone 5 — Specificity S
+- evaluate NEC genes in FPT/stress references using NEC direction
+- evaluate FPT genes in NEC/stress references using FPT direction
+- calculate same-direction mimicry penalty
+- expand negative comparator panel if needed
+
+## Milestone 6 — ESR
+- derive rescue-validated NEC empirical signature
+- derive rescue/cross-inducer FPT empirical signature
+- test signature stability across held-out studies
+- build rank-based single-sample ESR
+
+## Milestone 7 — Neural robustness
+NEC:
+- GSE287439 cell-type pseudobulk/scRNA validation
+
+FPT:
+- GSE287284
+- GSE152988
+
+## Milestone 8 — Score calibration
+- NEC-MPS / NEC-MCI / NEC-ESR
+- FPT-MPS / FPT-MCI / FPT-ESR
+- NFSI
 - bootstrap threshold stability
 - leave-one-study-out validation
-- retain continuous scores if thresholds are unstable
+- report continuous evidence if thresholds are unstable
 
-## Milestone 8 — Freeze v1.0
-Before external application:
-- freeze gene dictionaries
-- freeze equations
-- freeze weights
-- freeze thresholds
-- freeze software version
-- archive validation results
+## Milestone 9 — Freeze v1.0
+Freeze:
+- dictionaries
+- evidence tiers
+- equations
+- reference studies
+- empirical weights
+- ESR signatures
+- thresholds
+- software environment
 
-## Success criterion
+## Success criteria
 
-The framework should distinguish mechanism-specific DPT/FPT states while:
-- not classifying generic oxidative stress as either state by default
-- permitting Mixed and Indeterminate outcomes
-- maintaining performance under held-out-study validation
-- remaining interpretable at the stage and gene levels
+The framework should:
+- distinguish NEC from FPT in held-out perturbation studies;
+- not reduce to generic TNF inflammation or oxidative stress;
+- preserve performance across different induction mechanisms;
+- support Mixed and Indeterminate states;
+- remain interpretable at gene, stage and study levels.
