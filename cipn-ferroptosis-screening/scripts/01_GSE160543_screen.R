@@ -975,32 +975,23 @@ summarize_contrast <- function(gsea_tbl, contrast_name) {
     "HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY"
   )
 
+  # Directional evidence is intentionally restricted to:
+  #   (1) Vinik-24, a ferroptosis-vs-apoptosis biomarker panel, and
+  #   (2) WP_FERROPTOSIS, used as supporting mechanistic pathway evidence.
+  #
+  # GOBP_FERROPTOSIS is reported but NOT counted as a directional activation
+  # vote because GO process membership contains both ferroptosis-promoting and
+  # ferroptosis-limiting genes (for example GPX4 and NFE2L2).
+
   strong <- (
     is.finite(v$NES) &&
     v$NES > 0 &&
     is.finite(v$padj) &&
     v$padj < 0.05 &&
-    (
-      (
-        is.finite(k$NES) &&
-        k$NES > 0 &&
-        is.finite(k$padj) &&
-        k$padj < 0.05
-      ) ||
-      (
-        is.finite(w$NES) &&
-        w$NES > 0 &&
-        is.finite(w$padj) &&
-        w$padj < 0.05
-      )
-    )
-  )
-
-  ferro_rows <- bind_rows(v, k, w)
-  positive_fdr10 <- sum(
-    ferro_rows$NES > 0 &
-    ferro_rows$padj < 0.10,
-    na.rm = TRUE
+    is.finite(w$NES) &&
+    w$NES > 0 &&
+    is.finite(w$padj) &&
+    w$padj < 0.05
   )
 
   suggestive <- (
@@ -1010,7 +1001,12 @@ summarize_contrast <- function(gsea_tbl, contrast_name) {
       is.finite(v$pval) &&
       v$pval < 0.05
     ) ||
-    positive_fdr10 >= 2
+    (
+      is.finite(w$NES) &&
+      w$NES > 0 &&
+      is.finite(w$padj) &&
+      w$padj < 0.10
+    )
   )
 
   evidence <- if (strong) {
@@ -1149,6 +1145,7 @@ summary_lines <- c(
   "  These labels summarize transcriptomic evidence only.",
   "  Bulk DRG RNA-seq cannot by itself prove ferroptotic cell death or identify the exact responding cell type.",
   "",
+  "GOBP_FERROPTOSIS is reported descriptively and is not used as a directional activation vote in the evidence classifier.",
   "The STRONG/SUGGESTIVE/NO_SUPPORT rules are pre-specified heuristic interpretation rules, not a clinically validated classifier."
 )
 
