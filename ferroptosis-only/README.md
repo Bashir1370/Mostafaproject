@@ -50,7 +50,7 @@ ferroptosis-only/
 
 ## Current status
 
-**v0.1.1 — systematic gene curation in progress**
+**v0.2.0 — empirical rescue calibration in progress**
 
 Completed:
 - expanded ferroptosis Master Gene Universe
@@ -65,9 +65,10 @@ Completed additionally:
 - executable GSE182638 DESeq2 + ashr + Fer-1 rescue calibration script
 
 Next:
-- run GSE182638 locally
-- review QC/PCA and rescue-validated gene evidence
-- only then proceed to the independent/cross-inducer datasets.
+- GSE182638 primary rescue analysis completed
+- GSE247883 locked as independent rescue replication
+- preflight ENA manifest, raw-read download, Docker/Salmon quantification, and DESeq2/ashr replication scripts added
+- next: run GSE247883 preflight and inspect raw-read download size before acquisition.
 
 See:
 - [GENE_CURATION.md](docs/GENE_CURATION.md)
