@@ -30,14 +30,37 @@ ortho <- babelgene::orthologs(genes=unique(vinik$human_symbol), species="mouse",
 human_col <- intersect(c("human_symbol","human_gene","human"),names(ortho))[1]; mouse_col <- intersect(c("symbol","mouse_symbol","ortholog_symbol"),names(ortho))[1]
 if(is.na(human_col)||is.na(mouse_col)) stop("Unexpected babelgene columns: ",paste(names(ortho),collapse=", "))
 live_map <- ortho |> transmute(human_symbol=.data[[human_col]], live_mouse_symbol=.data[[mouse_col]], support=if("support"%in%names(ortho)) support else NA_character_)
-vinik_map <- vinik_locked |> left_join(live_map,by="human_symbol") |> mutate(matches_live_mapping=mouse_symbol==live_mouse_symbol)
+vinik_map <- vinik_locked |>
+  left_join(live_map,by="human_symbol") |>
+  mutate(
+    matches_live_mapping=mouse_symbol==live_mouse_symbol,
+    audit_status=case_when(
+      matches_live_mapping ~ "MATCHED_LIVE",
+      human_symbol=="GARS1" & mouse_symbol=="Gars1" & live_mouse_symbol=="Gars" ~ "MANUAL_REVIEW_ACCEPTED_SYMBOL_NOMENCLATURE_EXCEPTION",
+      TRUE ~ "REQUIRES_REVIEW"
+    ),
+    audit_note=case_when(
+      audit_status=="MATCHED_LIVE" ~ "Locked mapping matches current babelgene top ortholog.",
+      audit_status=="MANUAL_REVIEW_ACCEPTED_SYMBOL_NOMENCLATURE_EXCEPTION" ~ "Accepted nomenclature exception: NCBI/MGI current official mouse symbol is Gars1 (Gene ID 353172); Gars is an alias returned by the live babelgene mapping.",
+      TRUE ~ "Locked mapping differs from the live mapping and requires manual review before use."
+    )
+  )
 write_csv(vinik_map,out_vinik_audit)
 if(any(is.na(vinik_map$live_mouse_symbol))) stop("Live ortholog audit failed for one or more Vinik genes.")
+if(any(vinik_map$audit_status=="REQUIRES_REVIEW")) stop("One or more Vinik mappings require manual review; see ", out_vinik_audit)
 
 # Keep source definition identical to the rat analysis: Human MSigDB -> target-species orthologs.
 msig_mouse <- msigdbr::msigdbr(db_species="HS", species="Mus musculus")
 required_sets <- c("GOBP_FERROPTOSIS","WP_FERROPTOSIS","HALLMARK_APOPTOSIS","HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY")
-locked <- msig_mouse |> filter(gs_name %in% required_sets) |> transmute(signature=gs_name, mouse_gene_symbol=gene_symbol, gs_id, gs_source_species, db_version, num_ortholog_sources=if("num_ortholog_sources"%in%names(msig_mouse)) num_ortholog_sources else NA_integer_) |> distinct()
+locked <- msig_mouse |>
+  filter(gs_name %in% required_sets) |>
+  transmute(signature=gs_name, mouse_gene_symbol=gene_symbol, gs_id, gs_source_species, db_version,
+            num_ortholog_sources=if("num_ortholog_sources"%in%names(msig_mouse)) num_ortholog_sources else NA_integer_) |>
+  # Multiple human members can collapse to the same mouse ortholog. Keep one
+  # row per signature/mouse symbol, preferring the mapping with the strongest
+  # ortholog-source support so the frozen membership file is itself unique.
+  arrange(signature, mouse_gene_symbol, desc(num_ortholog_sources)) |>
+  distinct(signature, mouse_gene_symbol, .keep_all=TRUE)
 if(!all(required_sets %in% locked$signature)) stop("One or more required MSigDB sets are unavailable.")
 if(any(table(locked$signature)<5)) stop("Unexpectedly small mouse gene set after mapping.")
 write_csv(locked,out_msig)
