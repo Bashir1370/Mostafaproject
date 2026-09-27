@@ -40,7 +40,9 @@ ferroptosis-only/
 ├── README.md
 ├── ROADMAP.md
 ├── docs/
-│   └── PROTOCOL.md
+│   ├── PROTOCOL.md
+│   ├── GENE_CURATION.md
+│   └── REFERENCES.md
 └── config/
     ├── ferroptosis_master_gene_universe.csv
     └── reference_datasets.csv
@@ -48,6 +50,20 @@ ferroptosis-only/
 
 ## Current status
 
-**v0.1.0 — workspace initialized**
+**v0.1.1 — systematic gene curation in progress**
 
-Next task: systematic curation of the ferroptosis gene universe before any scoring weights are frozen.
+Completed:
+- expanded ferroptosis Master Gene Universe
+- evidence-tier framework
+- RNA-interpretability rules
+- primary mechanistic reference library
+- CORE / EXTENDED / MECHANISTIC / EMPIRICAL_ONLY / PENDING classes
+
+Next:
+- critical review of provisional CORE genes
+- reference-dataset inspection
+- empirical calibration of RNA informativeness before any final weight is frozen.
+
+See:
+- [GENE_CURATION.md](docs/GENE_CURATION.md)
+- [REFERENCES.md](docs/REFERENCES.md)
