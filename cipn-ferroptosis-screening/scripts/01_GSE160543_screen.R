@@ -22,7 +22,7 @@
 
 required_pkgs <- c(
   "DESeq2", "dplyr", "tidyr", "readr", "tibble", "data.table",
-  "ggplot2", "pheatmap", "fgsea", "msigdbr", "babelgene",
+  "ggplot2", "pheatmap", "fgsea",
   "AnnotationDbi", "org.Rn.eg.db"
 )
 
@@ -48,8 +48,6 @@ suppressPackageStartupMessages({
   library(ggplot2)
   library(pheatmap)
   library(fgsea)
-  library(msigdbr)
-  library(babelgene)
   library(AnnotationDbi)
   library(org.Rn.eg.db)
 })
@@ -68,6 +66,10 @@ dir.create(result_dir, recursive = TRUE, showWarnings = FALSE)
 
 metadata_file <- file.path(config_dir, "GSE160543_samples.csv")
 vinik_file <- file.path(config_dir, "vinik_2024_24_biomarkers.csv")
+vinik_mapping_file <- file.path(config_dir, "vinik_2024_24_human_to_rat_locked.csv")
+msigdb_locked_file <- file.path(config_dir, "msigdb_2026.1_Hs_rat_gene_sets_locked.csv")
+mechanistic_mapping_file <- file.path(config_dir, "mechanistic_panel_human_to_rat_locked.csv")
+gene_set_manifest_file <- file.path(config_dir, "gene_set_manifest.csv")
 
 # -------------------------------------------------------------------------
 # 1. Locked metadata
@@ -534,103 +536,79 @@ write_csv(
 # 5. Build independent ferroptosis/control signatures
 # -------------------------------------------------------------------------
 
-message("[5/10] Building independent ferroptosis and control signatures...")
+message("[5/10] Loading LOCKED, audited ferroptosis/control signatures...")
 
-msig <- msigdbr::msigdbr(species = "Rattus norvegicus")
+# IMPORTANT:
+# Inferential analysis never retrieves live MSigDB memberships or live orthologs.
+# Provenance/species/version are locked in config/gene_set_manifest.csv and
+# docs/GENE_SET_AUDIT.md. Update those files explicitly before changing sets.
 
-if (!all(c("gs_name", "gene_symbol") %in% names(msig))) {
-  stop("Current msigdbr output lacks expected gs_name/gene_symbol columns.")
+manifest <- read_csv(gene_set_manifest_file, show_col_types = FALSE)
+locked_msig <- read_csv(msigdb_locked_file, show_col_types = FALSE)
+vinik <- read_csv(vinik_file, show_col_types = FALSE)
+vinik_map <- read_csv(vinik_mapping_file, show_col_types = FALSE)
+
+required_manifest <- c(
+  "VINIK_2024_24_FERROPTOSIS_BIOMARKERS",
+  "GOBP_FERROPTOSIS",
+  "WP_FERROPTOSIS",
+  "HALLMARK_APOPTOSIS",
+  "HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY"
+)
+
+if (!all(required_manifest %in% manifest$signature)) {
+  stop("gene_set_manifest.csv is missing one or more required signatures.")
 }
-
-get_set <- function(name) {
-  unique(msig$gene_symbol[msig$gs_name == name])
-}
-
-wp_genes <- get_set("WP_FERROPTOSIS")
-
-gobp_genes <- get_set("GOBP_FERROPTOSIS")
-apoptosis_genes <- get_set("HALLMARK_APOPTOSIS")
-ros_genes <- get_set("HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY")
 
 if (
-  length(wp_genes) < 5 ||
-  length(gobp_genes) < 5 ||
-  length(apoptosis_genes) < 5 ||
-  length(ros_genes) < 5
+  nrow(vinik) != 24 ||
+  nrow(vinik_map) != 24 ||
+  anyDuplicated(vinik_map$human_symbol) ||
+  any(is.na(vinik_map$dataset_gene_symbol)) ||
+  any(!nzchar(vinik_map$dataset_gene_symbol))
 ) {
-  stop("One or more required MSigDB signatures could not be recovered.")
+  stop("Locked Vinik-24 mapping is incomplete or malformed.")
 }
 
-vinik <- read_csv(vinik_file, show_col_types = FALSE)
+if (!setequal(vinik$human_symbol, vinik_map$human_symbol)) {
+  stop("Vinik source list and locked human-to-rat mapping do not contain the same 24 human genes.")
+}
 
-map_human_to_rat <- function(human_genes) {
-  ortho <- babelgene::orthologs(
-    genes = unique(human_genes),
-    species = "rat",
-    human = TRUE,
-    min_support = 2,
-    top = TRUE
+vinik_rat <- unique(vinik_map$dataset_gene_symbol)
+
+get_locked_set <- function(name) {
+  unique(
+    locked_msig$rat_gene_symbol[
+      locked_msig$signature == name &
+      !is.na(locked_msig$rat_gene_symbol) &
+      nzchar(locked_msig$rat_gene_symbol)
+    ]
   )
-
-  ortho <- as_tibble(ortho)
-
-  human_col <- intersect(
-    c("human_symbol", "human_gene", "human"),
-    names(ortho)
-  )[1]
-
-  rat_col <- intersect(
-    c("symbol", "rat_symbol", "ortholog_symbol"),
-    names(ortho)
-  )[1]
-
-  if (is.na(human_col) || is.na(rat_col)) {
-    stop(
-      "Unexpected babelgene output columns: ",
-      paste(names(ortho), collapse = ", ")
-    )
-  }
-
-  out <- ortho %>%
-    transmute(
-      human_symbol = .data[[human_col]],
-      rat_symbol = .data[[rat_col]],
-      support = if ("support" %in% names(ortho)) support else NA_integer_
-    ) %>%
-    filter(
-      !is.na(human_symbol),
-      nzchar(human_symbol),
-      !is.na(rat_symbol),
-      nzchar(rat_symbol)
-    ) %>%
-    distinct(human_symbol, .keep_all = TRUE)
-
-  out
 }
 
-vinik_map <- map_human_to_rat(vinik$human_symbol) %>%
-  right_join(
-    vinik,
-    by = "human_symbol"
-  ) %>%
-  arrange(match(human_symbol, vinik$human_symbol))
+gobp_genes <- get_locked_set("GOBP_FERROPTOSIS")
+wp_genes <- get_locked_set("WP_FERROPTOSIS")
+apoptosis_genes <- get_locked_set("HALLMARK_APOPTOSIS")
+ros_genes <- get_locked_set("HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY")
 
-write_csv(
-  vinik_map,
-  file.path(result_dir, "vinik24_ortholog_mapping.csv")
+expected_sizes <- c(
+  GOBP_FERROPTOSIS = 30L,
+  WP_FERROPTOSIS = 67L,
+  HALLMARK_APOPTOSIS = 160L,
+  HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY = 50L
 )
 
-vinik_rat <- unique(
-  vinik_map$rat_symbol[
-    !is.na(vinik_map$rat_symbol) &
-    nzchar(vinik_map$rat_symbol)
-  ]
+observed_sizes <- c(
+  GOBP_FERROPTOSIS = length(gobp_genes),
+  WP_FERROPTOSIS = length(wp_genes),
+  HALLMARK_APOPTOSIS = length(apoptosis_genes),
+  HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY = length(ros_genes)
 )
 
-if (length(vinik_rat) < 12) {
+if (!identical(as.integer(observed_sizes), as.integer(expected_sizes))) {
   stop(
-    "Fewer than half of the Vinik-24 biomarkers mapped to rat. ",
-    "Mapped = ", length(vinik_rat), "/24."
+    "Locked MSigDB gene-set sizes changed unexpectedly. Observed: ",
+    paste(names(observed_sizes), observed_sizes, sep = "=", collapse = "; ")
   )
 }
 
@@ -653,6 +631,29 @@ signature_audit <- bind_rows(
   mutate(
     present_in_GSE160543 = gene %in% rownames(dds)
   )
+
+vinik_present <- sum(
+  signature_audit$signature == "VINIK_2024_24_FERROPTOSIS_BIOMARKERS" &
+  signature_audit$present_in_GSE160543
+)
+
+if (vinik_present != 24L) {
+  warning(
+    "Audited Vinik-24 mapping is complete, but only ",
+    vinik_present,
+    "/24 genes passed the current DESeq2 expression filter."
+  )
+}
+
+write_csv(
+  vinik_map,
+  file.path(result_dir, "vinik24_ortholog_mapping.csv")
+)
+
+write_csv(
+  manifest,
+  file.path(result_dir, "gene_set_manifest_used.csv")
+)
 
 write_csv(
   signature_audit,
@@ -846,13 +847,23 @@ ggsave(
 
 message("[8/10] Generating supporting mechanistic-gene panel...")
 
-mechanistic_human <- c(
-  "ACSL4", "LPCAT3", "GPX4", "SLC7A11", "TFRC",
-  "NCOA4", "FTH1", "FTL", "HMOX1", "AIFM2",
-  "DHODH", "GCH1", "POR"
-)
+mechanistic_map <- read_csv(
+  mechanistic_mapping_file,
+  show_col_types = FALSE
+) %>%
+  transmute(
+    human_symbol = human_symbol,
+    rat_symbol = rat_gene_symbol,
+    mapping_status = status
+  )
 
-mechanistic_map <- map_human_to_rat(mechanistic_human)
+if (
+  nrow(mechanistic_map) != 13 ||
+  anyDuplicated(mechanistic_map$human_symbol) ||
+  any(is.na(mechanistic_map$rat_symbol))
+) {
+  stop("Locked mechanistic-panel mapping is incomplete or malformed.")
+}
 
 mechanistic_effects <- mechanistic_map %>%
   left_join(
@@ -1087,12 +1098,17 @@ summary_lines <- c(
   "",
   "Primary transcriptomic ferroptosis signature:",
   paste0(
-    "  Vinik 2024 validated 24-gene panel; rat orthologs mapped: ",
-    length(vinik_rat), "/24"
+    "  Vinik 2024 human 24-gene ferroptosis-vs-apoptosis panel; locked rat dataset symbols present after filtering: ",
+    vinik_present, "/24"
   ),
   "",
+  "Gene-set provenance:",
+  "  Inferential memberships are loaded from locked config CSVs, not live databases.",
+  "  MSigDB-derived sets are frozen from MSigDB 2026.1.Hs / msigdbr 26.1.1 human-to-rat ortholog output.",
+  "  See config/gene_set_manifest.csv and docs/GENE_SET_AUDIT.md.",
+  "",
   "Supporting signatures:",
-  "  Gene Ontology GOBP_FERROPTOSIS",
+  "  Gene Ontology GOBP_FERROPTOSIS (supporting membership set; NES is not a direct activation score)",
   "  WikiPathways WP_FERROPTOSIS",
   "",
   "Context controls:",
