@@ -24,7 +24,9 @@ Define:
 - Mechanistic annotation
 - Excluded from direct RNA scoring
 
-## Phase 3 — Reference dataset QC
+## Phase 3 — Reference dataset QC — IN PROGRESS
+Completed primary-rescue execution for GSE182638. GSE247883 independent rescue replication is now locked and prepared from raw reads.
+
 Prioritize:
 - GSE182638
 - GSE247883
@@ -71,6 +73,12 @@ Freeze:
 - thresholds
 - software environment
 
+
+## Current empirical-calibration checkpoint
+- GSE182638 primary rescue analysis completed locally.
+- GSE182638 exposed the need to separate mechanistic susceptibility direction from acute transcriptional response.
+- GSE247883 is locked as an independent replication dataset; no discovery re-selection is permitted.
+- Raw SRA/ENA -> Salmon -> tximport -> DESeq2/ashr workflow prepared for GSE247883.
 
 ## Phase 1 current checkpoint
 - Master gene universe expanded and referenced.
