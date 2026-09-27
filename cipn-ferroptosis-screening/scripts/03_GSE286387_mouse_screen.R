@@ -17,7 +17,26 @@ cands<-Filter(Negate(is.null),lapply(files,read_candidate));if(!length(cands))st
 best<-cands[[which.max(vapply(cands,`[[`,numeric(1),"score"))]];x<-best$x;ids<-x[[best$gene_col]];m<-as.matrix(x[,best$sample_cols,drop=FALSE]);storage.mode(m)<-"numeric";rownames(m)<-standardize_mouse_ids(ids);colnames(m)<-names(x)[best$sample_cols]
 message("Selected raw-count source: ",best$file," [",nrow(m)," genes x ",ncol(m)," numeric columns]")
 # Match count columns to GEO samples using GSM IDs first, then titles.
-gsms<-rownames(pd);titles<-as.character(pd$title);map_one<-function(cn){hit<-which(vapply(gsms,function(g)grepl(g,cn,fixed=TRUE),logical(1)));if(length(hit)==1)return(hit);hit<-which(vapply(titles,function(t)grepl(make.names(t),make.names(cn),fixed=TRUE)||grepl(make.names(cn),make.names(t),fixed=TRUE)),logical(1)));if(length(hit)==1)hit else NA_integer_}
+gsms <- rownames(pd)
+titles <- as.character(pd$title)
+map_one <- function(cn) {
+  hit <- which(vapply(
+    gsms,
+    function(g) grepl(g, cn, fixed = TRUE),
+    logical(1)
+  ))
+  if (length(hit) == 1) return(hit)
+
+  hit <- which(vapply(
+    titles,
+    function(t) {
+      grepl(make.names(t), make.names(cn), fixed = TRUE) ||
+        grepl(make.names(cn), make.names(t), fixed = TRUE)
+    },
+    logical(1)
+  ))
+  if (length(hit) == 1) hit else NA_integer_
+}
 idx<-vapply(colnames(m),map_one,integer(1));
 # Derive treatment from all metadata text; keep only unambiguous control and 10 mg/kg oxaliplatin RNA-seq samples.
 alltxt<-apply(pd,1,function(z)paste(z,collapse=" | "));grp<-rep(NA_character_,nrow(pd));grp[grepl("control|vehicle|dextrose|0 mg",alltxt,ignore.case=TRUE)]<-"Vehicle";grp[grepl("oxaliplatin|10 mg/kg|10mg/kg",alltxt,ignore.case=TRUE)]<-"Oxaliplatin"
