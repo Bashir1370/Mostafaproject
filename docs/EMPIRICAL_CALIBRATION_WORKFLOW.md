@@ -1,159 +1,169 @@
-# Empirical Calibration Workflow
+# Empirical Calibration Workflow — NEC–FPT
 
-This document specifies the executable order for Milestones 1–4.
+## Step 1 — Inspect all bulk reference datasets
 
-## Step 1 — Ingest count-ready studies first
-
-Order:
-
-1. GSE255459 — FPT, three human cell lines, Erastin/RSL3
-2. GSE131444 — FPT, mouse MEF, Erastin
-3. GSE317656 — FPT, two human neuroblastoma lines, Erastin
-4. GSE104664 — generic oxidative stress, H2O2 time course
-
-These four datasets can establish and test the count-based analysis engine before raw-SRA reprocessing is introduced.
-
-## Step 2 — Per-study QC
-
-For every study:
-
-- reconstruct sample metadata from GEO;
-- verify integer count matrix;
-- confirm column/sample identity;
-- report library sizes;
-- report number of detected genes;
-- filter low-count genes using the locked rule in `config/analysis_parameters.csv`;
-- perform VST PCA and sample correlation;
-- record, but do not silently remove, any potential outlier.
-
-No raw expression matrices are merged across studies.
-
-## Step 3 — Differential effects
-
-Use DESeq2.
-
-For each pre-specified contrast, obtain:
-- MLE log2 fold change;
-- standard error.
-
-Then apply adaptive shrinkage using `ashr`:
-- posterior mean effect (`beta`);
-- local false sign rate (`lfsr`).
-
-No hard p-value/FDR cutoff is used to define empirical evidence.
-
-## Step 4 — Convert each contrast into evidence e
-
-For target direction d:
-
-```text
-Magnitude = percentile_rank(|posterior beta|)
-Confidence = 1 - lfsr
-
-e = sign(d × beta) × Magnitude × Confidence
+Run:
+```r
+source("scripts/00_inspect_reference_datasets.R")
 ```
 
-Range: [-1, +1].
+The inspection must precede DE analysis.
 
-## Step 5 — Within-study aggregation
+## Step 2 — Start with count-ready FPT calibration
+
+### GSE182638
+Two human cell lines:
+- MM1R
+- MM1S
+
+Per cell line:
+- RSL3 vs untreated
+- RSL3 vs RSL3+Fer-1
+
+Compute rescue-validated evidence, then aggregate cell lines within study.
 
 ### GSE255459
+Three human cell lines:
+- BT549
+- HS578
+- SUM159
 
-For each cell line:
+Per cell line:
+- Erastin vs DMSO
+- RSL3 vs DMSO
 
-```text
-e_cell = median(e_Erastin, e_RSL3)
-```
+Aggregate inducer evidence within cell line, then cell lines within study.
+
+### GSE319384
+Do **not** use for initial weight fitting unless needed.
+Prefer as held-out orthogonal FPT validation.
+
+## Step 3 — Reprocess primary NEC data
+
+### GSE108621
+
+Final count-level analysis requires reprocessing raw SRA.
+
+Per gene compute:
+1. TSZ vs DMSO
+2. TSZ vs TNF
+3. TSZ vs TSZ+Nec-1s
 
 Then:
 
 ```text
-e_study = median(e_BT549, e_HS578, e_SUM159)
+support =
+ min(
+   max(e_TSZ_DMSO,0),
+   max(e_TSZ_TNF,0),
+   max(e_Nec1s_reversal,0)
+ )
+
+contradiction =
+ max(
+   max(-e_TSZ_DMSO,0),
+   max(-e_TSZ_TNF,0),
+   max(-e_Nec1s_reversal,0)
+ )
+
+e_GSE108621 = support-contradiction
 ```
 
-This ensures the study contributes one evidence unit despite six contrasts.
+This requires a feature to be:
+- induced in necroptosis;
+- stronger than TNF inflammation alone;
+- reversible by Nec-1s.
 
-### GSE317656
+### Replication
+Next:
+- GSE172027
+- GSE154230
+
+## Step 4 — Orthogonal NEC validation
+
+Hold:
+- GSE134234
+- GSE268650
+
+These use direct RIPK3 activation and reduce dependence on TSZ-specific transcription.
+
+## Step 5 — Per-contrast effect engine
+
+For count data:
+- DESeq2 MLE effect + SE
+- adaptive shrinkage with ashr
+- local false sign rate
+
+No hard p-value cutoff defines evidence.
 
 ```text
-e_study = median(e_SK-N-AS, e_KELLY)
+Magnitude = percentile_rank(|posterior beta|)
+Confidence = 1-lfsr
+e = sign(d*beta)*Magnitude*Confidence
 ```
 
-### GSE104664
+## Step 6 — Anti-circularity
+
+If a gene is directly manipulated:
+- exclude that experiment from its own E.
+
+Examples:
+- RIPK3 in engineered RIPK3 activation studies;
+- PSAP in PSAP-KO neurons.
+
+## Step 7 — Cross-study E
+
+Each independent study contributes at most one signed evidence value per gene.
 
 ```text
-e_study = median(e_H2O2_16h, e_H2O2_36h)
+Positive      = mean(max(e_study,0))
+Contradiction = mean(max(-e_study,0))
+E             = max(0,Positive-Contradiction)
 ```
 
-### GSE247883 (after raw reprocessing)
+## Step 8 — Specificity S
 
-Define:
-- induction = RSL3 - DMSO
-- reversal = RSL3 - (RSL3 + Fer-1)
+For NEC genes:
+- evaluate same-direction behavior in FPT and generic stress.
 
-Both are evaluated using the same FPT target direction.
+For FPT genes:
+- evaluate same-direction behavior in NEC and generic stress.
 
 ```text
-support = min(max(e_induction,0), max(e_reversal,0))
-contradiction = max(max(-e_induction,0), max(-e_reversal,0))
-e_rescue = support - contradiction
+C = max(competing_same_direction,stress_same_direction)
+S = max(0,(E_target-C)/(E_target+C+epsilon))
 ```
 
-Thus a transcript only receives strong rescue-validated evidence when the RSL3 change is also reversed by Fer-1.
-
-### GSE282334 (after raw reprocessing)
-
-Use the interaction coefficient:
+## Step 9 — Final weights
 
 ```text
-(KO_GluMinus - KO_Regular) - (EV_GluMinus - EV_Regular)
+W_MPS  = M*E
+W_NFSI = M*E*S
 ```
 
-TXNRD1 is excluded from self-validation in this study.
+## Step 10 — ESR
 
-## Step 6 — Cross-study E
+Build separately:
+- rescue-validated NEC empirical signature
+- rescue/cross-inducer FPT empirical signature
 
-After each study has exactly one signed evidence value per gene:
+Primary scoring should be single-sample and rank-based.
 
-```text
-Positive       = mean(max(e_study, 0))
-Contradiction  = mean(max(-e_study, 0))
-E              = max(0, Positive - Contradiction)
-```
+## Step 11 — Required audit outputs
 
-Independent-study count is stored separately.
+Every study analysis writes:
+- metadata.csv
+- QC summary
+- filtered gene universe
+- per-contrast effects
+- per-contrast e
+- within-study aggregate e
+- sessionInfo
+- analysis decision notes
 
-## Step 7 — Specificity S
-
-For a DPT target gene, competitor FPT and generic-stress transcriptomes are re-evaluated using the **DPT expected direction**.
-
-For an FPT target gene, DPT and stress datasets are re-evaluated using the **FPT expected direction**.
-
-This is essential: opposite-direction behavior in a competing death program is discriminatory evidence, not mimicry.
-
-```text
-C = max(competitor_same_direction, generic_stress_same_direction)
-
-S = max(0, (E_target - C) / (E_target + C + epsilon))
-```
-
-## Step 8 — Final gene weights
-
-```text
-W_MPS = M × E
-W_DSI = M × E × S
-```
-
-## Step 9 — Required audit files
-
-Each run must write:
-- sample metadata;
-- QC summary;
-- filtered gene universe;
-- per-contrast effect table;
-- per-study signed evidence;
-- cross-study E;
-- same-direction competitor/stress evidence;
-- S;
-- final gene weights;
-- package/session information.
+Cross-study stage writes:
+- E
+- same-direction competitor/stress evidence
+- S
+- final weights
+- replication depth.
