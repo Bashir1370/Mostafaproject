@@ -66,9 +66,11 @@ Completed additionally:
 
 Next:
 - GSE182638 primary rescue analysis completed
-- GSE247883 locked as independent rescue replication
-- preflight ENA manifest, raw-read download, Docker/Salmon quantification, and DESeq2/ashr replication scripts added
-- next: run GSE247883 preflight and inspect raw-read download size before acquisition.
+- GSE247883 retained as an optional/additional independent bulk rescue replication
+- GSE287284 promoted to the next direct neuronal validation stage
+- GSE287284 workflow added: direct GEO FPKM download -> QC -> log2(FPKM+1) -> limma -> ashr -> frozen GSE182638 ESR testing
+- cross-species validation restricted to one-to-one Ensembl human-mouse orthologs
+- next: run GSE287284 locally and review neuronal transfer evidence.
 
 See:
 - [GENE_CURATION.md](docs/GENE_CURATION.md)
