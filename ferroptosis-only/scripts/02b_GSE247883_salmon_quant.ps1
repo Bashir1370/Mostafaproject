@@ -18,12 +18,24 @@ if (-not (Test-Path $manifestFile)) {
   throw "Missing ENA manifest. Run 02a_GSE247883_prepare_raw.ps1 first."
 }
 
-if (-not (Get-Command salmon -ErrorAction SilentlyContinue)) {
-  throw "salmon was not found on PATH. Install Salmon and reopen PowerShell."
+if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
+  throw "Docker was not found. Install Docker Desktop (or use WSL/Linux) before Salmon quantification."
 }
 
 if (-not (Get-Command curl.exe -ErrorAction SilentlyContinue)) {
   throw "curl.exe was not found."
+}
+
+& docker info | Out-Null
+if ($LASTEXITCODE -ne 0) {
+  throw "Docker is installed but the Docker engine is not running."
+}
+
+$salmonImage = "combinelab/salmon:latest"
+Write-Host "Pulling Salmon Docker image if needed..."
+& docker pull $salmonImage
+if ($LASTEXITCODE -ne 0) {
+  throw "Could not pull Salmon Docker image."
 }
 
 $cdnaGz = Join-Path $refDir "Homo_sapiens.GRCh38.cdna.all.fa.gz"
@@ -45,8 +57,9 @@ if (-not (Test-Path $gtfGz)) {
 }
 
 if (-not (Test-Path $indexDir)) {
-  Write-Host "Building Salmon index..."
-  & salmon index -t $cdnaGz -i $indexDir -p $Threads
+  Write-Host "Building Salmon index in Docker..."
+  $mount = "$repoRoot" + ":/work"
+  & docker run --rm -v $mount -w /work $salmonImage salmon index -t /work/ferroptosis-only/data/reference/ensembl101/Homo_sapiens.GRCh38.cdna.all.fa.gz -i /work/ferroptosis-only/data/reference/ensembl101/salmon_index -p $Threads
   if ($LASTEXITCODE -ne 0) { throw "Salmon index failed." }
 } else {
   Write-Host "Salmon index already exists; skipping."
@@ -67,8 +80,17 @@ foreach ($r in $manifest) {
     continue
   }
 
-  Write-Host "Quantifying $($r.gsm) ..."
-  & salmon quant -i $indexDir -l A -1 $r.fastq1_path -2 $r.fastq2_path --validateMappings --gcBias -p $Threads -o $outDir
+  Write-Host "Quantifying $($r.gsm) in Docker ..."
+
+  $fq1Name = [IO.Path]::GetFileName($r.fastq1_path)
+  $fq2Name = [IO.Path]::GetFileName($r.fastq2_path)
+
+  $fq1Container = "/work/ferroptosis-only/data/raw/GSE247883/fastq/$fq1Name"
+  $fq2Container = "/work/ferroptosis-only/data/raw/GSE247883/fastq/$fq2Name"
+  $outContainer = "/work/ferroptosis-only/data/processed/GSE247883/salmon/$($r.gsm)"
+  $mount = "$repoRoot" + ":/work"
+
+  & docker run --rm -v $mount -w /work $salmonImage salmon quant -i /work/ferroptosis-only/data/reference/ensembl101/salmon_index -l A -1 $fq1Container -2 $fq2Container --validateMappings --gcBias -p $Threads -o $outContainer
 
   if ($LASTEXITCODE -ne 0) {
     throw "Salmon quantification failed for $($r.gsm)."
