@@ -6,12 +6,17 @@
 #   This prevents assumptions about file structure, identifiers, or count type.
 #
 # Datasets:
-#   GSE282334  DPT reference
-#   GSE247883  FPT rescue reference
-#   GSE255459  FPT cross-inducer reference
-#   GSE131444  FPT cross-species reference
-#   GSE317656  FPT neural-lineage reference
-#   GSE104664  generic oxidative-stress reference
+#   NEC bulk references:
+#   GSE108621, GSE172027, GSE154230, GSE134234, GSE268650
+#
+#   FPT bulk references:
+#   GSE182638, GSE247883, GSE255459, GSE319384, GSE287284
+#
+#   Generic-stress comparator:
+#   GSE104664
+#
+#   scRNA/human-neuron validation datasets (GSE287439, GSE152988)
+#   are intentionally handled in separate workflows.
 #
 # Output:
 #   results/reference_inspection/inspection_summary.csv
@@ -55,11 +60,16 @@ suppressPackageStartupMessages({
 # -------------------------------------------------------------------------
 
 accessions <- c(
-  "GSE282334",
+  "GSE108621",
+  "GSE172027",
+  "GSE154230",
+  "GSE134234",
+  "GSE268650",
+  "GSE182638",
   "GSE247883",
   "GSE255459",
-  "GSE131444",
-  "GSE317656",
+  "GSE319384",
+  "GSE287284",
   "GSE104664"
 )
 
