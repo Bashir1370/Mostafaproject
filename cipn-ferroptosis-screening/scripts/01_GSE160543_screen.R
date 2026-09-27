@@ -10,7 +10,7 @@
 #   Vinik et al. 2024 validated 24-gene ferroptosis-vs-apoptosis biomarker panel
 #
 # Supporting evidence:
-#   KEGG Ferroptosis
+#   Gene Ontology Biological Process: Ferroptosis
 #   WikiPathways Ferroptosis
 #
 # Context / specificity controls:
@@ -548,38 +548,13 @@ get_set <- function(name) {
 
 wp_genes <- get_set("WP_FERROPTOSIS")
 
-kegg_priority <- c(
-  "KEGG_MEDICUS_FERROPTOSIS",
-  "KEGG_LEGACY_FERROPTOSIS",
-  "KEGG_FERROPTOSIS"
-)
-
-kegg_name <- kegg_priority[kegg_priority %in% unique(msig$gs_name)][1]
-
-if (is.na(kegg_name)) {
-  kegg_candidates <- unique(
-    msig$gs_name[
-      grepl("KEGG", msig$gs_name, ignore.case = TRUE) &
-      grepl("FERROPTOSIS", msig$gs_name, ignore.case = TRUE)
-    ]
-  )
-
-  if (length(kegg_candidates) > 0) {
-    kegg_name <- kegg_candidates[1]
-  }
-}
-
-if (is.na(kegg_name) || !nzchar(kegg_name)) {
-  stop("Could not find a KEGG ferroptosis gene set in the installed msigdbr release.")
-}
-
-kegg_genes <- get_set(kegg_name)
+gobp_genes <- get_set("GOBP_FERROPTOSIS")
 apoptosis_genes <- get_set("HALLMARK_APOPTOSIS")
 ros_genes <- get_set("HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY")
 
 if (
   length(wp_genes) < 5 ||
-  length(kegg_genes) < 5 ||
+  length(gobp_genes) < 5 ||
   length(apoptosis_genes) < 5 ||
   length(ros_genes) < 5
 ) {
@@ -661,7 +636,7 @@ if (length(vinik_rat) < 12) {
 
 signatures <- list(
   VINIK_2024_24_FERROPTOSIS_BIOMARKERS = vinik_rat,
-  KEGG_FERROPTOSIS = kegg_genes,
+  GOBP_FERROPTOSIS = gobp_genes,
   WP_FERROPTOSIS = wp_genes,
   HALLMARK_APOPTOSIS = apoptosis_genes,
   HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY = ros_genes
@@ -974,7 +949,7 @@ summarize_contrast <- function(gsea_tbl, contrast_name) {
   )
   k <- get_gsea_row(
     gsea_tbl,
-    "KEGG_FERROPTOSIS"
+    "GOBP_FERROPTOSIS"
   )
   w <- get_gsea_row(
     gsea_tbl,
@@ -1064,8 +1039,8 @@ summarize_contrast <- function(gsea_tbl, contrast_name) {
     ros_context = ros_context,
     VINIK_NES = v$NES,
     VINIK_FDR = v$padj,
-    KEGG_NES = k$NES,
-    KEGG_FDR = k$padj,
+    GOBP_NES = k$NES,
+    GOBP_FDR = k$padj,
     WP_NES = w$NES,
     WP_FDR = w$padj,
     APOPTOSIS_NES = a$NES,
@@ -1117,7 +1092,7 @@ summary_lines <- c(
   ),
   "",
   "Supporting signatures:",
-  paste0("  KEGG Ferroptosis source set: ", kegg_name),
+  "  Gene Ontology GOBP_FERROPTOSIS",
   "  WikiPathways WP_FERROPTOSIS",
   "",
   "Context controls:",
