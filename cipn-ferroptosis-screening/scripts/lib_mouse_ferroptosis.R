@@ -12,6 +12,10 @@ standardize_mouse_ids <- function(ids){
   out <- ids
   if(any(ens)){m<-AnnotationDbi::mapIds(db,keys=unique(ids[ens]),keytype="ENSEMBL",column="SYMBOL",multiVals="first");out[ens]<-unname(m[ids[ens]])}
   if(any(ent)){m<-AnnotationDbi::mapIds(db,keys=unique(ids[ent]),keytype="ENTREZID",column="SYMBOL",multiVals="first");out[ent]<-unname(m[ids[ent]])}
+  # Reconcile legacy symbols used by older processed-count annotations to the
+  # current official mouse nomenclature used by the frozen signatures.
+  # NCBI/MGI Gene 353172: official Gars1; Gars is a historical alias.
+  out[out=="Gars"] <- "Gars1"
   out
 }
 
@@ -59,8 +63,10 @@ run_mouse_ferroptosis_screen <- function(count_mat, meta, accession, result_dir,
   lookup<-function(n,col){x<-fg[fg$pathway==n,,drop=FALSE];if(nrow(x))x[[col]][1] else NA_real_}
   vin_fdr<-lookup("VINIK_2024_24_FERROPTOSIS_BIOMARKERS","padj");vin_nes<-lookup("VINIK_2024_24_FERROPTOSIS_BIOMARKERS","NES");go_fdr<-lookup("GOBP_FERROPTOSIS","padj");wp_fdr<-lookup("WP_FERROPTOSIS","padj");apo_fdr<-lookup("HALLMARK_APOPTOSIS","padj");ros_fdr<-lookup("HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY","padj")
   label<-if(is.finite(vin_fdr)&&vin_fdr<.05&&vin_nes>0&&((is.finite(go_fdr)&&go_fdr<.05)||(is.finite(wp_fdr)&&wp_fdr<.05)))"STRONG_SUPPORT" else if(is.finite(vin_fdr)&&vin_fdr<.05&&vin_nes>0)"SUGGESTIVE_SUPPORT" else "NO_TRANSCRIPTOMIC_SUPPORT"
-  ev<-tibble(dataset=accession,species="Mus musculus",tissue="DRG",contrast="Oxaliplatin_vs_Vehicle",ferroptosis_evidence=label,apoptosis_context=ifelse(is.finite(apo_fdr)&&apo_fdr<.05,"APOPTOSIS_COINCIDENT","NO_SIGNIFICANT_APOPTOSIS_ENRICHMENT"),ros_context=ifelse(is.finite(ros_fdr)&&ros_fdr<.05,"ROS_ENRICHED_OR_DEPLETED","NO_SIGNIFICANT_ROS_ENRICHMENT"),note=dataset_note)
+  ros_nes<-lookup("HALLMARK_REACTIVE_OXYGEN_SPECIES_PATHWAY","NES")
+  ros_label<-if(is.finite(ros_fdr)&&ros_fdr<.05&&is.finite(ros_nes)&&ros_nes>0)"POSITIVE_ROS_ENRICHMENT" else if(is.finite(ros_fdr)&&ros_fdr<.05&&is.finite(ros_nes)&&ros_nes<0)"NEGATIVE_ROS_ENRICHMENT" else "NO_SIGNIFICANT_ROS_ENRICHMENT"
+  ev<-tibble(dataset=accession,species="Mus musculus",tissue="DRG",contrast="Oxaliplatin_vs_Vehicle",ferroptosis_evidence=label,apoptosis_context=ifelse(is.finite(apo_fdr)&&apo_fdr<.05,"APOPTOSIS_COINCIDENT","NO_SIGNIFICANT_APOPTOSIS_ENRICHMENT"),ros_context=ros_label,note=dataset_note)
   write_csv(ev,file.path(result_dir,"evidence_summary.csv"))
-  writeLines(c(paste0("Dataset: ",accession),"Species: Mus musculus","Tissue: dorsal root ganglion","Contrast: Oxaliplatin vs Vehicle",paste0("Dataset note: ",dataset_note),paste0("Genes in reconstructed matrix: ",nrow(count_mat)),paste0("Genes retained for DESeq2: ",nrow(dds)),paste0("Vinik present after filter: ",sum(audit$signature=="VINIK_2024_24_FERROPTOSIS_BIOMARKERS" & audit$present_in_analysis),"/24"),paste0("Evidence label: ",label),"Boundary: bulk RNA-seq supports a ferroptosis-associated transcriptional program; it does not prove ferroptotic cell death."),file.path(result_dir,"analysis_summary.txt"))
+  writeLines(c(paste0("Dataset: ",accession),"Species: Mus musculus","Tissue: dorsal root ganglion","Contrast: Oxaliplatin vs Vehicle",paste0("Dataset note: ",dataset_note),paste0("Genes in reconstructed matrix: ",nrow(count_mat)),paste0("Genes retained for DESeq2: ",nrow(dds)),paste0("Vinik present after filter: ",sum(audit$signature=="VINIK_2024_24_FERROPTOSIS_BIOMARKERS" & audit$present_in_analysis),"/24"),paste0("Evidence label: ",label),"Boundary: bulk RNA-seq can detect ferroptosis-associated transcriptional features but cannot prove ferroptotic cell death or identify the responding cell type."),file.path(result_dir,"analysis_summary.txt"))
   writeLines(capture.output(sessionInfo()),file.path(result_dir,"sessionInfo.txt"));invisible(list(de=de,gsea=fg,evidence=ev))
 }
