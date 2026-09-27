@@ -209,13 +209,26 @@ count_names <- names(raw_tbl)
 count_keys <- clean_key(count_names)
 
 match_sample_column <- function(col_name, col_key) {
+  # 1) Exact match against GSM/title/verified short name.
   exact <- sample_fields %>% filter(key == col_key)
   if (nrow(exact) == 1) return(exact$sample)
 
-  # Fallback: GEO accession embedded in column name.
-  gsm_hits <- meta$sample[vapply(meta$sample, function(g) {
-    grepl(clean_key(g), col_key, fixed = TRUE)
-  }, logical(1))]
+  # 2) Robust substring match against verified short names.
+  #    This handles count columns that append/prepend BAM/file-processing text.
+  short_keys <- clean_key(meta$verified_short_name)
+  short_hits <- meta$sample[
+    vapply(short_keys, function(k) {
+      grepl(k, col_key, fixed = TRUE) || grepl(col_key, k, fixed = TRUE)
+    }, logical(1))
+  ]
+  if (length(short_hits) == 1) return(short_hits)
+
+  # 3) Fallback: GEO accession embedded in column name.
+  gsm_hits <- meta$sample[
+    vapply(meta$sample, function(g) {
+      grepl(clean_key(g), col_key, fixed = TRUE)
+    }, logical(1))
+  ]
   if (length(gsm_hits) == 1) return(gsm_hits)
 
   NA_character_
@@ -229,12 +242,20 @@ matched_samples <- vapply(
 
 sample_idx <- which(!is.na(matched_samples))
 
+mapping_debug <- tibble(
+  count_column = count_names,
+  cleaned_count_column = count_keys,
+  matched_sample = matched_samples
+)
+
+write_csv(
+  mapping_debug,
+  file.path(result_dir, "count_column_mapping_debug.csv")
+)
+
 if (length(sample_idx) != 18 || length(unique(matched_samples[sample_idx])) != 18) {
-  mapping_debug <- tibble(
-    count_column = count_names,
-    matched_sample = matched_samples
-  )
-  write_csv(mapping_debug, file.path(result_dir, "count_column_mapping_debug.csv"))
+  message("Detected count columns:")
+  message(paste(count_names, collapse = " | "))
   stop(
     "Could not uniquely map all 18 count columns to GEO samples. ",
     "See count_column_mapping_debug.csv."
