@@ -680,6 +680,9 @@ run_gsea <- function(de_tbl, contrast_name) {
   names(ranks) <- rank_tbl$gene
   ranks <- sort(ranks, decreasing = TRUE)
 
+  # fgseaMultilevel uses stochastic adaptive sampling. Reset a fixed,
+  # contrast-specific seed so identical inputs produce identical GSEA output.
+  set.seed(if (contrast_name == "Oxaliplatin_vs_Vehicle") 160543L else 160544L)
   fg <- fgsea::fgseaMultilevel(
     pathways = signatures,
     stats = ranks,
@@ -1034,7 +1037,14 @@ summarize_contrast <- function(gsea_tbl, contrast_name) {
     is.finite(r$padj) &&
     r$padj < 0.05
   ) {
-    "ROS_ENRICHED"
+    "POSITIVE_ROS_ENRICHMENT"
+  } else if (
+    is.finite(r$NES) &&
+    r$NES < 0 &&
+    is.finite(r$padj) &&
+    r$padj < 0.05
+  ) {
+    "NEGATIVE_ROS_ENRICHMENT"
   } else {
     "NO_SIGNIFICANT_ROS_ENRICHMENT"
   }
