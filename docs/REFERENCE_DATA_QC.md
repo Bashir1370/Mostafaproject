@@ -1,56 +1,64 @@
-# Reference Dataset QC — v0.1
+# Reference Dataset QC — NEC–FPT v0.2
 
-This document records the initial data-readiness audit for the reference perturbation library.
+This file records **pre-analysis data readiness**, not biological performance.
 
-## Inclusion criteria
+## Inclusion criteria for primary calibration
 
-A dataset is considered suitable for **primary empirical calibration** when it has:
-1. a biologically interpretable perturbation/contrast;
-2. adequate biological replication;
-3. gene-level count data or raw reads that can be reproducibly converted to counts;
-4. sample metadata sufficient to reconstruct the design matrix;
-5. no unavoidable circularity for the gene being evaluated.
+A study should ideally have:
+1. interpretable induction of the target death mechanism;
+2. biological replication;
+3. a pathway-specific rescue/inhibitor or an orthogonal control;
+4. count-level data or raw reads that can be reproducibly converted to counts;
+5. metadata sufficient to reconstruct contrasts.
 
-## Current audit
+## Current readiness
 
-| Accession | Program | Replication | Public matrix | Final readiness | Planned contrast |
-|---|---|---:|---|---|---|
-| GSE282334 | DPT | 2/cell | normalized counts | Raw reprocessing required | (KO_Glu- − KO_Reg) − (EV_Glu- − EV_Reg) |
-| GSE247883 | FPT | 3/group | FPKM | Raw reprocessing required | RSL3−DMSO plus Fer-1 reversal |
-| GSE255459 | FPT | 2/condition/cell line | raw counts | Ready | Erastin−DMSO and RSL3−DMSO within each cell line |
-| GSE131444 | FPT | 3/group | raw counts | Ready | Erastin−DMSO |
-| GSE317656 | FPT | 3/group/cell line | gene counts | Ready | Erastin−Control within each cell line |
-| GSE104664 | Generic stress | 3/group | raw counts | Ready | H2O2_16h−Control and H2O2_36h−Control |
-| GSE55169 | Generic stress | no replicate per cell/fraction/time state | fractionated RNA profiles | Secondary only | Supporting annotation only |
+| Accession | Program | Design strength | Public expression object | Readiness | Role |
+|---|---|---|---|---|---|
+| GSE108621 | NEC | TSZ + TNF-only + Nec-1s rescue | DESeq result tables; SRA | RAW_REPROCESS_REQUIRED | primary NEC calibration |
+| GSE172027 | NEC | TSZ + Nec-1s rescue, human astrocytes | normalized log2; SRA | RAW_REPROCESS_REQUIRED | neural rescue replication |
+| GSE154230 | NEC | two RIPK1-activating routes + Nec-1s, glia | normalized log; SRA | RAW_REPROCESS_REQUIRED | neuroimmune replication |
+| GSE134234 | NEC | direct RIPK3 dimerization + TNF control | RPKM workbook; SRA | ORTHOGONAL_VALIDATION | direct-RIPK3 validation |
+| GSE268650 | NEC | optogenetic RIPK3 + inhibitor/light controls | normalized log2 + DE tables; SRA | ORTHOGONAL_VALIDATION | human orthogonal validation |
+| GSE287439 | NEC | TSZ +/- RIPK1 inhibitor in human iPSC tri-culture | 10x H5 | SCRNA_VALIDATION | cell-type validation |
+| GSE182638 | FPT | RSL3 + Fer-1 rescue in 2 human lines | **raw read counts** | READY_COUNTS | primary FPT calibration |
+| GSE247883 | FPT | RSL3 + Fer-1 rescue | FPKM; SRA | RAW_REPROCESS_REQUIRED | rescue replication |
+| GSE255459 | FPT | Erastin + RSL3 in 3 human lines | **raw counts** | READY_COUNTS | cross-inducer calibration |
+| GSE319384 | FPT | Erastin/RSL3/Ferroptocide, 2 genotypes | **raw counts** | READY_COUNTS | held-out multi-inducer validation |
+| GSE287284 | FPT | neuronal RSL3 | FPKM; SRA | RAW_REPROCESS_REQUIRED | neural validation |
+| GSE152988 | FPT | human iPSC-neuron genetic ferroptosis model | processed table; SRA | HUMAN_NEURAL_VALIDATION | genetic validation |
+| GSE104664 | stress | H2O2 time course | **raw counts** | READY_COUNTS | oxidative-stress penalty |
 
-## Critical decisions
+## Priority order
 
-### GSE282334
-This is currently the strongest DPT transcriptomic reference in the seed library, but its supplementary matrix is normalized rather than raw counts. The final calibration should therefore reconstruct gene-level counts from SRA. The public normalized matrix may be used for exploratory PCA, sample-label checking and preliminary direction checks only.
+### First executable count-level analyses
+1. GSE182638
+2. GSE255459
+3. GSE319384 — keep held out until initial FPT weights/signature are defined
+4. GSE104664
 
-### GSE247883
-The rescue design is highly valuable mechanistically. However, the deposited supplementary matrix is FPKM. Final effect estimation and false-sign confidence should use reprocessed counts from SRA.
+### NEC
+GSE108621 has the best experimental design but requires raw-read reprocessing for the final DESeq2/ashr pipeline.
 
-### GSE255459
-This is immediately usable and particularly valuable because two canonical ferroptosis inducers are tested across three cell lines. Contrasts are first estimated within each cell line. Erastin and RSL3 evidence are then combined within this study before the study contributes one unit to cross-study E.
+The already-deposited DESeq result tables can be used only for:
+- metadata confirmation;
+- contrast sanity checks;
+- preliminary direction checks.
 
-### GSE131444
-Immediately usable count data. Because this dataset is mouse, ortholog mapping is performed only after per-study differential analysis. Raw mouse gene identifiers must not be mixed directly with human matrices.
+They should not silently replace final count-level inference when lfsr-based uncertainty is required.
 
-### GSE317656
-Immediately usable for validation after confirming processed columns are integer gene counts. The two cell lines are analyzed separately and aggregated within study.
+## Outlier policy
 
-### GSE104664
-Selected as the primary generic oxidative-stress comparator because it has a clean untreated/H2O2 design, three biological replicates per group, and a public count matrix. The 16 h and 36 h contrasts are treated as two within-study contrasts and aggregated before specificity calculations.
+Potential outliers are:
+- reported;
+- visualized by PCA/correlation;
+- never silently removed.
 
-### GSE55169
-Retained only as supporting evidence. Its fractionated time-course design is scientifically interesting but inappropriate as the primary negative-control differential dataset because cell-line/fraction/time states lack biological replication.
+Removal requires a documented technical reason and versioned decision.
 
-## Next QC tasks
+## Cross-species policy
 
-1. Import each READY_COUNTS matrix.
-2. Confirm identifiers, integer/count nature, library sizes and zero inflation.
-3. Reconstruct metadata from GEO sample labels.
-4. PCA / sample-correlation QC.
-5. Flag outliers before differential analysis using pre-specified rules.
-6. Store standardized per-study count and metadata objects without merging studies.
+Mouse studies are analyzed in their native annotation first.
+Human ortholog mapping occurs **after** per-study differential analysis.
+
+Raw mouse/human matrices are never merged.
