@@ -1,64 +1,87 @@
-# Decision Log
+# Decision Log — NEC–FPT Framework
 
 ## DL-001 — Disease-agnostic development
-The classifier is developed independently of any disease, tissue, drug, or clinical application.
+The classifier is developed independently of any future disease, tissue, drug or clinical application.
 
-## DL-002 — Mechanism-first design
-The framework is not a conventional flat gene-set score. DPT and FPT are decomposed into mechanistic stages.
+## DL-002 — Necroptosis replaces disulfidptosis
+The active framework was redesigned from DPT–FPT to **NEC–FPT** because necroptosis combines:
+- strong mechanistic separation from ferroptosis;
+- direct causal evidence in neuropathic-injury biology;
+- multiple independent GEO perturbation datasets;
+- rescue/inhibitor controls;
+- orthogonal RIPK3 activation strategies;
+- human neural/neuroimmune validation datasets.
 
-## DL-003 — Separate evidence classes
-Causal regulators, protective systems, metabolic modifiers, and proteins damaged post-translationally are not treated as equivalent.
+The earlier DPT design remains recoverable through Git history but is not part of the active model.
 
-## DL-004 — DPT cytoskeletal substrates are not direct RNA activity markers
-ACTB, MYH9, FLNA and related proteins remain mechanistic annotations unless empirical RNA evidence demonstrates diagnostic utility.
+## DL-003 — Mechanism-first design
+The framework is not a flat death-gene score. NEC and FPT are decomposed into mechanistic components.
 
-## DL-005 — Direction-aware scoring
-Promoters and protective genes have opposite expected directions. Protective genes are scored inversely.
+## DL-004 — NEC core is deliberately small
+Direct NEC RNA scoring begins with:
+- RIPK1/RIPK3 necrosome competence;
+- MLKL execution competence.
 
-## DL-006 — SLC7A11 is shared/contextual
-SLC7A11 is central to DPT permissiveness but also central to ferroptosis resistance. It contributes strongly to DPT context but must not directly dominate DSI.
+Upstream triggers and checkpoints are not allowed to dominate the core score.
 
-## DL-007 — DPT initiation uses a biological gate
-DPT requires both cystine-loading capacity and reducing-capacity vulnerability. D1 and D2 are coupled using a geometric interaction.
+## DL-005 — Post-translational execution is not inferred from RNA
+pRIPK3, pMLKL and MLKL oligomerization define execution more directly than transcript abundance. RNA scores therefore represent competence/permissiveness and state resemblance, not proof of execution.
 
-## DL-008 — MPS and MCI measure different concepts
-MPS measures overall permissiveness/intensity. MCI measures mechanistic completeness and is weakest-link sensitive.
+## DL-006 — CASP8/FADD/CFLAR are annotations initially
+Their effects depend on catalytic state, complex composition and/or isoforms. Bulk RNA direction is not safely converted into a simple positive/negative NEC score.
 
-## DL-009 — ESR remains separate
-Empirical transcriptomic resemblance is kept separate from mechanistic permissiveness.
+## DL-007 — RIPK1 is important but not universally required
+RIPK1 receives lower prior/specificity status than RIPK3/MLKL because RIPK3 can be activated through RIPK1-independent routes such as ZBP1.
 
-## DL-010 — Three-component weighting
-Final gene weights combine:
-- mechanistic prior M
-- empirical reproducibility E
-- specificity S
+## DL-008 — MPS and MCI are distinct
+MPS measures overall molecular permissiveness.
+MCI measures completeness and penalizes a missing required module.
+
+## DL-009 — ESR remains independent
+Empirical transcriptomic resemblance is not merged into the literature-defined mechanistic score.
+
+## DL-010 — Three-component gene weighting
+Final weights combine:
+- mechanistic prior M;
+- empirical reproducibility E;
+- specificity S.
 
 ## DL-011 — No p-value-only weighting
-Effect direction, effect magnitude and uncertainty are prioritized. Contradictions are explicitly penalized.
+Effect direction, effect magnitude and sign confidence are used. Contradictions are retained.
 
 ## DL-012 — Anti-circularity
-A directly manipulated gene cannot use the same experiment to validate its own transcriptomic behavior.
+A directly manipulated gene cannot validate itself in the same experiment.
 
 ## DL-013 — Independent study is the replication unit
-Multiple contrasts or cell lines from one study are aggregated before cross-study evidence combination.
+Multiple contrasts, cell lines or time points from one study are aggregated before cross-study E.
 
-## DL-014 — Rescue designs receive special value
-FPT responses reversed by Ferrostatin-1 are more specific than inducer-vs-control behavior alone.
+## DL-014 — GSE108621 is primary NEC calibration
+Its TNF-only arm helps remove generic inflammatory transcription and its Nec-1s arm provides pharmacological rescue.
 
-## DL-015 — Generic oxidative stress is a competitor
-H2O2 and similar stress datasets are used to down-weight nonspecific stress-response genes.
+## DL-015 — Orthogonal NEC validation is mandatory
+Direct/optogenetic RIPK3 datasets are held for robustness testing rather than allowing all NEC references to share the same TSZ induction chemistry.
 
-## DL-016 — Four top-level classes
-Possible outputs:
-- DPT-dominant
+## DL-016 — GSE182638 is primary FPT rescue calibration
+It provides raw counts, two independent human cell lines, RSL3 induction and Ferrostatin-1 reversal.
+
+## DL-017 — Cross-inducer FPT evidence is required
+Erastin, RSL3 and additional inducers are used to reduce drug-specific transcriptomic artifacts.
+
+## DL-018 — Generic stress is a competitor
+Oxidative stress datasets are used to down-weight nonspecific stress genes. Additional inflammatory/apoptotic comparators may be added later under a versioned protocol.
+
+## DL-019 — Specificity index renamed NFSI
+`NFSI` = Necroptosis–Ferroptosis Specificity Index.
+Positive values favor NEC-specific evidence; negative values favor FPT-specific evidence.
+
+## DL-020 — Four top-level classes
+- NEC-dominant
 - FPT-dominant
 - Mixed
 - Indeterminate / Neither
 
-The classifier is not forced to assign every sample to one mechanism.
+## DL-021 — Thresholds are learned
+No final biological cutoff is hand-picked. Thresholds require bootstrap and whole-study holdout validation.
 
-## DL-017 — Thresholds are learned
-Cutoffs must be learned from reference data and evaluated using bootstrap and leave-one-study-out validation.
-
-## DL-018 — Freeze before external application
-Gene dictionaries, equations, calibration rules and thresholds are versioned and frozen before future application.
+## DL-022 — Freeze before external application
+Dictionaries, equations, empirical signatures and thresholds must be versioned and frozen before external use.
