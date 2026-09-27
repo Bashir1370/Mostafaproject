@@ -1,0 +1,25 @@
+paper_symbol,human_symbol,mouse_symbol,mapping_status,note,live_mouse_symbol,support,matches_live_mapping
+HMOX1,HMOX1,Hmox1,manual_locked,canonical mouse ortholog,Hmox1,Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+SLC7A11,SLC7A11,Slc7a11,manual_locked,canonical mouse ortholog,Slc7a11,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+ASNS,ASNS,Asns,manual_locked,canonical mouse ortholog,Asns,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+CHAC1,CHAC1,Chac1,manual_locked,canonical mouse ortholog,Chac1,Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoMCL|Panther,TRUE
+DDIT4,DDIT4,Ddit4,manual_locked,canonical mouse ortholog,Ddit4,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+TXNRD1,TXNRD1,Txnrd1,manual_locked,canonical mouse ortholog,Txnrd1,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+TMEM154,TMEM154,Tmem154,manual_locked,canonical mouse ortholog,Tmem154,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+SLC38A2,SLC38A2,Slc38a2,manual_locked,canonical mouse ortholog,Slc38a2,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+VLDLR,VLDLR,Vldlr,manual_locked,canonical mouse ortholog,Vldlr,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+OSGIN1,OSGIN1,Osgin1,manual_locked,canonical mouse ortholog,Osgin1,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|Treefam,TRUE
+PCK2,PCK2,Pck2,manual_locked,canonical mouse ortholog,Pck2,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+GARS,GARS1,Gars1,manual_locked,current human symbol GARS1,Gars,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,FALSE
+PHGDH,PHGDH,Phgdh,manual_locked,canonical mouse ortholog,Phgdh,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+NDC80,NDC80,Ndc80,manual_locked,canonical mouse ortholog,Ndc80,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+SLC6A9,SLC6A9,Slc6a9,manual_locked,canonical mouse ortholog,Slc6a9,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+SPIN4,SPIN4,Spin4,manual_locked,canonical mouse ortholog,Spin4,Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB,TRUE
+CALM2,CALM2,Calm2,manual_locked,gene-specific ortholog retained,Calm2,Ensembl|HGNC|NCBI|OMA|OrthoDB|Panther|Treefam,TRUE
+SLC1A5,SLC1A5,Slc1a5,manual_locked,canonical mouse ortholog,Slc1a5,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|Treefam,TRUE
+PRR11,PRR11,Prr11,manual_locked,canonical mouse ortholog,Prr11,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+JDP2,JDP2,Jdp2,manual_locked,canonical mouse ortholog,Jdp2,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+ARHGEF2,ARHGEF2,Arhgef2,manual_locked,canonical mouse ortholog,Arhgef2,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|Treefam,TRUE
+MYC,MYC,Myc,manual_locked,canonical mouse ortholog,Myc,Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+ERMAP,ERMAP,Ermap,manual_locked,canonical mouse ortholog,Ermap,EggNOG|Ensembl|HGNC|HomoloGene|Inparanoid|NCBI|OMA|OrthoDB|OrthoMCL|Panther|PhylomeDB|Treefam,TRUE
+MT2A,MT2A,Mt2,manual_locked,mouse ortholog symbol differs from human MT2A,Mt2,HGNC|NCBI|OMA|Panther,TRUE
