@@ -1,0 +1,11 @@
+gene,program,stage,role,direction,evidence_tier,mechanistic_prior_M,mps_eligible,nfsi_eligible,status,notes
+RIPK3,NEC,N1_Necrosome,core_effector_kinase,1,A+,1.00,YES,YES,CORE,"Core necrosome kinase; RNA reflects competence, while activation requires phosphorylation/oligomerization"
+RIPK1,NEC,N1_Necrosome,canonical_upstream_kinase,1,A,0.80,YES,CANDIDATE,CORE,"Important in canonical TNFR1-driven necroptosis but dispensable in some RIPK1-independent/ZBP1 routes"
+MLKL,NEC,N2_Execution,terminal_effector,1,A+,1.00,YES,YES,CORE,"RIPK3 substrate and terminal membrane-disrupting effector; execution itself is post-translational"
+ZBP1,NEC,TriggerContext,alternative_RHIM_sensor,1,A,0.80,EXTENDED,CANDIDATE,EXTENDED,"Alternative RIPK3 activator; interferon inducible and therefore context-dependent"
+TICAM1,NEC,TriggerContext,TLR3_RHIM_adapter,1,B,0.50,EXTENDED,LOW,EXTENDED,"Route-specific RHIM adaptor upstream of RIPK3"
+TNFRSF1A,NEC,TriggerContext,death_receptor_context,1,B,0.50,CONTEXT,LOW,EXTENDED,"Canonical TNF receptor context but not necroptosis-specific"
+CYLD,NEC,Licensing,RIPK1_deubiquitination_context,1,B,0.50,EXTENDED,LOW,EXTENDED,"Can facilitate RIPK1-dependent necroptotic signaling but has broader functions"
+CASP8,NEC,Checkpoint,caspase_checkpoint,0,A+,1.00,NO,ANNOTATION,MECHANISTIC,"Catalytic activity suppresses canonical necroptosis; mRNA abundance is not a reliable inverse activity readout"
+FADD,NEC,Checkpoint,death_complex_scaffold,0,A,0.80,NO,ANNOTATION,MECHANISTIC,"Controls apoptosis/necroptosis switching; transcript abundance is not directly interpretable"
+CFLAR,NEC,Checkpoint,caspase8_modulator,0,A,0.80,NO,ANNOTATION,MECHANISTIC,"Isoform-dependent effects make bulk RNA direction unsafe for direct scoring"
