@@ -135,6 +135,19 @@ DOI: https://doi.org/10.1016/j.cell.2019.03.032
 PMID: 31056284  
 Use: neuronal GPX4/selenoprotein adaptive defense; retained as supporting biology rather than a core RNA module.
 
+
+### R24 — TFRC ferroptosis marker study
+**Feng H, Schorpp K, Jin J, et al.** Transferrin Receptor Is a Specific Ferroptosis Marker. *Cell Reports*. 2020;30(10):3411–3423.e7.  
+DOI: https://doi.org/10.1016/j.celrep.2020.02.049  
+PMID: 32160546  
+Use: supports TFRC as an iron/ferroptosis-associated marker while motivating separate evaluation of protein-level versus transcript-level utility.
+
+### R25 — Context dependence across ferroptosis genetic screens
+**Magtanong L, Mueller GD, Williams KJ, et al.** Context-dependent regulation of ferroptosis sensitivity. *Cell Chemical Biology*. 2022;29(9):1409–1418.e6.  
+DOI: https://doi.org/10.1016/j.chembiol.2022.06.004  
+PMID: 35809566  
+Use: integration of 24 genetic screens demonstrates that few ferroptosis regulators are universally essential; distinct inducers converge more consistently on lipid-peroxide accumulation than on a fixed gene dependency.
+
 ## Curated secondary resources
 
 ### RV01 — Mechanistic synthesis
