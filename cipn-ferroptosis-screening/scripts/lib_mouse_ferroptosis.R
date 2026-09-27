@@ -53,7 +53,7 @@ run_mouse_ferroptosis_screen <- function(count_mat, meta, accession, result_dir,
   gs<-load_mouse_signatures(); sigs<-gs$signatures
   audit<-bind_rows(lapply(names(sigs),function(n)tibble(signature=n,gene=unique(sigs[[n]])))) |> mutate(present_in_analysis=gene%in%rownames(dds));write_csv(audit,file.path(result_dir,"signature_members_used.csv"));write_csv(gs$manifest,file.path(result_dir,"gene_set_manifest_used.csv"));write_csv(gs$vinik_map,file.path(result_dir,"vinik24_ortholog_mapping.csv"))
   ranks<-de |> filter(is.finite(stat),!is.na(gene),nzchar(gene)) |> distinct(gene,.keep_all=TRUE);rv<-ranks$stat;names(rv)<-ranks$gene;rv<-sort(rv,decreasing=TRUE)
-  fg<-fgseaMultilevel(pathways=sigs,stats=rv,minSize=5,maxSize=500,eps=0) |> as_tibble() |> arrange(padj) |> mutate(contrast="Oxaliplatin_vs_Vehicle",leadingEdge=vapply(leadingEdge,paste,collapse=";",FUN.VALUE=character(1)))
+  # fgseaMultilevel uses stochastic adaptive sampling; fix the RNG seed so\n  # pathway p-values/NES are exactly reproducible across reruns with the same inputs.\n  set.seed(125002L)\n  fg<-fgseaMultilevel(pathways=sigs,stats=rv,minSize=5,maxSize=500,eps=0) |> as_tibble() |> arrange(padj) |> mutate(contrast="Oxaliplatin_vs_Vehicle",leadingEdge=vapply(leadingEdge,paste,collapse=";",FUN.VALUE=character(1)))
   write_csv(fg,file.path(result_dir,"gsea_all_signatures.csv"))
   z<-t(scale(t(vm))); z[!is.finite(z)]<-NA_real_
   score<-bind_rows(lapply(names(sigs),function(n){g<-intersect(sigs[[n]],rownames(z));tibble(sample=colnames(z),signature=n,score=colMeans(z[g,,drop=FALSE],na.rm=TRUE),n_genes=length(g))})) |> left_join(meta,by="sample");write_csv(score,file.path(result_dir,"sample_level_signature_scores.csv"))
