@@ -22,7 +22,7 @@ foreach ($s in $samples) {
   $url = "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=$query&fields=run_accession,experiment_accession,fastq_ftp,fastq_md5,fastq_bytes,library_layout&format=tsv&limit=0"
 
   $txt = (Invoke-WebRequest -Uri $url -UseBasicParsing).Content
-  $rows = $txt | ConvertFrom-Csv -Delimiter "`t"
+  $rows = @($txt | ConvertFrom-Csv -Delimiter "`t")
 
   if ($rows.Count -ne 1) {
     throw "Expected exactly one ENA run for $($s.srx); found $($rows.Count)."
