@@ -1,0 +1,13 @@
+parameter,value,notes
+min_count,10,"Minimum raw count for prefiltering"
+min_samples_rule,smallest_group,"Gene must reach min_count in at least 3 samples in GSE182638"
+effect_engine,DESeq2,"Negative-binomial differential expression"
+shrinkage_engine,ashr,"Posterior effect and local false sign rate"
+confidence_metric,lfsr,"confidence = 1-lfsr"
+primary_dataset,GSE182638,"First rescue-validated ferroptosis calibration study"
+primary_design,"~ replicate + condition","Replicate blocks matched passage within each cell line"
+induction_contrast,"RSL3-Untreated","Ferroptosis induction"
+rescue_contrast,"RSL3-(RSL3+Fer1)","Ferrostatin-1 reversal"
+within_study_cell_line_aggregation,median,"MM1R and MM1S contribute one study-level value"
+hard_pvalue_cutoff,NONE,"No p-value cutoff defines empirical evidence"
+core_freeze,FALSE,"Current CORE remains provisional until cross-study calibration"
