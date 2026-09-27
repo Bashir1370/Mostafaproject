@@ -1,43 +1,41 @@
 # Changelog
 
-## v0.1.0 — Architecture freeze candidate
+## v0.2.0 — Necroptosis–Ferroptosis redesign
+
+### Breaking changes
+- Replaced **disulfidptosis (DPT)** with **necroptosis (NEC)** as the second active regulated-cell-death program.
+- Replaced `DSI` with **NFSI (Necroptosis–Ferroptosis Specificity Index)**.
+- Removed the DPT gene dictionary from the active repository.
+- Rebuilt reference datasets and contrasts around NEC/FPT perturbation studies.
 
 ### Added
-- Disease-agnostic DPT-vs-FPT classifier scope.
-- DPT stages:
-  - cystine loading
-  - reducing-capacity vulnerability
-  - WRC/actin execution
-  - empirical state resemblance
-- FPT stages:
-  - iron availability
-  - PUFA-phospholipid susceptibility
-  - lipid-peroxidation machinery
-  - anti-ferroptotic defense failure
-- Mechanistic evidence tiers A+/A/B/C.
-- Direction-aware RNA scoring.
-- Separate MPS, MCI, ESR and DSI concepts.
-- DPT cystine × reducing-capacity interaction gate.
-- Mechanistic prior M, empirical reproducibility E and specificity S.
-- Anti-circularity rule for directly manipulated genes.
-- Contradiction penalty across studies.
-- Generic oxidative-stress comparator strategy.
-- Four-class output:
-  - DPT-dominant
-  - FPT-dominant
-  - Mixed
-  - Indeterminate / Neither
-- Reference-data-based threshold calibration.
-- Initial DPT and FPT gene dictionaries.
-- Initial perturbation dataset registry.
-- Primary reference bibliography.
+- NEC core architecture:
+  - N1 RIPK1/RIPK3 necrosome competence
+  - N2 MLKL execution competence
+- NEC trigger/checkpoint annotation layer.
+- GSE108621 primary NEC rescue/inflammation-controlled calibration.
+- GSE172027 human astrocyte rescue replication.
+- GSE154230 neuroimmune robustness.
+- GSE134234 and GSE268650 orthogonal RIPK3 validation.
+- GSE287439 human neural tri-culture scRNA validation.
+- GSE182638 primary FPT rescue calibration.
+- GSE319384 held-out multi-inducer FPT validation.
+- neural FPT validation datasets.
 
-### Not yet completed
-- Reference-dataset preprocessing.
-- Differential-expression re-analysis.
-- Empirical E calculation.
-- Specificity S calculation.
-- Final MPS/DSI weights.
-- Threshold calibration.
-- Leave-one-study-out validation.
-- Software implementation and unit tests.
+### Preserved
+- mechanistic prior M
+- empirical reproducibility E
+- specificity S
+- direction-aware evidence
+- anti-circularity
+- study-level replication rule
+- MPS/MCI/ESR separation
+- bootstrap / whole-study validation policy
+
+### Next
+- run the updated reference inspection;
+- calibrate GSE108621 and GSE182638 first;
+- then expand to replication datasets.
+
+## v0.1.0 — Historical DPT–FPT architecture
+The original DPT–FPT framework remains available through Git history but is no longer the active design.
