@@ -1,0 +1,8 @@
+accession,role,organism,model,design,replicates,initial_use
+GSE182638,PRIMARY_RESCUE,Homo sapiens,"MM1R; MM1S","Untreated; RSL3; RSL3+Ferrostatin-1",3 per condition/cell line,"Primary empirical calibration"
+GSE247883,RESCUE_REPLICATION,Homo sapiens,A549,"DMSO; RSL3; RSL3+Ferrostatin-1",3 per group,"Independent rescue replication"
+GSE255459,CROSS_INDUCER,Homo sapiens,"BT549; HS578; SUM159","DMSO; Erastin; RSL3",2 per condition/cell line,"Cross-inducer and cross-cell-line calibration"
+GSE319384,HELDOUT_MULTI_INDUCER,Homo sapiens,"PANC-1; PANC-1 TP53-KO","DMSO; Erastin; RSL3; Ferroptocide",3 per condition/genotype,"Held-out orthogonal validation"
+GSE287284,NEURAL_VALIDATION,Mus musculus,RA-differentiated N2a neurons,"DMSO; RSL3",3 per group,"Neuronal validation"
+GSE152988,HUMAN_NEURAL_VALIDATION,Homo sapiens,iPSC-derived neurons,"WT vs PSAP-KO ferroptosis model",3 per genotype,"Human neuronal genetic validation"
+GSE104664,GENERIC_STRESS_NEGATIVE,Homo sapiens,HUVEC,"Untreated; H2O2 16h; H2O2 36h",3 per group,"Negative-control specificity testing"
