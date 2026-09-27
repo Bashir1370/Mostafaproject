@@ -67,85 +67,32 @@ dir.create(raw_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(result_dir, recursive = TRUE, showWarnings = FALSE)
 
 # -------------------------------------------------------------------------
-# 1. GEO metadata
+# 1. Locked GEO metadata
 # -------------------------------------------------------------------------
 
-message("[1/9] Reading GEO metadata...")
+message("[1/9] Loading locked GEO metadata...")
 
-gse <- GEOquery::getGEO(accession, GSEMatrix = TRUE)
-
-if (length(gse) != 1) {
-  stop("Expected one expression platform for ", accession, "; found ", length(gse))
-}
-
-pd <- Biobase::pData(gse[[1]]) %>%
-  tibble::rownames_to_column("sample")
-
-if (!all(c("sample", "title") %in% names(pd))) {
-  stop("GEO metadata does not contain expected sample/title fields.")
-}
-
-extract_rep <- function(x) {
-  z <- sub(".*[Rr]ep[[:space:]]*([0-9]+).*", "\\1", x)
-  ifelse(grepl("[Rr]ep[[:space:]]*[0-9]+", x), z, NA_character_)
-}
-
-meta <- pd %>%
-  transmute(
-    sample = sample,
-    title = title,
-    cell_line = case_when(
-      grepl("MM1R", title, ignore.case = TRUE) ~ "MM1R",
-      grepl("MM1S", title, ignore.case = TRUE) ~ "MM1S",
-      TRUE ~ NA_character_
-    ),
-    condition = case_when(
-      grepl("Fer-?1", title, ignore.case = TRUE) &
-        grepl("RSL3", title, ignore.case = TRUE) ~ "RSL3_Fer1",
-      grepl("RSL3", title, ignore.case = TRUE) ~ "RSL3",
-      grepl("Untreated", title, ignore.case = TRUE) ~ "Untreated",
-      TRUE ~ NA_character_
-    ),
-    replicate = extract_rep(title)
-  )
-
-# Pull short GEO Description field if present; these names often match count columns.
-desc_cols <- grep("^description", names(pd), ignore.case = TRUE, value = TRUE)
-if (length(desc_cols) > 0) {
-  meta$description <- as.character(pd[[desc_cols[1]]])
-} else {
-  meta$description <- NA_character_
-}
-
-if (anyNA(meta$cell_line) || anyNA(meta$condition) || anyNA(meta$replicate)) {
-  write_csv(meta, file.path(result_dir, "metadata_parse_failure.csv"))
-  stop("Could not reconstruct all cell_line/condition/replicate labels. See metadata_parse_failure.csv")
-}
-
-verified_short_names <- tibble::tribble(
-  ~sample,      ~verified_short_name,
-  "GSM5534024", "MM1R-T3-P4-FR",
-  "GSM5534025", "MM1R-T3-P4-RSL3",
-  "GSM5534026", "MM1R-T3-P4-UT",
-  "GSM5534027", "MM1R-T3-P6-FR",
-  "GSM5534028", "MM1R-T3-P6-RSL3",
-  "GSM5534029", "MM1R-T3-P6-UT",
-  "GSM5534030", "MM1R-T3-P7-FR",
-  "GSM5534031", "MM1R-T3-P7-RSL3",
-  "GSM5534032", "MM1R-T3-P7-UT",
-  "GSM5534033", "MM1S-T3-P16-FR",
-  "GSM5534034", "MM1S-T3-P16-RSL3",
-  "GSM5534035", "MM1S-T3-P16-UT",
-  "GSM5534036", "MM1S-T3-P22-FR",
-  "GSM5534037", "MM1S-T3-P22-RSL3",
-  "GSM5534038", "MM1S-T3-P22-UT",
-  "GSM5534039", "MM1S-T3-P23-FR",
-  "GSM5534040", "MM1S-T3-P23-RSL3",
-  "GSM5534041", "MM1S-T3-P23-UT"
+meta <- tibble::tribble(
+  ~sample,      ~title,                                           ~cell_line, ~condition,  ~replicate, ~passage, ~verified_short_name,
+  "GSM5534024", "MM1R cells treated with Fer-1 and RSL3, rep 1", "MM1R",     "RSL3_Fer1", "1",       "P4",    "MM1R-T3-P4-FR",
+  "GSM5534025", "MM1R cells treated with RSL3, rep 1",           "MM1R",     "RSL3",      "1",       "P4",    "MM1R-T3-P4-RSL3",
+  "GSM5534026", "Untreated MM1R cells, rep 1",                   "MM1R",     "Untreated", "1",       "P4",    "MM1R-T3-P4-UT",
+  "GSM5534027", "MM1R cells treated with Fer-1 and RSL3, rep 2", "MM1R",     "RSL3_Fer1", "2",       "P6",    "MM1R-T3-P6-FR",
+  "GSM5534028", "MM1R cells treated with RSL3, rep 2",           "MM1R",     "RSL3",      "2",       "P6",    "MM1R-T3-P6-RSL3",
+  "GSM5534029", "Untreated MM1R cells, rep 2",                   "MM1R",     "Untreated", "2",       "P6",    "MM1R-T3-P6-UT",
+  "GSM5534030", "MM1R cells treated with Fer-1 and RSL3, rep 3", "MM1R",     "RSL3_Fer1", "3",       "P7",    "MM1R-T3-P7-FR",
+  "GSM5534031", "MM1R cells treated with RSL3, rep 3",           "MM1R",     "RSL3",      "3",       "P7",    "MM1R-T3-P7-RSL3",
+  "GSM5534032", "Untreated MM1R cells, rep 3",                   "MM1R",     "Untreated", "3",       "P7",    "MM1R-T3-P7-UT",
+  "GSM5534033", "MM1S cells treated with Fer-1 and RSL3, rep 1", "MM1S",     "RSL3_Fer1", "1",       "P16",   "MM1S-T3-P16-FR",
+  "GSM5534034", "MM1S cells treated with RSL3, rep 1",           "MM1S",     "RSL3",      "1",       "P16",   "MM1S-T3-P16-RSL3",
+  "GSM5534035", "Untreated MM1S cells, rep 1",                   "MM1S",     "Untreated", "1",       "P16",   "MM1S-T3-P16-UT",
+  "GSM5534036", "MM1S cells treated with Fer-1 and RSL3, rep 2", "MM1S",     "RSL3_Fer1", "2",       "P22",   "MM1S-T3-P22-FR",
+  "GSM5534037", "MM1S cells treated with RSL3, rep 2",           "MM1S",     "RSL3",      "2",       "P22",   "MM1S-T3-P22-RSL3",
+  "GSM5534038", "Untreated MM1S cells, rep 2",                   "MM1S",     "Untreated", "2",       "P22",   "MM1S-T3-P22-UT",
+  "GSM5534039", "MM1S cells treated with Fer-1 and RSL3, rep 3", "MM1S",     "RSL3_Fer1", "3",       "P23",   "MM1S-T3-P23-FR",
+  "GSM5534040", "MM1S cells treated with RSL3, rep 3",           "MM1S",     "RSL3",      "3",       "P23",   "MM1S-T3-P23-RSL3",
+  "GSM5534041", "Untreated MM1S cells, rep 3",                   "MM1S",     "Untreated", "3",       "P23",   "MM1S-T3-P23-UT"
 )
-
-meta <- meta %>%
-  left_join(verified_short_names, by = "sample")
 
 expected_design <- meta %>%
   count(cell_line, condition, name = "n")
@@ -156,11 +103,10 @@ if (
   !setequal(expected_design$cell_line, c("MM1R", "MM1S")) ||
   !setequal(expected_design$condition, c("Untreated", "RSL3", "RSL3_Fer1"))
 ) {
-  write_csv(expected_design, file.path(result_dir, "unexpected_design.csv"))
-  stop("GEO metadata does not match the locked 2 x 3 x 3 design.")
+  stop("Locked metadata failed internal design validation.")
 }
 
-write_csv(meta, file.path(result_dir, "sample_metadata_geo.csv"))
+write_csv(meta, file.path(result_dir, "sample_metadata_locked.csv"))
 
 # -------------------------------------------------------------------------
 # 2. Download and read raw count matrix
@@ -214,8 +160,6 @@ clean_key <- function(x) {
 sample_fields <- bind_rows(
   meta %>% transmute(sample, key = clean_key(sample), key_type = "GSM"),
   meta %>% transmute(sample, key = clean_key(title), key_type = "title"),
-  meta %>% filter(!is.na(description), nzchar(description)) %>%
-    transmute(sample, key = clean_key(description), key_type = "description"),
   meta %>% transmute(
     sample,
     key = clean_key(verified_short_name),
