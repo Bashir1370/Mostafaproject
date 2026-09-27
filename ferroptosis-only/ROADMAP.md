@@ -1,6 +1,6 @@
 # Roadmap — Ferroptosis-Only Model
 
-## Phase 1 — Systematic gene curation
+## Phase 1 — Systematic gene curation — IN PROGRESS
 Build a master ferroptosis gene universe from:
 - primary mechanistic literature
 - NCCD / curated pathway resources
@@ -70,3 +70,10 @@ Freeze:
 - formulas
 - thresholds
 - software environment
+
+
+## Phase 1 current checkpoint
+- Master gene universe expanded and referenced.
+- Primary mechanistic bibliography created.
+- No gene weight is final yet.
+- Provisional CORE genes must pass a dedicated scientific review before empirical calibration.
