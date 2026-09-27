@@ -1,0 +1,4 @@
+accession,species,tissue,treatment,control,rna_seq_n_treated,rna_seq_n_control,model_role,analysis_script,results_directory
+GSE160543,Rattus norvegicus,DRG,Oxaliplatin,Vehicle,4,4,discovery/initial screen,scripts/01_GSE160543_screen.R,results/GSE160543
+GSE125002,Mus musculus,L3-L5 DRG,Oxaliplatin,Vehicle,3,3,independent mouse replication,scripts/02_GSE125002_mouse_screen.R,results/GSE125002
+GSE286387,Mus musculus,bilateral lumbar DRG,Oxaliplatin 10 mg/kg weekly x8,Vehicle,5,5,chronic systemic mouse validation,scripts/03_GSE286387_mouse_screen.R,results/GSE286387
