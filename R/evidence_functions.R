@@ -1,5 +1,5 @@
-# Core evidence functions for the DPT–FPT classifier
-# Version: v0.1.0
+# Core evidence functions for the NEC–FPT classifier
+# Version: v0.2.0
 #
 # Statistical principle:
 #   raw counts -> DESeq2 effect + SE -> ashr posterior effect + lfsr
@@ -188,4 +188,23 @@ score_dictionary_genes <- function(effect_tbl, dictionary_tbl) {
       signed_alignment = sign(direction * beta),
       e = signed_alignment * magnitude * confidence
     )
+}
+
+
+three_way_rescue_validated_evidence <- function(e_induction, e_specific_vs_context, e_reversal) {
+  # Example NEC GSE108621:
+  # induction: TSZ - DMSO
+  # specific_vs_context: TSZ - TNF
+  # reversal: TSZ - (TSZ + Nec-1s)
+  support <- pmin(
+    pmax(e_induction, 0),
+    pmax(e_specific_vs_context, 0),
+    pmax(e_reversal, 0)
+  )
+  contradiction <- pmax(
+    pmax(-e_induction, 0),
+    pmax(-e_specific_vs_context, 0),
+    pmax(-e_reversal, 0)
+  )
+  support - contradiction
 }
