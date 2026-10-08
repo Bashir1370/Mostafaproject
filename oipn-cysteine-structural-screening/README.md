@@ -63,4 +63,20 @@ python3 oipn-cysteine-structural-screening/scripts/01_audit_GSE286387.py
 cat oipn-cysteine-structural-screening/results/01_dataset_audit/qc_report.md
 ```
 
-Python 3.8+ standard library only; no pip packages or R packages required for this download/integrity step. R is used next for sample QC and DESeq2. See [Step 01 execution and findings](docs/STEP_01.md). Generated data/results are ignored by git. The committed audit snapshot is under `docs/audits/` and records the actual source checksums.
+Python 3.8+ standard library only; no pip packages or R packages required for this download/integrity step. R sample QC is now implemented; DE testing follows only after QC/design review. See [Step 01 execution and findings](docs/STEP_01.md). Generated data/results are ignored by git. The committed audit snapshot is under `docs/audits/` and records the actual source checksums.
+
+## Step 01b: R sample QC
+
+After the audit completes, execute from the repository root:
+
+```bash
+Rscript oipn-cysteine-structural-screening/scripts/01b_qc_GSE286387.R
+```
+
+Or in the RStudio Console:
+
+```r
+source("/home/bashir/Desktop/Mostafaproject/oipn-cysteine-structural-screening/scripts/01b_qc_GSE286387.R")
+```
+
+The script loads the project's `.r-library` automatically. It requires DESeq2 and jsonlite (installation in [Ubuntu guide](docs/UBUNTU.md)). Outputs, including four PNGs and a combined PDF, are in `results/01b_sample_qc`. Status remains **QC_GENERATED_REVIEW_PENDING**. See [QC specification and validation](docs/STEP_01B_QC.md).

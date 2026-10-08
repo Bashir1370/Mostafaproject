@@ -1,7 +1,7 @@
 {
   "protocol_version": "0.1.0",
   "recorded_date": "2026-10-08",
-  "status": "design_frozen_analysis_not_run",
+  "status": "step01_sample_qc_implemented_review_pending",
   "platform": {
     "os": "Ubuntu Linux",
     "shell": "bash",
@@ -19,7 +19,7 @@
   "datasets": {
     "primary_candidate": "GSE286387",
     "complementary_candidate": "GSE125002",
-    "selection_status": "pending_step_01_audit",
+    "selection_status": "official_input_audited_sample_QC_and_metadata_review_pending",
     "merge_count_matrices": false,
     "minimum_biological_units_per_group": 3
   },
@@ -138,5 +138,15 @@
     ],
     "no_zero_imputation_for_missing": true,
     "amendments_require_version": true
+  },
+  "sample_qc": {
+    "transformation": "DESeq2_varianceStabilizingTransformation",
+    "blind": true,
+    "initial_fit_type": "parametric",
+    "pca_top_variable_genes": 500,
+    "pca_scale_features": false,
+    "sample_distance": "Euclidean_all_filtered_VST_genes",
+    "sample_correlation": "Pearson_all_filtered_VST_genes",
+    "automatic_sample_exclusion": false
   }
 }

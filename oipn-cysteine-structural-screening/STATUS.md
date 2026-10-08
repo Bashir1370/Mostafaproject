@@ -12,8 +12,12 @@ Protocol: 0.1.0. Audit recorded: 2026-10-08. Workstation target: Ubuntu Linux.
 
 ## Pending
 
-Step 01 is **DATA_READY_QC_PENDING**, not completed: R sample QC, animal/pooling identity review, age/batch availability and final sample inclusion. No samples have been removed or finally approved. No DE fitting, sequence/structure retrieval, scoring, validation or enrichment has run. R is unavailable in the assistant execution environment; R execution will be on the user's Ubuntu workstation.
+Step 01 is **DATA_READY_QC_PENDING**, not completed: R sample QC, animal/pooling identity review, age/batch availability and final sample inclusion. No samples have been removed or finally approved. No DE fitting, sequence/structure retrieval, scoring, validation or enrichment has run. User reports R 4.3.3, Bioconductor 3.18 and DESeq2 1.42.1 installed successfully. The QC script has now been exercised independently on actual official counts with R 4.3.3 and DESeq2 1.42.0; user-workstation reproduction is pending.
 
 ## Next
 
-Reproduce the audit locally using README commands. Then prepare/run R QC (library sizes, transformed expression PCA/sample distances and design review). Freeze sample inclusion and model before Step 02 DESeq2. Missing batch is not evidence of absence of batch effects. GSE125002 remains a separately audited complementary candidate.
+Reproduce the audit locally using README commands. Run the committed R QC script (library sizes, transformed expression PCA/sample distances and design review). Freeze sample inclusion and model before Step 02 DESeq2. Missing batch is not evidence of absence of batch effects. GSE125002 remains a separately audited complementary candidate.
+
+## Step 01b implementation
+
+Blind VST sample QC now implemented and run successfully on official inputs: 10 samples and 18,538 retained genes. PCA, library totals, sample distances/correlations and reproducibility records are generated. Seven input-integrity/integration tests pass. No hypothesis tests or sample inclusion freeze were performed. The R QC substep is part of Step 01, not an eleventh scientific step.

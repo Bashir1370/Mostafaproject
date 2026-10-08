@@ -68,3 +68,21 @@ The JSON command checks syntax only. The ten biological analysis scripts will be
 ## Next executable task
 
 Step 01: verify current GSE286387 metadata, sample identities and complete data availability. If raw reads must be quantified, choose and record a Linux-compatible quantification route and matching reference before implementation. A normalized or DEG-only table is not a shortcut to DESeq2.
+
+## RStudio preparation verified by user (2026-10-08)
+
+User workstation: R 4.3.3; Bioconductor 3.18; DESeq2 1.42.1. For Step 01b only DESeq2 and jsonlite are required. The QC script adds the dedicated project library to `.libPaths()` automatically, including when sourced from RStudio. It does not install or update packages during analysis.
+
+To install the small JSON configuration reader in RStudio, if missing:
+
+```r
+project_lib <- "/home/bashir/Desktop/Mostafaproject/oipn-cysteine-structural-screening/.r-library"
+dir.create(project_lib, recursive = TRUE, showWarnings = FALSE)
+.libPaths(c(project_lib, .libPaths()))
+if (!requireNamespace("jsonlite", quietly = TRUE)) {
+  install.packages("jsonlite", lib = project_lib, repos = "https://cloud.r-project.org")
+}
+source("/home/bashir/Desktop/Mostafaproject/oipn-cysteine-structural-screening/scripts/01b_qc_GSE286387.R")
+```
+
+Outputs are saved without changing the RStudio working directory. Provide `qc_report.md`, `sample_metrics.csv`, and `pca_top500.png` for review. Full diagnostics are collected in `QC_plots.pdf`. If FAILURE.txt exists or SUCCESS.txt is absent, the run is incomplete; rerun successfully before interpreting results. No DEG fitting occurs here.

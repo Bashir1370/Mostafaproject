@@ -32,3 +32,7 @@ Version every parameter/method change and state why. Preserve v0.1.0 results if 
 ## 2026-10-08 — Step 01 input implementation
 
 Official SOFT and submitter-designated raw counts retrieved and audited. Candidate GSE286387 remains provisional until R sample QC and animal/pooling review. Retain one vector for duplicate stable IDs only if every count and biotype matches; preserve annotation alternatives, never sum copies. Actual 167 duplicate IDs / 276 redundant rows satisfy this rule. No scientific threshold changed. A protocol-independent input integrity script uses Python standard library; QC and DE use R next. Sample identities are explicit; batch/age/animal IDs remain NA rather than inferred.
+
+## 2026-10-08 — Step 01b sample QC implementation
+
+User workstation reports R 4.3.3 / Bioconductor 3.18 / DESeq2 1.42.1. QC uses an intercept-only, blind DESeq2 VST before any Wald/LRT testing. PCA uses top 500 variable retained genes without feature scaling; Euclidean distances and Pearson correlations use all retained VST genes. No sample is automatically excluded. Count filter and discovery thresholds are unchanged. Exact source checksums/identity mapping and every processed count are checked against original deposited counts. Full seven-test suite and actual-data run pass in R 4.3.3 / DESeq2 1.42.0; user reproduction with 1.42.1 pending. Metadata remains held for animal/pooling/design review.
