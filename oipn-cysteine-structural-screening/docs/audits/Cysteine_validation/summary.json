@@ -1,0 +1,27 @@
+{
+  "status": "STEP04_GENERATED_REVIEW_PENDING",
+  "protocol_version": "0.1.0",
+  "implementation_version": "1.0.0",
+  "input_discovery_genes": 854,
+  "input_mapped_genes": 789,
+  "input_unique_proteins": 787,
+  "protein_status_counts": {
+    "pass": 760,
+    "excluded": 27
+  },
+  "gene_status_counts": {
+    "held": 64,
+    "pass": 760,
+    "excluded": 29,
+    "unassessable": 1
+  },
+  "total_unique_cysteine_sites": 10799,
+  "proteins_with_one_cys": 31,
+  "proteins_with_multiple_cys": 729,
+  "uniprot_sequence_release": "2026_03",
+  "mapping_sha256": "407237315ec47f7d0814b4f173d2d105d41b16ad0a337f8156a5981d7cecee0e",
+  "fasta_sha256": "2230cdb4929aa8ec678e140fd0ce7e2e53ca9d9cf3d3f242f718cbacc698212f",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "generated_utc": "2026-10-08T21:27:10.585429+00:00"
+}

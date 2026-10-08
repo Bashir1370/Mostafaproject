@@ -1,6 +1,6 @@
 # Output contracts and provenance
 
-Steps 01–03 now have executable implementations; Steps 04–10 remain output schemas for future work. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
+Steps 01–04 now have executable implementations; Steps 05–10 remain output schemas for future work. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
 
 | Step | Main output | Required fields/content |
 |---|---|---|
@@ -34,3 +34,7 @@ One gene_protein_mapping.csv row and one step_audit.csv row per discovery gene. 
 ## Step 03b combined output
 
 results/03b_mapping_resolution/gene_protein_mapping.csv retains all Step 03 fields plus step03_original_status, resolution_method and resolution_version. Every discovery gene has one terminal step_audit row; all accepted accessions occur exactly once in combined canonical_sequences.fasta. gene_centric_evidence.csv records stable_gene_id, representative_identifier, explicit gene-specific member_accessions, covers_all_original_candidates and resolution_reason. Baseline accepted identities/sequences stay unchanged. source_manifest.csv records relationship response provenance separately from the sequence reference release; absent service release headers are explicit. Success remains generation/review-pending, not final inclusion approval. The combined output becomes the prospective Cys-inventory input only after reproduction/evidence review.
+
+## Step 04 details
+
+The reviewed mapping snapshot is checksum-bound in config/GSE286387_step04_input.json. protein_inventory.csv and protein step_audit.csv include every accepted input accession, including zero-C exclusions. cysteine_inventory.csv deduplicates accession/1-based canonical position, retains gene associations, sequence hash/release and descriptive count/percentage. gene_step_audit.csv retains all discovery genes and inherited upstream held/unassessable cases. Cys-positive FASTA preserves the full displayed sequences. Provenance, summary/report and generation markers follow STEP_04.md. No-Cys exclusion is method-specific; count/density are not score terms.

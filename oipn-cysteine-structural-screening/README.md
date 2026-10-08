@@ -116,3 +116,14 @@ cat oipn-cysteine-structural-screening/results/03b_mapping_resolution/resolution
 ```
 
 Run after successful Step 03. Explicit gene-centric grouping must account for every original candidate and nominate an existing exact-gene mouse representative passing the original sequence checks. Baseline mappings remain intact; no reviewed/longest-entry shortcut is used. See [criteria, output contract and reference limits](docs/STEP_03B.md). No Step 04 analysis starts before workstation reproduction and mapping coverage/evidence review.
+
+## Step 04 — canonical Cys inventory
+
+The uploaded Ubuntu combined mapping snapshot is reviewed and its 789-gene / 787-protein accepted subset is frozen. Unresolved identities remain in the audit; see [mapping review](docs/audits/ubuntu_resolution_2026-10-09/REVIEW.md).
+
+```bash
+python3 oipn-cysteine-structural-screening/scripts/04_inventory_GSE286387.py
+cat oipn-cysteine-structural-screening/results/04_cysteine_inventory/inventory_report.md
+```
+
+This offline step verifies reviewed inputs, records every 1-based canonical Cys position, and audits proteins without Cys. Implementation validation finds 760 C-positive proteins and 10,799 unique sites; Ubuntu reproduction is pending. See [criteria and outputs](docs/STEP_04.md). Cys count/density are descriptive; structural features and scores are not calculated here.

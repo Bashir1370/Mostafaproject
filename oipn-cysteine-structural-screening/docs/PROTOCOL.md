@@ -50,7 +50,7 @@ There are **exactly ten scientific steps**. Environment preparation is operation
 
 **Exit:** no cysteine. Ambiguous/invalid sequence sections are reviewed and not silently treated as resolved amino acids.
 
-**Output:** one row per Cys, total Cys count, Cys percentage and protein length. Counts/density are descriptive, not score inputs.
+**Output:** one row per Cys, total Cys count, Cys percentage and protein length. Counts/density are descriptive, not score inputs. The executable implementation and reviewed input binding are documented in [STEP_04.md](STEP_04.md); U is not counted as C, precursor numbering is preserved, and unresolved upstream genes stay in the full-universe audit.
 
 ## 05 — Structure retrieval, mapping and local quality
 

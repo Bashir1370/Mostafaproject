@@ -86,3 +86,14 @@ source("/home/bashir/Desktop/Mostafaproject/oipn-cysteine-structural-screening/s
 ```
 
 Outputs are saved without changing the RStudio working directory. Provide `qc_report.md`, `sample_metrics.csv`, and `pca_top500.png` for review. Full diagnostics are collected in `QC_plots.pdf`. If FAILURE.txt exists or SUCCESS.txt is absent, the run is incomplete; rerun successfully before interpreting results. No DEG fitting occurs here.
+
+## Step 04 offline inventory
+
+After pulling the reviewed mapping snapshots and binding:
+
+```bash
+python3 oipn-cysteine-structural-screening/scripts/04_inventory_GSE286387.py
+cat oipn-cysteine-structural-screening/results/04_cysteine_inventory/inventory_report.md
+```
+
+Python standard library suffices. No new R package, external download or structure tool is required. SUCCESS.txt must exist and FAILURE.txt must be absent. Send the report before proceeding to Step 05.
