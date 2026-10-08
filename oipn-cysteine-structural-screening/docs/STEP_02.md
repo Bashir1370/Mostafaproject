@@ -44,7 +44,7 @@ Review the summary, missing-result reasons, sample/model identity and exact disc
 
 ## Implementation validation
 
-A real-data implementation run with R 4.3.3 / DESeq2 1.42.0 tested 18,538 genes; 18,503 had valid p-values. It selected 893 significant genes across biotypes and 854 significant coding genes (477 up, 377 down). These are implementation-validation results; the user's DESeq2 1.42.1 run remains the authoritative workstation reproduction pending review. The small snapshot is under `docs/audits/DE_validation/`.
+A real-data implementation run with R 4.3.3 / DESeq2 1.42.0 tested 18,538 genes; 18,503 had valid p-values. It selected 893 significant genes across biotypes and 854 significant coding genes (477 up, 377 down). These are implementation-validation results; the user has now reported a successful DESeq2 1.42.1 run with matching totals. Actual discovery membership and provenance await workstation snapshot upload and review. The small snapshot is under `docs/audits/DE_validation/`.
 
 Tests independently recompute BH over all valid biotypes, verify complete gene auditing and exact significant-coding selection including small fold changes, and reject tampered frozen counts/sample manifests. Run after local Step 02:
 
@@ -53,3 +53,38 @@ python3 -m unittest discover -s oipn-cysteine-structural-screening/tests -v
 ```
 
 Integration tests require Rscript with DESeq2/jsonlite; result-contract tests skip explicitly if Step 02 results are unavailable.
+
+## Record the actual Ubuntu snapshot
+
+The user's supplied report is already recorded in `docs/audits/ubuntu_DE_2026-10-08`; other files must come from the real workstation run. From an otherwise clean checkout on main, run the following complete Bash block. It stops on failed pull/copy/commit/push, failed execution markers or pre-existing staged changes. Keep the full runtime outputs locally; this selected Git snapshot contains the Step 03 input and provenance. Large all-gene tables and the fitted RDS remain in ignored results and can be reproduced with the registered script.
+
+```bash
+(
+  set -e
+  cd /home/bashir/Desktop/Mostafaproject
+  git pull --ff-only
+  git diff --cached --quiet
+
+  project=oipn-cysteine-structural-screening
+  result="$project/results/02_differential_expression"
+  snapshot="$project/docs/audits/ubuntu_DE_2026-10-08"
+
+  test -f "$result/SUCCESS.txt"
+  test ! -e "$result/FAILURE.txt"
+  mkdir -p "$snapshot"
+  for file in de_report.md summary.json input_checksums.csv sessionInfo.txt significant_protein_coding_degs.csv sample_manifest_used.csv design_matrix.csv SUCCESS.txt; do
+    cp "$result/$file" "$snapshot/$file"
+  done
+
+  (
+    cd "$snapshot"
+    sha256sum de_report.md summary.json input_checksums.csv sessionInfo.txt significant_protein_coding_degs.csv sample_manifest_used.csv design_matrix.csv SUCCESS.txt > snapshot_checksums.sha256
+  )
+  git add "$snapshot"
+  git diff --cached --stat
+  git commit -m "Record Ubuntu Step 02 DESeq2 1.42.1 result snapshot"
+  git push origin main
+)
+```
+
+After push, inspect summary, checksums, exact coding/FDR selection, sample/model records and package versions from the uploaded files. Reported totals alone do not complete this review.

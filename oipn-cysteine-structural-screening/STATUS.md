@@ -12,10 +12,14 @@ Protocol: 0.1.0. Audit recorded: 2026-10-08. Workstation target: Ubuntu Linux.
 - Step 02 implemented and run on real inputs in R 4.3.3 / DESeq2 1.42.0: 18,538 tested, 18,503 valid p-values, 854 significant coding genes (477 up / 377 down). This is implementation validation, not the user's final workstation DE run.
 - Eleven input-integrity, QC integration, BH/selection-contract and frozen-input gate tests passed.
 
+## Workstation reproduction reported
+
+On 2026-10-08 the user supplied the completed Ubuntu Step 02 report: R 4.3.3 / DESeq2 1.42.1, 18,538 tested genes, 18,503 valid p-values, 893 significant genes across biotypes and 854 coding genes (477 up / 377 down). These totals match implementation validation. The supplied report is recorded in `docs/audits/ubuntu_DE_2026-10-08/de_report.md`.
+
 ## Pending
 
-User-workstation Step 02 execution with DESeq2 1.42.1 and output review. No sequence/structure retrieval, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain limitations, documented in the accepted design. GSE125002 remains a separate unaudited complementary candidate.
+Upload and inspect the actual workstation discovery CSV, summary, input checksums, model/sample records and session information. Agreement of reported totals does not verify identical gene membership or complete provenance. No sequence/structure retrieval, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain limitations, documented in the accepted design. GSE125002 remains a separate unaudited complementary candidate.
 
 ## Next
 
-Pull the update, execute `scripts/02_DE_GSE286387.R` in RStudio or Rscript, and review `results/02_differential_expression/de_report.md` and `summary.json`. After workstation reproduction, proceed to Step 03 version-aware mouse gene/protein mapping.
+Upload the selected workstation snapshot using `docs/STEP_02.md`. After validating the uploaded discovery list and provenance, proceed to Step 03 version-aware mouse gene/protein mapping.
