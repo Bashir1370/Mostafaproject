@@ -65,3 +65,7 @@ Tests cover exact versioned IDs, explicit canonical isoforms other than -1, revi
 - [EMBL-EBI: Sequence and isoforms](https://www.ebi.ac.uk/training/online/courses/uniprot-exploring-protein-sequence-and-functional-info/exploring-a-uniprotkb-entry/the-entry-view/sequence-isoforms/): representative sequence and alternative isoforms.
 - [EMBL-EBI: Programmatic UniProt access](https://www.ebi.ac.uk/training/online/courses/uniprot-exploring-protein-sequence-and-functional-info/getting-data-from-uniprot/accessing-uniprot-data-programmatically/): API entry/query retrieval and release provenance.
 - [UniProt REST endpoint](https://rest.uniprot.org/uniprotkb/search): live queries and JSON cross-reference/sequence fields were exercised on the actual mouse input during validation.
+
+## Implemented ambiguity-resolution substep
+
+The user reports successful first-pass workstation execution with the same 285-gene / 283-protein totals. [Step 03b](STEP_03B.md) now resolves ambiguous entries using explicit gene-centric representative evidence and all-candidate accounting, preserving baseline outputs. Its validation expands coverage to 789 genes (92.4%); workstation reproduction is pending. Do not use the baseline-only FASTA as the expanded Step 04 input. The remaining six no-current-link genes, fragment and unresolved representative cases stay auditable.

@@ -18,12 +18,16 @@ The actual Ubuntu R 4.3.3 / DESeq2 1.42.1 snapshot is uploaded and reviewed at s
 
 ## Pending
 
-Step 03 is implemented and validated on the accepted input; workstation execution and held-cohort review remain pending. No structures, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain documented limitations. The selected snapshot does not include full all-gene p-values; workstation BH was not independently recomputed from that upload. GSE125002 remains a separate unaudited complementary candidate.
+The user reports a successful Step 03 workstation run with matching 285-gene / 283-protein first-pass totals. Its full workstation mapping snapshot is not yet uploaded/reviewed. Step 03b is now implemented and validated; workstation Step 03b execution and unresolved-case review remain pending. No structures, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain documented limitations. The selected snapshot does not include full all-gene p-values; workstation BH was not independently recomputed from that upload. GSE125002 remains a separate unaudited complementary candidate.
 
 ## Step 03 implementation validation
 
 The standard-library Python script retrieved 35 complete UniProt batches from release 2026_03. It audited all 854 genes: 285 pass / 283 unique proteins, 562 held for multiple mouse entries, six held without a current exact link, one unassessable fragment. Cached replay reproduces these counts. All nineteen tests passed, including earlier input/QC/DE checks. See docs/STEP_03.md and docs/audits/Mapping_validation. Held genes are not biological exclusions; the accepted first-pass subset has limited coverage.
 
+## Step 03b implementation validation
+
+Independent gene-centric representative evidence resolves 504 more genes without selecting by review status or length. Combined result: 789 / 854 genes (92.4%) and 787 unique proteins, with 64 held and one fragment unassessable. Baseline mappings are preserved. All twenty-six tests pass, including earlier input/QC/DE and first-pass mapping tests. See docs/STEP_03B.md and docs/audits/Resolution_validation. The relationship service did not supply a release header; response hashes/access times are recorded separately from the UniProt sequence release 2026_03.
+
 ## Next
 
-Pull and execute scripts/03_map_GSE286387.py on Ubuntu. Review the mapping report, full candidate audit, FASTA and release provenance before deciding how to resolve held genes or proceeding to Step 04. No Cys filtering or structural scoring occurs in Step 03.
+Pull and execute scripts/03b_resolve_GSE286387.py on Ubuntu using the completed first-pass outputs/cache. Review combined mapping/evidence/FASTA and the remaining 65 cases before committing the workstation snapshot and freezing Step 04 input. The user's coverage objective is recorded: map most genes before Cys inventory, without forced mappings. No cysteine filtering or structural score has run.

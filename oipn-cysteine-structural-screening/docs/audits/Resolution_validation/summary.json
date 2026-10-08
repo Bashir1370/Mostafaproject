@@ -1,0 +1,32 @@
+{
+  "status": "STEP03B_GENERATED_REVIEW_PENDING",
+  "input_genes": 854,
+  "baseline_passed_genes": 285,
+  "resolved_additional_genes": 504,
+  "passed_genes": 789,
+  "unique_accepted_proteins": 787,
+  "mapped_gene_fraction": 0.9238875878220141,
+  "status_counts": {
+    "held": 64,
+    "pass": 789,
+    "unassessable": 1
+  },
+  "reason_counts": {
+    "REPRESENTATIVE_LACKS_ORIGINAL_EXACT_GENE_LINK": 49,
+    "PASS_CURRENT_EXACT_XREF_DISPLAYED_SEQUENCE": 285,
+    "RESOLVED_EXPLICIT_GENE_CENTRIC_REPRESENTATIVE": 504,
+    "REPRESENTATIVE_ONLY_NONCANONICAL_OR_UNRESOLVED_ISOFORM_XREF": 7,
+    "NO_CURRENT_EXACT_ENSEMBL_XREF": 6,
+    "FRAGMENT_SEQUENCE": 1,
+    "REPRESENTATIVE_MULTIPLE_DISPLAYED_ISOFORMS": 1,
+    "MULTIPLE_GENE_CENTRIC_REPRESENTATIVES": 1
+  },
+  "uniprot_sequence_release": "2026_03",
+  "gene_centric_release_headers": [
+    "not_supplied_by_service"
+  ],
+  "protocol_version": "0.1.0",
+  "resolution_version": "1.0.0",
+  "discovery_sha256": "c9bf672d38f877361b3132065884d3a02e3132bcbf9901656b9f2cb04fdf3130",
+  "python": "3.12.14"
+}

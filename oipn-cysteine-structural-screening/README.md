@@ -12,7 +12,7 @@ Approved study design recorded on 2026-10-08. Target workstation: **Ubuntu Linux
 - Primary dataset: GSE286387 **Step 01 accepted after user QC and study-method review**; all ten samples retained with documented metadata limitations.
 - Complementary dataset: GSE125002 **candidate; analyzed separately**.
 - Step 02: **Ubuntu reproduction and uploaded snapshot reviewed**; 854 coding DEGs (477 up / 377 down), exact selected IDs match validation. [Review and limits](docs/audits/ubuntu_DE_2026-10-08/REVIEW.md); Step 03 input is checksum-bound in config/GSE286387_step03_input.json.
-- Step 03: exact mouse gene mapping and canonical sequence retrieval implemented and tested; **workstation reproduction and held-gene review pending**.
+- Step 03: user reports successful first pass; Step 03b evidence-based resolution implemented and tested. Validation covers **789 / 854 genes (92.4%)**, 787 unique proteins; workstation Step 03b and full snapshot review pending.
 - Structure retrieval and biological validation: **not run**.
 
 ## Ten steps
@@ -107,3 +107,12 @@ cat oipn-cysteine-structural-screening/results/03_protein_mapping/mapping_report
 ```
 
 Python 3.8+ standard library only. The checksum-bound Step 02 discovery snapshot is the input. Current exact Ensembl GeneId cross-references identify mouse UniProtKB entries; multiple accessions remain held instead of selecting an arbitrary reviewed/longest entry. Results include complete gene/candidate audits, unique-protein canonical FASTA and reference provenance. See [Step 03 criteria, cache and validation](docs/STEP_03.md). Large held-cohort coverage limitations must be reviewed before downstream inclusion is finalized.
+
+## Step 03b: resolve ambiguous mappings
+
+```bash
+python3 oipn-cysteine-structural-screening/scripts/03b_resolve_GSE286387.py
+cat oipn-cysteine-structural-screening/results/03b_mapping_resolution/resolution_report.md
+```
+
+Run after successful Step 03. Explicit gene-centric grouping must account for every original candidate and nominate an existing exact-gene mouse representative passing the original sequence checks. Baseline mappings remain intact; no reviewed/longest-entry shortcut is used. See [criteria, output contract and reference limits](docs/STEP_03B.md). No Step 04 analysis starts before workstation reproduction and mapping coverage/evidence review.

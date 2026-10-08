@@ -67,7 +67,7 @@ The JSON command checks syntax only. The ten biological analysis scripts will be
 
 ## Next executable task
 
-Steps 01–02 are accepted, including the uploaded workstation DE snapshot. Pull the latest commit, then run the standard-library Python Step 03 mapper in the Ubuntu terminal; see [Step 03](STEP_03.md). HTTPS access to rest.uniprot.org is required; no extra Python/R package installation is needed.
+Steps 01–02 are accepted and the user reports successful first-pass Step 03. Pull the latest commit and run the standard-library Python Step 03b resolver in the Ubuntu terminal; see [Step 03b](STEP_03B.md). It uses the completed Step 03 outputs/cache and HTTPS access to www.ebi.ac.uk. No extra Python/R package installation is needed.
 
 ## RStudio preparation verified by user (2026-10-08)
 
