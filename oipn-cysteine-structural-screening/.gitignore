@@ -1,0 +1,10 @@
+.venv/
+.r-library/
+data/
+results/
+logs/
+cache/
+__pycache__/
+*.pyc
+.Rhistory
+.RData

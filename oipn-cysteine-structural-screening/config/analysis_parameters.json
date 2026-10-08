@@ -1,0 +1,142 @@
+{
+  "protocol_version": "0.1.0",
+  "recorded_date": "2026-10-08",
+  "status": "design_frozen_analysis_not_run",
+  "platform": {
+    "os": "Ubuntu Linux",
+    "shell": "bash",
+    "exact_environment_lock": "pending_implementation"
+  },
+  "scope": {
+    "species": "Mus musculus",
+    "taxonomy_id": 10090,
+    "tissue": "DRG",
+    "treatment": "Oxaliplatin",
+    "control": "Vehicle",
+    "discovery_input": "significant_protein_coding_DEGs",
+    "oxidation_target": "free_cysteine_thiol_structural_prioritization"
+  },
+  "datasets": {
+    "primary_candidate": "GSE286387",
+    "complementary_candidate": "GSE125002",
+    "selection_status": "pending_step_01_audit",
+    "merge_count_matrices": false,
+    "minimum_biological_units_per_group": 3
+  },
+  "differential_expression": {
+    "engine": "DESeq2",
+    "count_minimum": 10,
+    "minimum_samples_rule": "smallest_group_size_across_two_groups",
+    "independent_filtering": false,
+    "multiple_testing": "BH",
+    "fdr_strictly_less_than": 0.05,
+    "absolute_log2fc_cutoff": null,
+    "directions": [
+      "up",
+      "down"
+    ],
+    "baseMean_cutoff_after_DE": null,
+    "model": "set_from_audited_design_before_fit"
+  },
+  "sequence": {
+    "species_must_match": true,
+    "primary_isoform": "UniProt_canonical",
+    "ambiguous_mapping": "hold_for_review",
+    "position_numbering": "1_based"
+  },
+  "structure": {
+    "priority": [
+      "suitable_experimental_mouse",
+      "quality_eligible_predicted_mouse"
+    ],
+    "target_atom": "SG",
+    "local_radius_angstrom": 6.0,
+    "predicted_target_plddt_minimum": 90,
+    "predicted_neighbor_plddt_minimum": 70,
+    "predicted_neighbor_plddt_strict": 90,
+    "experimental_local_validation": "manual_audit_before_bulk_extraction",
+    "ortholog_substitution_primary": false
+  },
+  "chemical_state": {
+    "primary_class": "compatible_with_free_thiol",
+    "separate_classes": [
+      "structural_disulfide",
+      "metal_coordinating",
+      "incompatible_modified",
+      "unresolved_state"
+    ]
+  },
+  "features": {
+    "primary": [
+      "SG_SASA_A2",
+      "predicted_pKa"
+    ],
+    "supplemental": [
+      "nearest_other_SG_distance_A"
+    ],
+    "sasa_probe_radius_angstrom": 1.4,
+    "sasa_engine_and_radii": "lock_at_implementation",
+    "pka_engine": "PROPKA",
+    "tool_versions": "lock_at_implementation",
+    "missing_primary_feature": "unassessable_no_imputation"
+  },
+  "scoring": {
+    "reference": "all_unique_complete_eligible_discovery_sites",
+    "rank_formula": "(average_ascending_rank-1)/(N-1)",
+    "singleton_rank": 0.5,
+    "constant_feature_rank": 0.5,
+    "accessibility_weight": 0.5,
+    "minus_pka_weight": 0.5,
+    "protein_aggregation": "max",
+    "missing_protein_score": null,
+    "weight_scenarios": [
+      [
+        0.25,
+        0.75
+      ],
+      [
+        0.75,
+        0.25
+      ]
+    ],
+    "secondary_aggregation": "mean_of_up_to_three_best_sites"
+  },
+  "shortlist": {
+    "quantile": 0.75,
+    "quantile_method": "linear_R_type_7",
+    "comparison": "greater_than_or_equal",
+    "preserve_boundary_ties": true,
+    "biochemical_cutoff": false
+  },
+  "validation": {
+    "experimental_reference_candidate": "PMID:28827280",
+    "benchmark_status": "pending_source_and_label_audit",
+    "unreported_sites_are_negative": false,
+    "baselines": [
+      "SG_SASA_only",
+      "minus_pKa_only"
+    ],
+    "bootstrap_unit": "protein",
+    "bootstrap_resamples": 2000,
+    "random_seed": 20261008,
+    "performance_threshold": "none_retroactively_selected"
+  },
+  "enrichment": {
+    "background": "all_scoreable_discovery_DEG_protein_genes",
+    "gene_deduplication": "stable_gene_id",
+    "multiple_testing": "BH",
+    "fdr_strictly_less_than": 0.05,
+    "term_collection": "predeclare_before_testing"
+  },
+  "audit": {
+    "every_step_required": true,
+    "object_statuses": [
+      "pass",
+      "excluded",
+      "held",
+      "unassessable"
+    ],
+    "no_zero_imputation_for_missing": true,
+    "amendments_require_version": true
+  }
+}
