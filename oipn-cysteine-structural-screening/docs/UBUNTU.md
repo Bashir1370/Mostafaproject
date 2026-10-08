@@ -67,7 +67,7 @@ The JSON command checks syntax only. The ten biological analysis scripts will be
 
 ## Next executable task
 
-Step 01: verify current GSE286387 metadata, sample identities and complete data availability. If raw reads must be quantified, choose and record a Linux-compatible quantification route and matching reference before implementation. A normalized or DEG-only table is not a shortcut to DESeq2.
+Step 01 is accepted following reviewed local QC and study methods. Pull the latest commit, then run Step 02 with the existing DESeq2/jsonlite installation. See [Step 02](STEP_02.md) for RStudio and terminal commands. No additional package installation is required for this step.
 
 ## RStudio preparation verified by user (2026-10-08)
 

@@ -1,6 +1,6 @@
 # Output contracts and provenance
 
-These are schemas for future outputs, not claims that outputs already exist. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
+Steps 01–02 now have executable implementations; Steps 03–10 remain output schemas for future work. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
 
 | Step | Main output | Required fields/content |
 |---|---|---|
@@ -22,3 +22,7 @@ step_id, object_level (sample/gene/protein/site), object_id, status (pass/exclud
 ## Tool/environment provenance
 
 Record Ubuntu release, architecture, R sessionInfo, Python package versions, tool arguments, retrieval date, database release, input/reference checksums and random seeds. A plan to use a tool is not a tested version lock.
+
+## Step 02 details
+
+`all_genes_de.csv` includes every original unique gene, including prefilter exclusions. `tested_gene_universe.csv` is the retained test set before p-value missingness; BH uses its finite p-values. `significant_protein_coding_degs.csv` contains exactly coding padj<0.05 rows. Additional fields are annotation_reference, maxCooks, valid_p_for_BH, significant, passes_to_step03, direction and protocol_version. Missing results have explicit reasons. Supporting outputs include sample_manifest_used.csv, design_matrix.csv, input_checksums.csv, summary.json, de_report.md, sessionInfo.txt and dds_fitted.rds. Runtime success/failure markers govern eligibility for downstream use.

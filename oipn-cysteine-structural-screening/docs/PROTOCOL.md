@@ -16,7 +16,7 @@ There are **exactly ten scientific steps**. Environment preparation is operation
 
 **Exit/hold:** wrong species/tissue; inseparable combination therapy; unresolved identity; fewer than three independent units per group; complete treatment–batch confounding; only DEG/normalized tables available and no recoverable count route. Stop inference while a count/sample audit is unresolved. Do not switch datasets based on how many desired genes are found.
 
-**Output:** audited sample manifest, data/source manifest, complete count matrix and QC report. Candidate primary: GSE286387 (chronic systemic model); complementary: GSE125002 (different short/local model). These are previous repository candidates, not newly verified downloads. Lock the accession and contrast after this audit.
+**Output:** audited sample manifest, data/source manifest, complete count matrix and QC report. Candidate primary: GSE286387 (chronic systemic model); complementary: GSE125002 (different short/local model). Current acceptance (2026-10-08): GSE286387 is the primary dataset, all ten samples retained, unpaired `~ condition`, oxaliplatin/control. See [design evidence and limitations](DATASET_DESIGN_AUDIT.md). GSE125002 remains unaudited and separate.
 
 ## 02 — Differential expression and discovery gene list
 

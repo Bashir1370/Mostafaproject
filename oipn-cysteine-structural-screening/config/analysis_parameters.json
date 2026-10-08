@@ -1,7 +1,7 @@
 {
   "protocol_version": "0.1.0",
   "recorded_date": "2026-10-08",
-  "status": "step01_sample_qc_implemented_review_pending",
+  "status": "step01_design_accepted_step02_ready",
   "platform": {
     "os": "Ubuntu Linux",
     "shell": "bash",
@@ -19,7 +19,7 @@
   "datasets": {
     "primary_candidate": "GSE286387",
     "complementary_candidate": "GSE125002",
-    "selection_status": "official_input_audited_sample_QC_and_metadata_review_pending",
+    "selection_status": "GSE286387_accepted_with_documented_metadata_limitations",
     "merge_count_matrices": false,
     "minimum_biological_units_per_group": 3
   },
@@ -36,7 +36,9 @@
       "down"
     ],
     "baseMean_cutoff_after_DE": null,
-    "model": "set_from_audited_design_before_fit"
+    "model": "~ condition",
+    "control_level": "control",
+    "treatment_level": "oxaliplatin"
   },
   "sequence": {
     "species_must_match": true,

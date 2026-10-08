@@ -1,0 +1,26 @@
+{
+  "protocol_version": "0.1.0",
+  "status": "accepted_for_step02_with_documented_metadata_limitations",
+  "accession": "GSE286387",
+  "recorded_date": "2026-10-08",
+  "formula": "~ condition",
+  "reference_level": "control",
+  "numerator": "oxaliplatin",
+  "denominator": "control",
+  "n_control": 5,
+  "n_oxaliplatin": 5,
+  "paired": false,
+  "batch_adjustment": "not_estimable_from_public_metadata",
+  "sample_manifest_sha256": "8e887eb24c18950aa3670953dae79a7506c7d08e3781301ab55d2199759f5485",
+  "count_matrix_sha256": "651c93f34952ad2bf5b2f70fef714f730cf17699d439420c906051db973b6393",
+  "source_methods": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13356913/",
+  "qc_snapshot": "docs/audits/ubuntu_2026-10-08",
+  "decision_basis": "paper_10_mouse_matrix_and_5_per_group_GEO_samples_plus_reviewed_QC",
+  "remaining_limitations": [
+    "individual_animal_IDs_not_reported",
+    "batch_not_reported_unmeasured_confounding_cannot_be_excluded",
+    "age_at_purchase_known_exact_age_at_collection_unknown",
+    "exact_interval_from_final_injection_to_collection_unknown"
+  ],
+  "sample_exclusions": []
+}

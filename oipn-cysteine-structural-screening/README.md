@@ -9,10 +9,10 @@ Approved study design recorded on 2026-10-08. Target workstation: **Ubuntu Linux
 ## Status
 
 - Study scope, ten-step workflow and initial scoring rule: **recorded and frozen as v0.1.0**.
-- Primary dataset: GSE286387 **official counts and metadata audited; sample QC pending**.
+- Primary dataset: GSE286387 **Step 01 accepted after user QC and study-method review**; all ten samples retained with documented metadata limitations.
 - Complementary dataset: GSE125002 **candidate; analyzed separately**.
-- DEG analysis, structure retrieval and biological validation: **not run**.
-- Step 01 now includes a tested input-audit script and a real audit snapshot. Sample inclusion remains pending R QC; no DEGs or structural results are reported.
+- Step 02: implemented and validated on real inputs; **user-workstation execution pending**.
+- Structure retrieval and biological validation: **not run**.
 
 ## Ten steps
 
@@ -79,4 +79,21 @@ Or in the RStudio Console:
 source("/home/bashir/Desktop/Mostafaproject/oipn-cysteine-structural-screening/scripts/01b_qc_GSE286387.R")
 ```
 
-The script loads the project's `.r-library` automatically. It requires DESeq2 and jsonlite (installation in [Ubuntu guide](docs/UBUNTU.md)). Outputs, including four PNGs and a combined PDF, are in `results/01b_sample_qc`. Status remains **QC_GENERATED_REVIEW_PENDING**. See [QC specification and validation](docs/STEP_01B_QC.md).
+The script loads the project's `.r-library` automatically. It requires DESeq2 and jsonlite (installation in [Ubuntu guide](docs/UBUNTU.md)). Outputs, including four PNGs and a combined PDF, are in `results/01b_sample_qc`. The QC script itself reports **QC_GENERATED_REVIEW_PENDING**; the subsequent review and accepted design are recorded separately in [design audit](docs/DATASET_DESIGN_AUDIT.md). See [QC specification and validation](docs/STEP_01B_QC.md).
+
+## Step 02: differential expression
+
+The accepted design is `~ condition`, oxaliplatin versus control, five libraries per group. BH uses all valid tested genes; significant coding genes proceed without a fold-change cutoff.
+
+```bash
+Rscript oipn-cysteine-structural-screening/scripts/02_DE_GSE286387.R
+cat oipn-cysteine-structural-screening/results/02_differential_expression/de_report.md
+```
+
+Or in RStudio:
+
+```r
+source("/home/bashir/Desktop/Mostafaproject/oipn-cysteine-structural-screening/scripts/02_DE_GSE286387.R")
+```
+
+See [Step 02 inputs, outputs and validation](docs/STEP_02.md). A complete run requires SUCCESS.txt and absence of FAILURE.txt. Generated results remain ignored by Git; review and commit a deliberately selected snapshot after local reproduction.
