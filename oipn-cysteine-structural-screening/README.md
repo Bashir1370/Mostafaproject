@@ -9,10 +9,10 @@ Approved study design recorded on 2026-10-08. Target workstation: **Ubuntu Linux
 ## Status
 
 - Study scope, ten-step workflow and initial scoring rule: **recorded and frozen as v0.1.0**.
-- Primary dataset: GSE286387 **candidate; current data/metadata audit pending**.
+- Primary dataset: GSE286387 **official counts and metadata audited; sample QC pending**.
 - Complementary dataset: GSE125002 **candidate; analyzed separately**.
 - DEG analysis, structure retrieval and biological validation: **not run**.
-- This commit contains a protocol, configuration, output contracts and Ubuntu instructions. It does not contain executable scientific analysis scripts or fabricated sample manifests/results.
+- Step 01 now includes a tested input-audit script and a real audit snapshot. Sample inclusion remains pending R QC; no DEGs or structural results are reported.
 
 ## Ten steps
 
@@ -53,3 +53,14 @@ The final command checks JSON syntax only; it does not run the study. See the Ub
 The score is a relative structural prioritization index, not a calibrated probability, oxidation rate, ROS concentration or proof of oxidation in OIPN. DEG restriction does not enumerate all oxidation-sensitive DRG proteins. RNA does not prove protein abundance or expressed isoform. High rank does not establish harmful consequences or causality in pain. This branch models free cysteine thiols; it does not cover every ROS target or chemical modification.
 
 The workspace has its own configuration and outputs. It does not import ferroptosis signatures or existing classifier weights.
+
+## Step 01: run on Ubuntu
+
+```bash
+cd /home/bashir/Desktop/Mostafaproject
+git pull --ff-only
+python3 oipn-cysteine-structural-screening/scripts/01_audit_GSE286387.py
+cat oipn-cysteine-structural-screening/results/01_dataset_audit/qc_report.md
+```
+
+Python 3.8+ standard library only; no pip packages or R packages required for this download/integrity step. R is used next for sample QC and DESeq2. See [Step 01 execution and findings](docs/STEP_01.md). Generated data/results are ignored by git. The committed audit snapshot is under `docs/audits/` and records the actual source checksums.

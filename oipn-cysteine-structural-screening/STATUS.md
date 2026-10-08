@@ -1,19 +1,19 @@
 # Progress checkpoint
 
-Protocol version: 0.1.0. Recorded: 2026-10-08. Workstation target: Ubuntu Linux.
+Protocol: 0.1.0. Audit recorded: 2026-10-08. Workstation target: Ubuntu Linux.
 
 ## Completed
 
-- Research question, mouse/OIPN scope and DEG input rule.
-- Ten-step protocol with entry/exit/hold criteria and output contracts.
-- Fixed initial equal-weight structural index and shortlist policy.
-- Independent validation and sensitivity plan.
-- Ubuntu environment instructions and machine-readable configuration.
+- Ten-step design, structural scoring specification, validation plan and Ubuntu instructions.
+- Step 01 official GEO metadata and raw count download/integrity audit executed.
+- Exact sample-title to GSM mapping: five vehicle, five oxaliplatin samples.
+- 40,757 source rows reduced to 40,481 unique stable IDs by retaining one identical count vector per gene; original annotation alternatives and 276 redundant rows are recorded.
+- Executable standard-library Python audit, four integrity regression tests, and actual small audit snapshots committed.
 
-## Not yet executed
+## Pending
 
-No current dataset/sample audit, DE analysis, sequence download, structure download, site scoring, benchmark analysis or enrichment has been run for this workspace. No sample manifest, package lock or result table is fabricated.
+Step 01 is **DATA_READY_QC_PENDING**, not completed: R sample QC, animal/pooling identity review, age/batch availability and final sample inclusion. No samples have been removed or finally approved. No DE fitting, sequence/structure retrieval, scoring, validation or enrichment has run. R is unavailable in the assistant execution environment; R execution will be on the user's Ubuntu workstation.
 
-## Next session
+## Next
 
-Start Step 01: audit GSE286387 metadata and genome-scale raw-count/raw-read availability; resolve biological sample identities, treatment and collection time. Freeze the sample manifest and data provenance, then implement/run Step 02. Review GSE125002 independently as a complementary model. Continue the numbered scientific steps in order.
+Reproduce the audit locally using README commands. Then prepare/run R QC (library sizes, transformed expression PCA/sample distances and design review). Freeze sample inclusion and model before Step 02 DESeq2. Missing batch is not evidence of absence of batch effects. GSE125002 remains a separately audited complementary candidate.

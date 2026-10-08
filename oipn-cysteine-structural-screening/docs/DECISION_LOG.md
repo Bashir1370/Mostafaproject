@@ -28,3 +28,7 @@ Reuse its sequence–structure integration, systematic filtering, transparent ra
 ## Amendment policy
 
 Version every parameter/method change and state why. Preserve v0.1.0 results if a later model is trained. Do not change the initial rule retrospectively to obtain a desired named candidate.
+
+## 2026-10-08 — Step 01 input implementation
+
+Official SOFT and submitter-designated raw counts retrieved and audited. Candidate GSE286387 remains provisional until R sample QC and animal/pooling review. Retain one vector for duplicate stable IDs only if every count and biotype matches; preserve annotation alternatives, never sum copies. Actual 167 duplicate IDs / 276 redundant rows satisfy this rule. No scientific threshold changed. A protocol-independent input integrity script uses Python standard library; QC and DE use R next. Sample identities are explicit; batch/age/animal IDs remain NA rather than inferred.
