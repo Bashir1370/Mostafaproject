@@ -46,3 +46,7 @@ Step 02 uses the existing registered count filter, BH across valid tested genes 
 ## Step 02 workstation report — 2026-10-08
 
 The user supplied de_report.md from Ubuntu with R 4.3.3 / DESeq2 1.42.1 and STEP02_COMPLETE. All reported totals match the separate 1.42.0 implementation run: 18,538 tested, 18,503 valid p-values, 893 significant across biotypes, 854 coding (477 up / 377 down). Preserve the supplied report verbatim under docs/audits/ubuntu_DE_2026-10-08. Actual gene identities, checksum records and environment files must be uploaded from the workstation and inspected before accepting the Step 03 input. No local 1.42.0 result is relabeled as a 1.42.1 file. Parameters and design are unchanged.
+
+## Step 02 snapshot acceptance — 2026-10-08
+
+Reviewed actual workstation files from d80a26859ad54577ebf4021e87ef4f4a0cb8cac0. All eight SHA256 checks, frozen input/configuration records, ten-sample identities and design matrix pass. Discovery CSV contains 854 unique significant coding IDs (477 up / 377 down); all IDs match the separate validated 1.42.0 discovery run. Record review limits and checksum-bound Step 03 input. Full workstation BH was not independently recomputed because all-gene p-values are outside this selected snapshot. Protein mapping has not started; scientific thresholds and protocol version are unchanged.

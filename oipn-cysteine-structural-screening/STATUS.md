@@ -12,14 +12,14 @@ Protocol: 0.1.0. Audit recorded: 2026-10-08. Workstation target: Ubuntu Linux.
 - Step 02 implemented and run on real inputs in R 4.3.3 / DESeq2 1.42.0: 18,538 tested, 18,503 valid p-values, 854 significant coding genes (477 up / 377 down). This is implementation validation, not the user's final workstation DE run.
 - Eleven input-integrity, QC integration, BH/selection-contract and frozen-input gate tests passed.
 
-## Workstation reproduction reported
+## Workstation reproduction and review completed
 
-On 2026-10-08 the user supplied the completed Ubuntu Step 02 report: R 4.3.3 / DESeq2 1.42.1, 18,538 tested genes, 18,503 valid p-values, 893 significant genes across biotypes and 854 coding genes (477 up / 377 down). These totals match implementation validation. The supplied report is recorded in `docs/audits/ubuntu_DE_2026-10-08/de_report.md`.
+The actual Ubuntu R 4.3.3 / DESeq2 1.42.1 snapshot is uploaded and reviewed at source commit d80a26859ad54577ebf4021e87ef4f4a0cb8cac0. All eight snapshot checksums, configuration provenance, sample identities and model matrix pass. Discovery has 854 unique significant coding genes (477 up / 377 down); exact membership matches implementation validation. See docs/audits/ubuntu_DE_2026-10-08/REVIEW.md. The accepted discovery file/checksum is bound in config/GSE286387_step03_input.json.
 
 ## Pending
 
-Upload and inspect the actual workstation discovery CSV, summary, input checksums, model/sample records and session information. Agreement of reported totals does not verify identical gene membership or complete provenance. No sequence/structure retrieval, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain limitations, documented in the accepted design. GSE125002 remains a separate unaudited complementary candidate.
+Step 03 protein mapping and sequence retrieval have not started. No structures, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain documented limitations. The selected snapshot does not include full all-gene p-values; workstation BH was not independently recomputed from that upload. GSE125002 remains a separate unaudited complementary candidate.
 
 ## Next
 
-Upload the selected workstation snapshot using `docs/STEP_02.md`. After validating the uploaded discovery list and provenance, proceed to Step 03 version-aware mouse gene/protein mapping.
+Step 03: version-aware mapping of the accepted 854 mouse stable gene IDs to canonical proteins and sequences, with an audit for every input gene and explicit missing/ambiguous statuses. Do not assume one protein per gene or resolve identity by symbol alone.

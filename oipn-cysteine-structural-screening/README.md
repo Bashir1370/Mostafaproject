@@ -11,7 +11,7 @@ Approved study design recorded on 2026-10-08. Target workstation: **Ubuntu Linux
 - Study scope, ten-step workflow and initial scoring rule: **recorded and frozen as v0.1.0**.
 - Primary dataset: GSE286387 **Step 01 accepted after user QC and study-method review**; all ten samples retained with documented metadata limitations.
 - Complementary dataset: GSE125002 **candidate; analyzed separately**.
-- Step 02: **user reports successful Ubuntu reproduction with DESeq2 1.42.1**; totals match validation (854 coding DEGs). Supporting workstation files are pending upload/review; see [snapshot status](docs/audits/ubuntu_DE_2026-10-08/README.md).
+- Step 02: **Ubuntu reproduction and uploaded snapshot reviewed**; 854 coding DEGs (477 up / 377 down), exact selected IDs match validation. [Review and limits](docs/audits/ubuntu_DE_2026-10-08/REVIEW.md); Step 03 input is checksum-bound in config/GSE286387_step03_input.json.
 - Structure retrieval and biological validation: **not run**.
 
 ## Ten steps

@@ -44,7 +44,7 @@ Review the summary, missing-result reasons, sample/model identity and exact disc
 
 ## Implementation validation
 
-A real-data implementation run with R 4.3.3 / DESeq2 1.42.0 tested 18,538 genes; 18,503 had valid p-values. It selected 893 significant genes across biotypes and 854 significant coding genes (477 up, 377 down). These are implementation-validation results; the user has now reported a successful DESeq2 1.42.1 run with matching totals. Actual discovery membership and provenance await workstation snapshot upload and review. The small snapshot is under `docs/audits/DE_validation/`.
+A real-data implementation run with R 4.3.3 / DESeq2 1.42.0 tested 18,538 genes; 18,503 had valid p-values. It selected 893 significant genes across biotypes and 854 significant coding genes (477 up, 377 down). These are implementation-validation results; the user has now reported a successful DESeq2 1.42.1 run with matching totals. The uploaded snapshot is now reviewed; exact discovery membership and provenance checks passed. See [review](audits/ubuntu_DE_2026-10-08/REVIEW.md). The small snapshot is under `docs/audits/DE_validation/`.
 
 Tests independently recompute BH over all valid biotypes, verify complete gene auditing and exact significant-coding selection including small fold changes, and reject tampered frozen counts/sample manifests. Run after local Step 02:
 
@@ -56,7 +56,7 @@ Integration tests require Rscript with DESeq2/jsonlite; result-contract tests sk
 
 ## Record the actual Ubuntu snapshot
 
-The user's supplied report is already recorded in `docs/audits/ubuntu_DE_2026-10-08`; other files must come from the real workstation run. From an otherwise clean checkout on main, run the following complete Bash block. It stops on failed pull/copy/commit/push, failed execution markers or pre-existing staged changes. Keep the full runtime outputs locally; this selected Git snapshot contains the Step 03 input and provenance. Large all-gene tables and the fitted RDS remain in ignored results and can be reproduced with the registered script.
+The completed snapshot in `docs/audits/ubuntu_DE_2026-10-08` has been uploaded and reviewed. The commands below are the retained transfer procedure; no repeat upload is needed for this accepted run. From an otherwise clean checkout on main, run the following complete Bash block. It stops on failed pull/copy/commit/push, failed execution markers or pre-existing staged changes. Keep the full runtime outputs locally; this selected Git snapshot contains the Step 03 input and provenance. Large all-gene tables and the fitted RDS remain in ignored results and can be reproduced with the registered script.
 
 ```bash
 (

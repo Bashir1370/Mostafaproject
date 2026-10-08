@@ -1,0 +1,17 @@
+{
+  "protocol_version": "0.1.0",
+  "status": "STEP02_SNAPSHOT_ACCEPTED_FOR_STEP03",
+  "accession": "GSE286387",
+  "review_date": "2026-10-08",
+  "source_commit": "d80a26859ad54577ebf4021e87ef4f4a0cb8cac0",
+  "discovery_file": "docs/audits/ubuntu_DE_2026-10-08/significant_protein_coding_degs.csv",
+  "discovery_sha256": "c9bf672d38f877361b3132065884d3a02e3132bcbf9901656b9f2cb04fdf3130",
+  "n_unique_genes": 854,
+  "n_up": 477,
+  "n_down": 377,
+  "species": "Mus musculus",
+  "species_taxid": 10090,
+  "annotation_reference": "deposited_Ensembl_release_76",
+  "mapping_status": "not_started",
+  "review_document": "docs/audits/ubuntu_DE_2026-10-08/REVIEW.md"
+}

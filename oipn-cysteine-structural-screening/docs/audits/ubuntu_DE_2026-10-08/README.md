@@ -1,11 +1,9 @@
 # Ubuntu Step 02 snapshot — 2026-10-08
 
-## Current evidence
+Status: STEP02_SNAPSHOT_ACCEPTED_FOR_STEP03.
 
-The user supplied the text of de_report.md after running the registered Step 02 script on Ubuntu with R 4.3.3 / DESeq2 1.42.1. This report is recorded verbatim. Its totals match the separate implementation-validation run: 18,538 tested, 18,503 valid p-values, 893 significant genes, 854 significant coding genes (477 up / 377 down).
+The real workstation snapshot was uploaded in commit d80a26859ad54577ebf4021e87ef4f4a0cb8cac0. It includes the report, summary, input checksums, session information, 854-gene discovery CSV, sample manifest, model matrix, success marker and snapshot checksum manifest.
 
-## Workstation file transfer and review
+All eight file checksums and the selected-gene/model/provenance checks passed. R 4.3.3 / DESeq2 1.42.1 produced 477 up and 377 down coding DEGs; exact discovery membership matches the separate 1.42.0 validation run. See [review evidence and limits](REVIEW.md).
 
-At creation, only the user-supplied report and this receipt are available in this directory. Upload the actual summary.json, input_checksums.csv, sessionInfo.txt, significant_protein_coding_degs.csv, sample_manifest_used.csv, design_matrix.csv and SUCCESS.txt from the workstation using [the documented commands](../../STEP_02.md). The commands also copy the actual report and generate snapshot_checksums.sha256. Their appearance in the directory confirms transfer; acceptance still requires review of contents and provenance.
-
-No implementation-validation file has been substituted for a workstation file. Matching totals alone do not verify identical selected genes. Full all-gene tables, gene audit, tested universe and fitted model remain in the workstation's ignored results directory. The original protocol and scripts reproduce them. Step 03 is pending discovery-list/provenance review.
+Step 03 uses the uploaded discovery file identified in config/GSE286387_step03_input.json. Full runtime gene tables and fitted model remain on the workstation. No mapping or structural analysis has run.
