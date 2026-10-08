@@ -18,8 +18,12 @@ The actual Ubuntu R 4.3.3 / DESeq2 1.42.1 snapshot is uploaded and reviewed at s
 
 ## Pending
 
-Step 03 protein mapping and sequence retrieval have not started. No structures, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain documented limitations. The selected snapshot does not include full all-gene p-values; workstation BH was not independently recomputed from that upload. GSE125002 remains a separate unaudited complementary candidate.
+Step 03 is implemented and validated on the accepted input; workstation execution and held-cohort review remain pending. No structures, structural ranking, validation or enrichment has run. Original animal identifiers, batch, collection age and exact final-dose interval remain documented limitations. The selected snapshot does not include full all-gene p-values; workstation BH was not independently recomputed from that upload. GSE125002 remains a separate unaudited complementary candidate.
+
+## Step 03 implementation validation
+
+The standard-library Python script retrieved 35 complete UniProt batches from release 2026_03. It audited all 854 genes: 285 pass / 283 unique proteins, 562 held for multiple mouse entries, six held without a current exact link, one unassessable fragment. Cached replay reproduces these counts. All nineteen tests passed, including earlier input/QC/DE checks. See docs/STEP_03.md and docs/audits/Mapping_validation. Held genes are not biological exclusions; the accepted first-pass subset has limited coverage.
 
 ## Next
 
-Step 03: version-aware mapping of the accepted 854 mouse stable gene IDs to canonical proteins and sequences, with an audit for every input gene and explicit missing/ambiguous statuses. Do not assume one protein per gene or resolve identity by symbol alone.
+Pull and execute scripts/03_map_GSE286387.py on Ubuntu. Review the mapping report, full candidate audit, FASTA and release provenance before deciding how to resolve held genes or proceeding to Step 04. No Cys filtering or structural scoring occurs in Step 03.

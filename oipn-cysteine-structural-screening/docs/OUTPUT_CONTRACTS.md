@@ -1,6 +1,6 @@
 # Output contracts and provenance
 
-Steps 01–02 now have executable implementations; Steps 03–10 remain output schemas for future work. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
+Steps 01–03 now have executable implementations; Steps 04–10 remain output schemas for future work. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
 
 | Step | Main output | Required fields/content |
 |---|---|---|
@@ -26,3 +26,7 @@ Record Ubuntu release, architecture, R sessionInfo, Python package versions, too
 ## Step 02 details
 
 `all_genes_de.csv` includes every original unique gene, including prefilter exclusions. `tested_gene_universe.csv` is the retained test set before p-value missingness; BH uses its finite p-values. `significant_protein_coding_degs.csv` contains exactly coding padj<0.05 rows. Additional fields are annotation_reference, maxCooks, valid_p_for_BH, significant, passes_to_step03, direction and protocol_version. Missing results have explicit reasons. Supporting outputs include sample_manifest_used.csv, design_matrix.csv, input_checksums.csv, summary.json, de_report.md, sessionInfo.txt and dds_fitted.rds. Runtime success/failure markers govern eligibility for downstream use.
+
+## Step 03 details
+
+One gene_protein_mapping.csv row and one step_audit.csv row per discovery gene. Pass/held/unassessable are explicit; no artificial zero susceptibility. mapping_candidates.csv retains every exact mouse-entry option including ambiguous alternatives. Accepted columns include canonical_gene_association, entry_type, entry_version, sequence_version, versioned Ensembl gene/transcript/protein IDs and source/deposited reference distinctions. canonical_sequences.fasta deduplicates accepted accessions while retaining all associated gene IDs. sequence_checksum is SHA256 of the uppercase unwrapped amino-acid string, not FASTA bytes. source_manifest.csv records every completed query page, response checksum, UTC access time and release/date. input_checksums.csv includes the executable script. Runtime SUCCESS.txt is STEP03_GENERATED_REVIEW_PENDING, not final inclusion approval.

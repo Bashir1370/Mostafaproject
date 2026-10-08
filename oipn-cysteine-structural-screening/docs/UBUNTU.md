@@ -67,7 +67,7 @@ The JSON command checks syntax only. The ten biological analysis scripts will be
 
 ## Next executable task
 
-Step 01 is accepted following reviewed local QC and study methods. Pull the latest commit, then run Step 02 with the existing DESeq2/jsonlite installation. See [Step 02](STEP_02.md) for RStudio and terminal commands. No additional package installation is required for this step.
+Steps 01–02 are accepted, including the uploaded workstation DE snapshot. Pull the latest commit, then run the standard-library Python Step 03 mapper in the Ubuntu terminal; see [Step 03](STEP_03.md). HTTPS access to rest.uniprot.org is required; no extra Python/R package installation is needed.
 
 ## RStudio preparation verified by user (2026-10-08)
 

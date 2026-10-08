@@ -40,7 +40,7 @@ There are **exactly ten scientific steps**. Environment preparation is operation
 
 **Exit/hold:** missing sequence, wrong species, unresolved gene/protein identity, or unresolved canonical mapping. RNA at gene level does not demonstrate which isoform is expressed. Isoform alternatives are secondary analyses.
 
-**Output:** gene–protein map, canonical FASTA, sequence length, species and mapping audit.
+**Output:** gene–protein map, canonical FASTA, sequence length, species and mapping audit. The executable first pass is specified in [STEP_03.md](STEP_03.md): exact current Ensembl GeneId links, all mouse entry candidates retained, multiple accessions held, displayed-sequence association checked, and ambiguous/fragment sequences unassessable. Historical IDs without current links require separate rescue review. Canonical means the UniProtKB representative sequence, not a measured dominant DRG isoform.
 
 ## 04 — Cysteine inventory
 

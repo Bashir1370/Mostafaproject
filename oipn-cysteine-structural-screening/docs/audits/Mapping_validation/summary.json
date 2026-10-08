@@ -1,0 +1,24 @@
+{
+  "status": "STEP03_GENERATED_REVIEW_PENDING",
+  "input_genes": 854,
+  "mapping_status_counts": {
+    "held": 568,
+    "pass": 285,
+    "unassessable": 1
+  },
+  "reason_counts": {
+    "MULTIPLE_MOUSE_UNIPROT_ENTRIES": 562,
+    "PASS_CURRENT_EXACT_XREF_DISPLAYED_SEQUENCE": 285,
+    "NO_CURRENT_EXACT_ENSEMBL_XREF": 6,
+    "FRAGMENT_SEQUENCE": 1
+  },
+  "passed_genes": 285,
+  "unique_accepted_proteins": 283,
+  "candidate_accessions": 2285,
+  "reference_release": "2026_03",
+  "reference_release_date": "02-September-2026",
+  "discovery_sha256": "c9bf672d38f877361b3132065884d3a02e3132bcbf9901656b9f2cb04fdf3130",
+  "protocol_version": "0.1.0",
+  "python": "3.12.14",
+  "generated_utc": "2026-10-08T20:02:26.099352+00:00"
+}
