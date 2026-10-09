@@ -1,6 +1,6 @@
 # Output contracts and provenance
 
-Steps 01–04 and the Step 05a metadata catalogue have executable implementations; coordinate/quality Step 05b and Steps 06–10 remain future implementations. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
+Steps 01–04 and the Step 05a metadata catalogue have executable implementations; raw coordinate acquisition Step 05b1 is implemented; residue mapping/local-quality Step 05b and Steps 06–10 remain future implementations. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
 
 | Step | Main output | Required fields/content |
 |---|---|---|
@@ -45,4 +45,8 @@ structure_candidates.csv is a service-metadata inventory, distinct from the fina
 
 ## Step 05b input binding
 
-config/GSE286387_step05b_input.json records STEP05A_SNAPSHOT_ACCEPTED_FOR_STEP05B and binds all actual Ubuntu catalogue snapshot files, their checksum manifest and the Step 05 input binding. Future coordinate scripts must verify that chain and use the frozen candidate/source/protein files, while retaining the canonical 760-protein / 10,799-site universe from the prior binding. The catalogue has no structural eligibility approvals. Step 05b executable implementation remains pending.
+config/GSE286387_step05b_input.json records STEP05A_SNAPSHOT_ACCEPTED_FOR_STEP05B and binds all actual Ubuntu catalogue snapshot files, their checksum manifest and the Step 05 input binding. Future coordinate scripts must verify that chain and use the frozen candidate/source/protein files, while retaining the canonical 760-protein / 10,799-site universe from the prior binding. The catalogue has no structural eligibility approvals. Step 05b1 acquisition is implemented; subsequent residue mapping/local quality remains pending.
+
+## Step 05b1 acquisition outputs
+
+download_plan.csv has one row per kind/URL, SHA256-derived file_id and required-coordinate flag. candidate_file_links.csv preserves every offered row and its file associations or held/excluded metadata status, always structural_eligibility=not_assessed. download_manifest.csv adds acquisition status/reason, HTTP code, bytes/raw SHA256, original retrieval time, response URL, ETag/Last-Modified and project-relative body/sidecar paths. Network failure is failed; 404 is unavailable, never oxidative resistance. Raw archive_manifest.csv and archive_receipt.json record member/raw/archive hashes separately; partial archives retain incomplete status. PROBE_SUCCESS.txt is not full-download SUCCESS.txt.

@@ -97,3 +97,7 @@ After workstation HTTP 403 and SSL EOF failures, add explicit --reference-cache 
 ## 2026-10-09 — Actual Ubuntu Step 05a catalogue accepted
 
 Review source commit f8a1a4e8c60593101425ebc09ba55c2081393bba: eight complete outputs, all 42 input checksums and four byte-identical reference-reproduced tables pass. Freeze actual workstation snapshot with a separate Step 05b input binding. Acceptance concerns catalogue provenance and coverage only, not structure or site eligibility. Retain 29 no-eligible-metadata proteins (27 unassessable, two held with unresolved records) in downstream audits. Coordinate acquisition and local-quality implementation are still pending.
+
+## 2026-10-09 — Step 05b1 raw acquisition and archival
+
+Implement coordinate acquisition as a separate substep before residue mapping/local quality. Download every metadata-eligible option, deduplicating full deposited PDB entries and exact AlphaFold file URLs. Preserve ambiguous/excluded metadata and auxiliary gaps. Add four-kind preflight, verified resumable caches, transport diagnostics and a tar.gz with full member read-back checks; archive existence does not imply complete acquisition or structural acceptance. Raw coordinates remain local under ignored data/; compact manifests are tracked. No frozen scientific scoring/input files or unrelated subprojects are changed.

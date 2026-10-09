@@ -129,3 +129,7 @@ The 629,151-byte archive contains exactly 1,520 query response/metadata pairs ca
 Reference bytes live in a separate data/raw/structure_catalogue/reference/<archive SHA256> namespace; partial workstation/network caches remain separate. This option forces offline execution, including when --offline is omitted. summary.json and the report explicitly identify frozen_reference metadata and the archive checksum; input_checksums.csv includes the descriptor/archive/source ledger. source_manifest.csv retains the original upstream acquisition timestamps. These are reused public reference responses, not new downloads on the workstation. A later database update requires a separately documented reference revision.
 
 This resolves reproducibility of Step 05a only. It does not fix the workstation HTTPS connection, download coordinates, approve structures, or score oxidative susceptibility. The existing structural/identity gates and frozen scientific protocol are unchanged. Successful output still requires SUCCESS.txt and review before Step 05b.
+
+## Structure acquisition / archive
+
+Step 05b1 needs only Python standard library. Follow STEP_05B1.md: test --probe before --workers 4 --archive. The archive stays under data/archives/ locally and is not uploaded to Git. Share download_report.md and archive_receipt.json after completion; send failure_context.json when endpoints fail. Resume with the same full command.

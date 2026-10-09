@@ -139,3 +139,7 @@ cat oipn-cysteine-structural-screening/results/05a_structure_catalogue/catalogue
 Query PDBe/SIFTS and AlphaFold DB for all 760 reviewed C-positive accessions, retain every offered candidate, check mouse/accession/sequence metadata and cache response provenance. No coordinate/quality approval occurs yet; structure/site validation follows within Step 05b. See [criteria, API schema, outputs and scope](docs/STEP_05A.md). No new R/Python package is required. Commit actual workstation outputs under results/ after the completed run.
 
 Step 05a can run without API connectivity using `python3 oipn-cysteine-structural-screening/scripts/05a_catalogue_GSE286387.py --reference-cache` from the repository root. See docs/STEP_05A.md for the frozen public reference provenance and verification contract.
+
+## Step 05b1 — raw structures
+
+The reviewed Step 05a snapshot drives scripts/05b1_download_GSE286387.py. Start with --probe, then --workers 4 --archive. See docs/STEP_05B1.md for resumable downloads, raw-file provenance and verified local tar.gz archival. No local structural quality decision is made in this acquisition substep.

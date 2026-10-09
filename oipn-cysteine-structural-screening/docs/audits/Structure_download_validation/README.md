@@ -1,0 +1,3 @@
+# Structure acquisition validation
+
+Implementation validation on real frozen inputs: 2,638-file plan / 1,872 complete metadata associations; online probe for four file kinds succeeded. The four source rows here document validation-environment retrieval, not Ubuntu workstation bulk acquisition. No structural/site quality pass is issued. All 56 then-existing regression tests passed; an added full archive/offline-resume integration test also passed. Nine download/archive tests cover identity/content errors, HTTP/SSL distinctions, cache reuse/corruption, approved-host redirects, frozen gates, probe status and archive verification/rebuild. Raw sample files are cached locally, not committed here.
