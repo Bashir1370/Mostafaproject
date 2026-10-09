@@ -1,6 +1,6 @@
 {
   "status": "STEP05B3_GENERATED_REVIEW_PENDING",
-  "implementation_version": "1.0.0",
+  "implementation_version": "1.0.1",
   "protocol_version": "0.1.0",
   "input_proteins": 760,
   "input_sites": 10799,
@@ -18,10 +18,15 @@
     "NEIGHBOR_PLDDT_BELOW_70": 125,
     "EXPERIMENTAL_LOCAL_VALIDATION_AND_CONTEXT_PENDING": 4569
   },
+  "site_status_counts": {
+    "excluded": 3042,
+    "held": 6964,
+    "unassessable": 793
+  },
   "sites_with_local_confidence_options": 4580,
   "proteins_with_local_confidence_options": 667,
   "final_structural_passes": 0,
   "python": "3.13.13",
   "gemmi": "0.7.5",
-  "generated_utc": "2026-10-09T14:21:46.591586+00:00"
+  "generated_utc": "2026-10-09T17:41:51.864125+00:00"
 }
