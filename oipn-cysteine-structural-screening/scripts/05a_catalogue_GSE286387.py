@@ -12,6 +12,7 @@ import re
 import shutil
 import sys
 import tempfile
+import tarfile
 from datetime import datetime, timezone
 import time
 import urllib.error
@@ -21,7 +22,7 @@ import urllib.request
 SPEC = importlib.util.spec_from_file_location('inventory', Path(__file__).with_name('04_inventory_GSE286387.py'))
 I = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(I)
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 PDBE = 'https://www.ebi.ac.uk/pdbe/api/mappings/best_structures/'
 AFDB = 'https://alphafold.ebi.ac.uk/api/prediction/'
 
@@ -123,6 +124,60 @@ def fetch(url, cache, offline=False):
         body.write_bytes(raw)
         sidecar.write_text(json.dumps(meta, indent=2) + '\n')
     return (json.loads(raw) if meta['http_status'] == 200 else None), meta
+
+
+def reference_cache(project, binding, sequences):
+    """Import frozen public response bytes into a separate, verified namespace."""
+    descriptor = project / 'references/step05a_metadata_2026-10-09/reference.json'
+    ref = json.loads(descriptor.read_text())
+    I.require(ref['protocol_version'] == '0.1.0' and
+              ref['purpose'] == 'frozen_public_API_response_reference_not_workstation_download' and
+              ref['canonical_fasta_sha256'] == binding['input_sha256'][binding['fasta_file']],
+              'Reference protocol/purpose/sequence universe mismatch')
+    archive = I.safe_path(project, ref['archive_file'])
+    ledger = I.safe_path(project, ref['source_manifest_file'])
+    I.require(I.sha(archive.read_bytes()) == ref['archive_sha256'] and
+              I.sha(ledger.read_bytes()) == ref['source_manifest_sha256'], 'Reference checksum mismatch')
+    records = I.read_csv(ledger)
+    urls = {base + accession for base in (PDBE, AFDB) for accession in sequences}
+    I.require(len(records) == ref['query_records'] == len(urls) and
+              {r['url'] for r in records} == urls, 'Reference query universe mismatch')
+    names = {I.sha(url.encode()) + suffix for url in urls for suffix in ('.response', '.metadata.json')}
+    contents = {}
+    with tarfile.open(archive, 'r:gz') as bundle:
+        for member in bundle:
+            I.require(member.isfile() and member.name in names and member.name not in contents,
+                      'Unsafe/unexpected/duplicate reference archive member')
+            I.require(0 <= member.size <= ref['uncompressed_bytes'], 'Reference member size invalid')
+            contents[member.name] = bundle.extractfile(member).read()
+    I.require(set(contents) == names and len(contents) == ref['cache_files'] and
+              sum(map(len, contents.values())) == ref['uncompressed_bytes'], 'Reference archive incomplete')
+    for row in records:
+        key = I.sha(row['url'].encode())
+        raw = contents[key + '.response']
+        meta = json.loads(contents[key + '.metadata.json'])
+        I.require(meta['url'] == row['url'] and meta['sha256'] == row['sha256'] == I.sha(raw) and
+                  meta['http_status'] == int(row['http_status']) and meta['http_status'] in (200, 404) and
+                  meta['retrieved_utc'] == row['retrieved_utc'] and
+                  meta['service_release'] == row['service_release'], 'Reference response provenance mismatch')
+        if meta['http_status'] == 200:
+            json.loads(raw)
+    cache = project / 'data/raw/structure_catalogue/reference' / ref['archive_sha256']
+    if cache.exists():
+        I.require({p.name for p in cache.iterdir()} == names and
+                  all((cache / name).read_bytes() == raw for name, raw in contents.items()),
+                  'Existing reference cache changed; remove that reference cache directory before retrying')
+    else:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        stage = Path(tempfile.mkdtemp(prefix='reference_stage_', dir=cache.parent))
+        try:
+            for name, raw in contents.items():
+                (stage / name).write_bytes(raw)
+            stage.rename(cache)
+        finally:
+            if stage.exists():
+                shutil.rmtree(stage)
+    return cache, ref, [descriptor, archive, ledger]
 
 
 def number(value, label):
@@ -255,7 +310,7 @@ def catalogue_one(accession, sequence, cache, offline):
                                    dict(a_source, protein_accession=accession, service='AlphaFold_DB')]
 
 
-def run(project, offline=False, workers=8):
+def run(project, offline=False, workers=8, use_reference_cache=False):
     out = project / 'results/05a_structure_catalogue'
     out.mkdir(parents=True, exist_ok=True)
     (out / 'SUCCESS.txt').unlink(missing_ok=True)
@@ -265,6 +320,11 @@ def run(project, offline=False, workers=8):
         I.require(1 <= workers <= 16, 'Workers must be between 1 and 16')
         binding, sequences, inputs = load_input(project)
         cache = project / 'data/raw/structure_catalogue/step05a' / binding['input_sha256'][binding['fasta_file']]
+        reference = None
+        if use_reference_cache:
+            cache, reference, reference_inputs = reference_cache(project, binding, sequences)
+            inputs += reference_inputs
+            offline = True
         cache.mkdir(parents=True, exist_ok=True)
         candidates, proteins, sources = [], [], []
         print(f'[1/3] Cataloguing PDBe and AlphaFold metadata for {len(sequences)} proteins...', flush=True)
@@ -311,6 +371,8 @@ def run(project, offline=False, workers=8):
                        candidate_reason_counts=dict(Counter(r['reason'] for r in candidates)),
                        alphafold_model_versions=sorted({r['model_version'] for r in candidates if r['source'] == 'AlphaFold_DB'}),
                        http_status_counts=dict(Counter(str(r['http_status']) for r in sources)),
+                       metadata_mode='frozen_reference' if reference else 'workstation_cache_or_network',
+                       reference_bundle_sha256=reference['archive_sha256'] if reference else '',
                        workers=workers, offline=offline, python=platform.python_version(), platform=platform.platform(),
                        generated_utc=datetime.now(timezone.utc).isoformat())
         (stage / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
@@ -331,6 +393,10 @@ def run(project, offline=False, workers=8):
                   'Network/server errors fail the run and are never counted as missing structures.',
                   'Raw response hashes and retrieval times are cached separately from model versions; no global current database release is invented.',
                   'Review the catalogue before coordinate retrieval, per-site mapping and quality assessment in Step 05b.']
+        if reference:
+            report += ['', 'Metadata source: frozen public API reference captured on 2026-10-09; this run made no API requests.',
+                       'Original upstream retrieval times and response hashes are preserved; these are not fresh workstation downloads.',
+                       'Reference bundle SHA256: ' + reference['archive_sha256']]
         (stage / 'catalogue_report.md').write_text('\n'.join(report) + '\n')
         for path in stage.iterdir():
             shutil.copyfile(path, out / path.name)
@@ -353,10 +419,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project-dir', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--offline', action='store_true', help='Require complete checksum-verified metadata caches')
+    parser.add_argument('--reference-cache', action='store_true',
+                        help='Verify and use the bundled frozen API reference without network requests')
     parser.add_argument('--workers', type=int, default=8, help='Concurrent protein queries, 1–16 (default 8)')
     args = parser.parse_args()
     try:
-        run(args.project_dir.resolve(), args.offline, args.workers)
+        run(args.project_dir.resolve(), args.offline, args.workers, args.reference_cache)
     except Exception as error:
         print('STEP05A FAILED: ' + str(error), file=sys.stderr)
         return 1

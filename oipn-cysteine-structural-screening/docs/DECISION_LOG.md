@@ -89,3 +89,7 @@ Live implementation validation and final cache replay complete all 1,520 queries
 User reports HTTP 403 before a final catalogue. Original exception handling lost endpoint context. Add diagnostic implementation revision 1.0.1: fatal HTTP errors retain requested URL/status and a bounded, allowlisted failure_context.json. Preserve HTTPError compatibility, 404 handling, existing caches, all successful catalogue tables and scientific inputs. Do not classify the workstation failure as absent structures or claim that access is repaired. Same initial endpoints return expected responses in validation; actual workstation endpoint/response evidence is pending.
 
 Diagnostic revision validation: all 44 regression tests pass; final cache replay reproduces all four complete catalogue/query/protein-audit tables byte-for-byte. Workstation 403 cause and resolution remain pending.
+
+## 2026-10-09 — Step 05a frozen reference reproduction
+
+After workstation HTTP 403 and SSL EOF failures, add explicit --reference-cache mode with all 1,520 public API responses from the previously completed validation run. Preserve original acquisition times/hashes, verify the full sequence/query universe and archive, and import into a separate namespace. Force offline execution and label source reuse in summary/report/input provenance. Do not disable TLS or infer network errors as absent structures. Historical validation records and all frozen scientific inputs remain unchanged.

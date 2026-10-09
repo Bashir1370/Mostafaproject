@@ -161,5 +161,64 @@ class RealCatalogue(unittest.TestCase):
         self.assertTrue(all(r['status'] in ('held', 'unassessable') for r in proteins))
 
 
+class FrozenReference(unittest.TestCase):
+    def test_reference_run_without_any_network_and_same_audits(self):
+        binding, sequences, _ = C.load_input(PROJECT)
+        cache, ref, inputs = C.reference_cache(PROJECT, binding, sequences)
+        self.assertEqual(len(list(cache.iterdir())), 3040)
+        with patch.object(C.urllib.request, 'urlopen', side_effect=AssertionError('Network forbidden')):
+            summary = C.run(PROJECT, workers=4, use_reference_cache=True)
+        self.assertEqual(summary['metadata_mode'], 'frozen_reference')
+        self.assertTrue(summary['offline'])
+        self.assertEqual(summary['query_records'], 1520)
+        self.assertEqual(summary['candidate_status_counts'], {'held': 324, 'candidate': 1533, 'excluded': 15})
+        self.assertEqual(C.I.sha((PROJECT / 'results/05a_structure_catalogue/source_manifest.csv').read_bytes()),
+                         ref['source_manifest_sha256'])
+
+    def test_bad_reference_hash_fails_before_import(self):
+        binding, sequences, _ = C.load_input(PROJECT)
+        with tempfile.TemporaryDirectory() as temp:
+            project = Path(temp)
+            for relative in ['references/step05a_metadata_2026-10-09',
+                             'docs/audits/Structure_catalogue_validation']:
+                shutil.copytree(PROJECT / relative, project / relative)
+            descriptor = project / 'references/step05a_metadata_2026-10-09/reference.json'
+            ref = json.loads(descriptor.read_text()); ref['archive_sha256'] = '0' * 64
+            descriptor.write_text(json.dumps(ref))
+            with self.assertRaisesRegex(ValueError, 'Reference checksum'):
+                C.reference_cache(project, binding, sequences)
+            self.assertFalse((project / 'data').exists())
+
+    def test_unsafe_archive_is_rejected_even_with_updated_checksum(self):
+        binding, sequences, _ = C.load_input(PROJECT)
+        import tarfile
+        with tempfile.TemporaryDirectory() as temp:
+            project = Path(temp)
+            for relative in ['references/step05a_metadata_2026-10-09',
+                             'docs/audits/Structure_catalogue_validation']:
+                shutil.copytree(PROJECT / relative, project / relative)
+            descriptor = project / 'references/step05a_metadata_2026-10-09/reference.json'
+            ref = json.loads(descriptor.read_text())
+            archive = project / ref['archive_file']
+            with tarfile.open(archive, 'w:gz') as bundle:
+                member = tarfile.TarInfo('../escape'); member.size = 1
+                bundle.addfile(member, io.BytesIO(b'x'))
+            ref['archive_sha256'] = C.I.sha(archive.read_bytes()); descriptor.write_text(json.dumps(ref))
+            with self.assertRaisesRegex(ValueError, 'Unsafe/unexpected/duplicate'):
+                C.reference_cache(project, binding, sequences)
+            self.assertFalse((project / 'data').exists())
+
+    def test_existing_corrupt_reference_cache_is_not_reused(self):
+        binding, sequences, _ = C.load_input(PROJECT)
+        cache, ref, _ = C.reference_cache(PROJECT, binding, sequences)
+        target = next(cache.glob('*.response')); original = target.read_bytes()
+        try:
+            target.write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError, 'Existing reference cache changed'):
+                C.reference_cache(PROJECT, binding, sequences)
+        finally:
+            target.write_bytes(original)
+
+
 if __name__ == '__main__':
     unittest.main()

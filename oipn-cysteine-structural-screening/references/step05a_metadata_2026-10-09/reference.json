@@ -1,0 +1,18 @@
+{
+  "protocol_version": "0.1.0",
+  "purpose": "frozen_public_API_response_reference_not_workstation_download",
+  "archive_file": "references/step05a_metadata_2026-10-09/api_responses.tar.gz",
+  "archive_sha256": "f486decef5424cfe215a523d0df3e64dfe0171646401d573f484985f7743a2e3",
+  "source_manifest_file": "docs/audits/Structure_catalogue_validation/source_manifest.csv",
+  "source_manifest_sha256": "d6a0a310df8617a56fab429fa3be8556f7feab12af5d5b45bacd20dcf8b39580",
+  "canonical_fasta_sha256": "f174572ae025ddbedf438c2828117efd49a89c0030631be5949cc783793e1296",
+  "query_records": 1520,
+  "cache_files": 3040,
+  "uncompressed_bytes": 3252366,
+  "retrieval_utc_min": "2026-10-09T07:18:41.981668+00:00",
+  "retrieval_utc_max": "2026-10-09T07:31:24.029763+00:00",
+  "services": [
+    "PDBe_SIFTS",
+    "AlphaFold_DB"
+  ]
+}
