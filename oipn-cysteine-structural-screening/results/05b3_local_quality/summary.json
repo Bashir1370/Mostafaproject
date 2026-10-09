@@ -1,0 +1,27 @@
+{
+  "status": "STEP05B3_GENERATED_REVIEW_PENDING",
+  "implementation_version": "1.0.0",
+  "protocol_version": "0.1.0",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "verified_raw_files": 2638,
+  "predicted_models_checked": 731,
+  "mapped_options": 14310,
+  "local_gate_status_counts": {
+    "excluded": 5161,
+    "pass": 4580,
+    "held": 4569
+  },
+  "reason_counts": {
+    "TARGET_PLDDT_BELOW_90": 5036,
+    "LOCAL_CONFIDENCE_PASS_CONTEXT_PENDING": 4580,
+    "NEIGHBOR_PLDDT_BELOW_70": 125,
+    "EXPERIMENTAL_LOCAL_VALIDATION_AND_CONTEXT_PENDING": 4569
+  },
+  "sites_with_local_confidence_options": 4580,
+  "proteins_with_local_confidence_options": 667,
+  "final_structural_passes": 0,
+  "python": "3.13.13",
+  "gemmi": "0.7.5",
+  "generated_utc": "2026-10-09T14:21:46.591586+00:00"
+}
