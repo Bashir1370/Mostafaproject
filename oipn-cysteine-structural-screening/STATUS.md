@@ -48,6 +48,10 @@ Actual Ubuntu catalogue uploaded at f8a1a4e8c60593101425ebc09ba55c2081393bba is 
 
 Resumable downloader verifies the entire accepted snapshot/upstream input chain and plans 1,176 unique coordinate files (445 PDB entries / 731 AlphaFold models) plus 1,462 offered AlphaFold confidence/PAE files. Every metadata record remains in the audit. Real four-kind probe and acquisition/cache/error/archive tests pass; the bulk workstation download is pending. Archive read-back checks every stored member. Raw acquisition does not approve assemblies, sequences, chemical state or local Cys quality. See docs/STEP_05B1.md and docs/audits/Structure_download_validation.
 
+## Step 05b1 actual incomplete acquisition
+
+Uploaded source ed5ae356e169d2ae5be5b657bbce5130de582bc6 reconciles 2,638 unique requests: 2,121 successful, 517 failed. All 731 AlphaFold coordinates and all 731 confidence files succeeded; 438 PDB coordinates / 221 PAE files succeeded. Remaining: six PDB SSL handshake timeouts, one interrupted large PDB read, 498 PAE HTTP 400 and 12 PAE HTTP 502. Original HTTP 400 bodies were not captured, so origin/root cause remains unresolved. The uploaded receipt references a partial local archive, not an independently inspected remote tar.gz. See docs/audits/ubuntu_download_incomplete_2026-10-09/REVIEW.md.
+
 ## Next
 
-Run scripts/05b1_download_GSE286387.py --probe on Ubuntu, then --workers 4 --archive if successful. Review actual manifests and archive receipt. After acquisition, implement residue mapping, biological-assembly/native-context review and local quality in the remaining Step 05b substeps, including experimental local validation evidence. Keep all 760 proteins / 10,799 sites in coverage accounting. Workstation network errors remain possible and are reported explicitly; no structure or oxidative score is approved by download completion.
+Revision 1.0.1 adds interrupted-read retry, longer configurable timeout and bounded HTTP diagnostics. Run --probe --retry-probe to test failed URLs, then resume --workers 1 --timeout 120 --attempts 4 --archive if successful. All 60 regression tests pass; two unchanged failed PAE URLs return 200/full JSON in validation. Cache/file plan and frozen scientific inputs are unchanged. Workstation completion and subsequent site mapping/local quality remain pending; no structural/scoring approval is issued.

@@ -1,0 +1,11 @@
+# Incomplete Ubuntu acquisition review
+
+Source commit ed5ae356e169d2ae5be5b657bbce5130de582bc6. All 2,638 file IDs are unique and accounted for. The complete manifest was retrieved and its Git blob SHA1 matches the committed blob. This is not acquisition acceptance or structure/site approval.
+
+Observed successful files: 438/445 PDB coordinates, 731/731 AlphaFold coordinates, 731/731 confidence files and 221/731 PAE files. Every AlphaFold coordinate/confidence file has downloaded status; only seven coordinates and 510 PAE requests remain failed. All 517 failure records reconcile with the manifest/summary.
+
+Six PDB requests failed with SSL handshake timeouts; the seventh (9ijj) raised IncompleteRead after 92,487,704 bytes. Version 1.0.0 omitted IncompleteRead from transient retry handling. PAE failures: 498 HTTP 400, 12 HTTP 502 after existing retry handling. The old script retained HTTP status in its error string but did not capture the response body/headers, so those records cannot establish whether a service or intermediary produced the 400. Two exact failed PAE URLs (AF-O35074-F1 and AF-O35082-F1, v6) succeed with HTTP 200 and full JSON parsing from the validation environment on the same day; no URL/version replacement is justified. This does not establish workstation recovery or the cause of HTTP 400.
+
+The uploaded receipt describes a partial 330,730,626-byte local archive with 4,304 members, SHA256 4e5bc221831c16be6742438ca5c9a31b5e33a36aac57bf6961162237757ffd4e. That tar.gz is local to the workstation and was not inspected remotely; this review validates the uploaded receipt/manifest evidence, not the actual archive bytes.
+
+Revision 1.0.1 adds retry coverage for interrupted/remote-disconnected reads, configurable 120-second timeout / four transient attempts by default, and bounded HTTP response diagnostics with cookies omitted. HTTP 400 is retained as a failure and is not reclassified or blindly retried. --probe --retry-probe tests a previous failed URL per file kind before bulk continuation. Use one worker for the resumed bulk attempt. The frozen file plan, cache namespace, identity gates and archive checks are unchanged, so successful raw files/metadata are reused. Workstation completion remains pending.

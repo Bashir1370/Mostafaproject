@@ -133,3 +133,5 @@ This resolves reproducibility of Step 05a only. It does not fix the workstation 
 ## Structure acquisition / archive
 
 Step 05b1 needs only Python standard library. Follow STEP_05B1.md: test --probe before --workers 4 --archive. The archive stays under data/archives/ locally and is not uploaded to Git. Share download_report.md and archive_receipt.json after completion; send failure_context.json when endpoints fail. Resume with the same full command.
+
+For the incomplete first bulk run, pull revision 1.0.1 and use --probe --retry-probe --timeout 120 --attempts 4 before resuming with --workers 1 --timeout 120 --attempts 4 --archive. This probes a previously failed URL; successful file caches retain their hashes/acquisition dates. HTTP 400 origin remains unresolved until bounded response diagnostics from the workstation are available.

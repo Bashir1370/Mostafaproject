@@ -5,6 +5,7 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import hashlib
+import http.client
 import importlib.util
 import json
 from pathlib import Path
@@ -21,7 +22,7 @@ SPEC = importlib.util.spec_from_file_location('catalogue', Path(__file__).with_n
 C = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(C)
 I = C.I
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 HOSTS = {'files.rcsb.org', 'alphafold.ebi.ac.uk'}
 KINDS = ('pdb_mmcif', 'alphafold_mmcif', 'alphafold_confidence', 'alphafold_pae')
 
@@ -141,7 +142,7 @@ def atomic(path, raw):
         temporary.unlink(missing_ok=True)
 
 
-def download(cache, item, offline=False, timeout=30, attempts=3):
+def download(cache, item, offline=False, timeout=120, attempts=4):
     try:
         result = cached(cache, item)
         if result:
@@ -168,19 +169,32 @@ def download(cache, item, offline=False, timeout=30, attempts=3):
                 return {**item, **meta, 'status': 'downloaded', 'reason': 'DOWNLOADED_CONTENT_CHECKED',
                         'local_file': str(body), 'metadata_file': str(sidecar)}
             except urllib.error.HTTPError as error:
+                # Preserve a bounded diagnostic; never cache an error response as file content.
+                try:
+                    excerpt = error.read(2048).decode('utf-8', errors='replace')
+                except Exception:
+                    excerpt = 'error body could not be read'
+                headers = error.headers or {}
+                error.download_details = dict(http_status=error.code, response_url=error.geturl(),
+                    error_headers=json.dumps({k: str(headers.get(k, ''))[:256] for k in
+                        ('Server', 'Content-Type', 'Retry-After', 'Via', 'X-Mitmproxy-Blocked-Reason')}),
+                    error_excerpt=excerpt)
                 if error.code == 404:
                     return dict(item, status='unavailable', reason='HTTP_404_NOT_REPORTED', http_status=404,
-                                retrieved_utc=utc(), error=str(error)[:1000])
+                                retrieved_utc=utc(), error=str(error)[:1000],
+                                response_url=error.geturl(), error_headers=error.download_details['error_headers'],
+                                error_excerpt=excerpt)
                 if error.code not in (429, 500, 502, 503, 504) or attempt == attempts - 1:
                     raise
                 delay = error.headers.get('Retry-After', '') if error.headers else ''
                 time.sleep(min(30, int(delay)) if delay.isdigit() else 2 ** attempt)
-            except (urllib.error.URLError, TimeoutError, ConnectionError, OSError):
+            except (urllib.error.URLError, TimeoutError, ConnectionError, OSError, http.client.IncompleteRead, http.client.RemoteDisconnected):
                 if attempt == attempts - 1:
                     raise
                 time.sleep(2 ** attempt)
     except Exception as error:
-        return dict(item, status='failed', reason=type(error).__name__, retrieved_utc=utc(), error=str(error)[:1000])
+        return dict(item, status='failed', reason=type(error).__name__, retrieved_utc=utc(),
+                    error=str(error)[:1000], **getattr(error, 'download_details', {}))
 
 
 def archive_files(project, out, cache, items, inputs, plan_hash):
@@ -226,7 +240,8 @@ def archive_files(project, out, cache, items, inputs, plan_hash):
     return receipt
 
 
-def run(project, workers=4, offline=False, probe=False, plan_only=False, archive=False):
+def run(project, workers=4, offline=False, probe=False, plan_only=False, archive=False,
+        timeout=120, attempts=4, retry_probe=False):
     out = project / 'results/05b1_structure_download'
     out.mkdir(parents=True, exist_ok=True)
     for marker in ('SUCCESS.txt', 'PROBE_SUCCESS.txt', 'FAILURE.txt'):
@@ -234,6 +249,9 @@ def run(project, workers=4, offline=False, probe=False, plan_only=False, archive
     (out / 'archive_receipt.json').unlink(missing_ok=True)
     try:
         I.require(1 <= workers <= 8, 'Workers must be between 1 and 8')
+        I.require(1 <= timeout <= 600 and 1 <= attempts <= 8, 'Timeout/attempts outside allowed bounds')
+        I.require(not retry_probe or probe, '--retry-probe requires --probe')
+        prior = I.read_csv(out / 'download_manifest.csv') if retry_probe and (out / 'download_manifest.csv').is_file() else []
         I.require(not (archive and (probe or plan_only)), '--archive requires a full acquisition run')
         binding, rows, inputs = load_input(project)
         plan, links = make_plan(rows)
@@ -249,19 +267,27 @@ def run(project, workers=4, offline=False, probe=False, plan_only=False, archive
             return 0
         # Check one endpoint per file kind before any bulk requests, including on resumption.
         first = {kind: next(r for r in plan if r['kind'] == kind) for kind in KINDS if any(r['kind'] == kind for r in plan)}
-        results = {r['file_id']: download(cache, r, offline) for r in first.values()}
+        if retry_probe:
+            by_id = {r['file_id']: r for r in plan}
+            for kind in first:
+                failed = next((r for r in prior if r['kind'] == kind and r['status'] in ('failed', 'unavailable')), None)
+                if failed:
+                    I.require(failed['file_id'] in by_id and failed['url'] == by_id[failed['file_id']]['url'],
+                              'Previous failure does not match frozen file plan')
+                    first[kind] = by_id[failed['file_id']]
+        results = {r['file_id']: download(cache, r, offline, timeout, attempts) for r in first.values()}
         blocked = any(r['status'] == 'failed' or (r['required'] and r['status'] != 'downloaded') for r in results.values())
         if not probe and not blocked:
             pending = [r for r in plan if r['file_id'] not in results]
             with ThreadPoolExecutor(max_workers=workers) as pool:
-                jobs = {pool.submit(download, cache, r, offline): r for r in pending}
+                jobs = {pool.submit(download, cache, r, offline, timeout, attempts): r for r in pending}
                 for n, job in enumerate(as_completed(jobs), len(results) + 1):
                     r = job.result(); results[r['file_id']] = r
                     if n % 25 == 0 or n == len(plan):
                         print(f'  Files checked: {n}/{len(plan)}', flush=True)
         records = [results.get(r['file_id'], dict(r, status='pending', reason='PROBE_ONLY' if probe else 'PREFLIGHT_BLOCKED')) for r in plan]
         fields = list(plan[0]) + ['status', 'reason', 'http_status', 'bytes', 'sha256', 'retrieved_utc',
-                                 'response_url', 'etag', 'last_modified', 'local_file', 'metadata_file', 'error']
+                                 'response_url', 'etag', 'last_modified', 'local_file', 'metadata_file', 'error', 'error_headers', 'error_excerpt']
         for r in records:
             for key in ('local_file', 'metadata_file'):
                 if r.get(key): r[key] = str(Path(r[key]).relative_to(project))
@@ -278,7 +304,8 @@ def run(project, workers=4, offline=False, probe=False, plan_only=False, archive
                        file_status_counts=dict(Counter(r['status'] for r in records)),
                        required_coordinates=len(required), coordinates_downloaded=sum(r['status']=='downloaded' for r in required),
                        auxiliary_unavailable=sum(not r['required'] and r['status']=='unavailable' for r in records),
-                       offline=offline, probe=probe, workers=workers, generated_utc=utc())
+                       offline=offline, probe=probe, retry_probe=retry_probe, workers=workers,
+                       timeout_seconds=timeout, max_attempts=attempts, generated_utc=utc())
         atomic(out / 'summary.json', (json.dumps(summary, indent=2) + '\n').encode())
         report = '\n'.join(['# Step 05b1 — raw structure acquisition', '', 'Status: ' + status, '',
                            f'- Required coordinates: {summary["coordinates_downloaded"]}/{len(required)}',
@@ -313,13 +340,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project-dir', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--workers', type=int, default=4)
+    parser.add_argument('--timeout', type=int, default=120, help='Request timeout seconds, 1–600 (default 120)')
+    parser.add_argument('--attempts', type=int, default=4, help='Attempts for transient transport errors, 1–8 (default 4)')
+    parser.add_argument('--retry-probe', action='store_true', help='With --probe, test a previous failed URL per kind')
     parser.add_argument('--offline', action='store_true')
     parser.add_argument('--probe', action='store_true', help='Test one file per kind; no full-download success marker')
     parser.add_argument('--plan-only', action='store_true')
     parser.add_argument('--archive', action='store_true', help='Create and verify a tar.gz of available raw files and provenance')
     args = parser.parse_args()
     try:
-        return run(args.project_dir.resolve(), args.workers, args.offline, args.probe, args.plan_only, args.archive)
+        return run(args.project_dir.resolve(), args.workers, args.offline, args.probe, args.plan_only, args.archive,
+                   args.timeout, args.attempts, args.retry_probe)
     except Exception as error:
         print('STEP05B1 FAILED: ' + str(error), file=sys.stderr)
         return 1

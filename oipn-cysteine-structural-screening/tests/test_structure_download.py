@@ -124,5 +124,42 @@ class DownloadContracts(unittest.TestCase):
             receipt=json.loads((out/'archive_receipt.json').read_text())
             self.assertTrue((project/receipt['archive']).is_file())
 
+    def test_incomplete_read_retries_then_caches_only_complete_bytes(self):
+        import http.client
+        with tempfile.TemporaryDirectory() as t:
+            with patch.object(D.urllib.request,'urlopen',side_effect=[http.client.IncompleteRead(b'partial',10),Response()]) as request, patch.object(D.time,'sleep'):
+                result=D.download(Path(t),item(),attempts=2)
+            self.assertEqual(request.call_count,2)
+            self.assertEqual(result['status'],'downloaded')
+            self.assertEqual(result['sha256'],D.I.sha(RAW))
+
+    def test_http400_keeps_bounded_diagnostic_without_cookies_or_retry(self):
+        with tempfile.TemporaryDirectory() as t:
+            error=urllib.error.HTTPError(item()['url'],400,'Bad Request',
+                 {'Server':'example','Set-Cookie':'private'},io.BytesIO(b'x'*3000))
+            with patch.object(D.urllib.request,'urlopen',side_effect=error) as request:
+                result=D.download(Path(t),item())
+            self.assertEqual(request.call_count,1)
+            self.assertEqual(result['http_status'],400)
+            self.assertEqual(len(result['error_excerpt']),2048)
+            self.assertNotIn('Set-Cookie',result['error_headers'])
+            self.assertFalse(list(Path(t).iterdir()))
+
+    def test_retry_probe_targets_failed_url_and_forwards_transport_options(self):
+        with tempfile.TemporaryDirectory() as t:
+            project=Path(t);out=project/'results/05b1_structure_download';out.mkdir(parents=True)
+            rows=[dict(protein_accession='P12345',source='PDBe_SIFTS',structure_id=pdb,chain_id='A',
+                       candidate_status='candidate',species_taxid='10090',reason='pending') for pdb in ('1abc','2abc')]
+            plan,_=D.make_plan(rows);failed=next(r for r in plan if r['structure_id']=='2abc')
+            D.I.write_csv(out/'download_manifest.csv',[dict(failed,status='failed')],list(failed)+['status'])
+            def result(cache,r,offline,timeout,attempts):
+                self.assertEqual((timeout,attempts),(150,2));self.assertEqual(r['structure_id'],'2abc')
+                return dict(r,status='failed',reason='test')
+            with patch.object(D,'load_input',return_value=({'source_commit':'test'},rows,[])),patch.object(D,'download',side_effect=result):
+                self.assertEqual(D.run(project,probe=True,retry_probe=True,timeout=150,attempts=2),1)
+            records=D.I.read_csv(out/'download_manifest.csv')
+            self.assertEqual(next(r for r in records if r['structure_id']=='2abc')['status'],'failed')
+            self.assertEqual(next(r for r in records if r['structure_id']=='1abc')['status'],'pending')
+
 
 if __name__=='__main__':unittest.main()

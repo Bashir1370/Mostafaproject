@@ -101,3 +101,7 @@ Review source commit f8a1a4e8c60593101425ebc09ba55c2081393bba: eight complete ou
 ## 2026-10-09 — Step 05b1 raw acquisition and archival
 
 Implement coordinate acquisition as a separate substep before residue mapping/local quality. Download every metadata-eligible option, deduplicating full deposited PDB entries and exact AlphaFold file URLs. Preserve ambiguous/excluded metadata and auxiliary gaps. Add four-kind preflight, verified resumable caches, transport diagnostics and a tar.gz with full member read-back checks; archive existence does not imply complete acquisition or structural acceptance. Raw coordinates remain local under ignored data/; compact manifests are tracked. No frozen scientific scoring/input files or unrelated subprojects are changed.
+
+## 2026-10-09 — Diagnose incomplete acquisition and add evidence-preserving retry
+
+Review actual 2,638-row manifest and 517 failures at ed5ae356e169d2ae5be5b657bbce5130de582bc6. Add missing IncompleteRead/remote-disconnect retries, explicit request timeout/attempt controls and bounded HTTP diagnostics. Do not infer HTTP 400 source without its response body; two exact failed PAE URLs work elsewhere. Probe a recorded failed URL per kind before bulk retry; use one worker for workstation continuation. Preserve successful caches and all frozen identity/scientific gates. All 60 regression tests pass; the partial archive receipt is not remotely validated archive content.

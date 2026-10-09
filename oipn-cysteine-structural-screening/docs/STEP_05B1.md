@@ -22,7 +22,7 @@ cat oipn-cysteine-structural-screening/results/05b1_structure_download/download_
 
 Probe checks one file of every planned kind (four files). It produces PROBE_SUCCESS.txt only if all probe transports work and both coordinate samples are available. It never produces full-download SUCCESS.txt. A failing probe prevents bulk requests. Read failure_context.json for exact affected URLs/statuses. The optional --plan-only writes the complete plan without acquisition; --offline requires existing verified caches. Do not execute multiple instances concurrently against the same cache/output directory.
 
-Full acquisition checks all files, preserves the complete plan and reports failures without treating them as biological absence. HTTP 404 is explicit unavailable evidence; missing required coordinates prevent completion. Missing optional confidence/PAE remains a recorded gap even when all coordinates succeed; no confidence/context gate is passed on that basis. Network/SSL/HTTP 403 errors are failed, not unavailable. Retry transient errors at most three times, 30-second request timeout; TLS verification remains enabled. Unexpected redirected hosts, payload identity, coordinate-tag/content-length failures or corrupted caches fail acquisition. mmCIF checks here are transport/content sanity checks, not full parser/sequence/atom validation.
+Full acquisition checks all files, preserves the complete plan and reports failures without treating them as biological absence. HTTP 404 is explicit unavailable evidence; missing required coordinates prevent completion. Missing optional confidence/PAE remains a recorded gap even when all coordinates succeed; no confidence/context gate is passed on that basis. Network/SSL/HTTP 403 errors are failed, not unavailable. Retry transient errors at most four times, 120-second request timeout (revision 1.0.1 defaults); TLS verification remains enabled. Unexpected redirected hosts, payload identity, coordinate-tag/content-length failures or corrupted caches fail acquisition. mmCIF checks here are transport/content sanity checks, not full parser/sequence/atom validation.
 
 Successful completion requires all 1,176 coordinate files plus no failed requests and SUCCESS.txt. Status is STEP05B1_GENERATED_REVIEW_PENDING. The report retains auxiliary 404 gaps. Incomplete runs use FAILURE.txt; rerun the same full command to reuse byte-verified successful files and retry failed/unavailable endpoints. An orphan body without metadata is never trusted; confirmed corrupted cache pairs are reported rather than silently replaced. Original retrieval dates/ETag/Last-Modified and raw SHA256 are preserved on reuse.
 
@@ -41,3 +41,18 @@ https://www.rcsb.org/docs/programmatic-access/file-download-services documents m
 ## Validation and limits
 
 The complete frozen plan contains exactly 2,638 unique files and links all 1,872 offered records. Real online probe downloads succeeded for one file of each kind (four), then cached replay was tested. All 56 then-existing regression tests passed; the additional full acquisition/archive/offline-resume test also passed (nine acquisition tests total). This is implementation validation, not the user's bulk download. Bulk live acquisition has not been performed in the validation environment. Workstation HTTPS transport remains independently unverified; use the probe first.
+
+## Interrupted workstation acquisition — revision 1.0.1
+
+Actual first bulk run: 2,121 successful files / 517 failed. All AlphaFold coordinates and confidence files succeeded; seven PDB coordinates and 510 PAE files remain. See audits/ubuntu_download_incomplete_2026-10-09/REVIEW.md. HTTP 400 cause is unresolved because the old executable did not retain response-body evidence. Two unchanged failed PAE URLs work from the validation environment; do not alter their model versions or substitute another endpoint without provenance.
+
+The revised executable defaults to timeout=120 seconds and four attempts for transient errors, including IncompleteRead and remote disconnection. --timeout (1–600) and --attempts (1–8) are explicit CLI controls. --probe --retry-probe reads the prior download manifest and selects one previous failed/unavailable URL per file kind, verifying its ID/URL against the frozen plan; otherwise it uses the first planned URL. HTTP errors now include status, response URL, an allowlisted header JSON string and at most 2,048 response bytes in the failure context/CSV. Cookies are omitted. HTTP 400 is not blindly retried or relabeled unavailable.
+
+```bash
+cd /home/bashir/Desktop/Mostafaproject
+git pull --ff-only
+python3 oipn-cysteine-structural-screening/scripts/05b1_download_GSE286387.py --probe --retry-probe --timeout 120 --attempts 4 &&
+python3 oipn-cysteine-structural-screening/scripts/05b1_download_GSE286387.py --workers 1 --timeout 120 --attempts 4 --archive
+```
+
+If the failed-URL probe still fails, inspect failure_context.json; the bulk command is not run by this conditional shell sequence. Original successful caches/metadata are preserved; a completed archive replaces the previous plan archive only after read-back checksum verification. Partial archive reports remain explicitly incomplete. Validation: all 60 tests passed plus full JSON downloads of two previously failed PAE URLs from the validation environment. Workstation recovery is not claimed.

@@ -1,0 +1,38 @@
+[
+  {
+    "file_id": "9ec70c1dd98023db632d1576bc2cc8ae774e548e892a413a8e6ff9144de96d6b",
+    "kind": "alphafold_pae",
+    "url": "https://alphafold.ebi.ac.uk/files/AF-O35074-F1-predicted_aligned_error_v6.json",
+    "structure_id": "AF-O35074-F1",
+    "required": false,
+    "response_url": "https://alphafold.ebi.ac.uk/files/AF-O35074-F1-predicted_aligned_error_v6.json",
+    "http_status": 200,
+    "bytes": 534317,
+    "sha256": "8e79d77e1b2dd21df931af48297302008b96042fb9899187233846da44c184a4",
+    "retrieved_utc": "2026-10-09T11:05:30.449921+00:00",
+    "etag": "W/\"7996a16854364c054dfde8fea5a87d47\"",
+    "last_modified": "Thu, 18 Sep 2025 14:42:24 GMT",
+    "status": "downloaded",
+    "reason": "DOWNLOADED_CONTENT_CHECKED",
+    "local_file": "data/raw/structure_coordinates/step05b1/0c6c72738f4a739be52ef57944ec974f48e1f3c483209310d5fde8806fd4b4ac/9ec70c1dd98023db632d1576bc2cc8ae774e548e892a413a8e6ff9144de96d6b.json",
+    "metadata_file": "data/raw/structure_coordinates/step05b1/0c6c72738f4a739be52ef57944ec974f48e1f3c483209310d5fde8806fd4b4ac/9ec70c1dd98023db632d1576bc2cc8ae774e548e892a413a8e6ff9144de96d6b.metadata.json"
+  },
+  {
+    "file_id": "4619185f0bc3004822caa980d6120971269df637334e6d367853fd1c3ac49985",
+    "kind": "alphafold_pae",
+    "url": "https://alphafold.ebi.ac.uk/files/AF-O35082-F1-predicted_aligned_error_v6.json",
+    "structure_id": "AF-O35082-F1",
+    "required": false,
+    "response_url": "https://alphafold.ebi.ac.uk/files/AF-O35082-F1-predicted_aligned_error_v6.json",
+    "http_status": 200,
+    "bytes": 2433650,
+    "sha256": "03f4f6e496acd7dab2feab85561128ef4bbe16fb57b30ed023ad245691a9cbe7",
+    "retrieved_utc": "2026-10-09T11:05:36.292886+00:00",
+    "etag": "W/\"1e928abdaadde7bc862781dd406d1053\"",
+    "last_modified": "Thu, 18 Sep 2025 15:10:13 GMT",
+    "status": "downloaded",
+    "reason": "DOWNLOADED_CONTENT_CHECKED",
+    "local_file": "data/raw/structure_coordinates/step05b1/0c6c72738f4a739be52ef57944ec974f48e1f3c483209310d5fde8806fd4b4ac/4619185f0bc3004822caa980d6120971269df637334e6d367853fd1c3ac49985.json",
+    "metadata_file": "data/raw/structure_coordinates/step05b1/0c6c72738f4a739be52ef57944ec974f48e1f3c483209310d5fde8806fd4b4ac/4619185f0bc3004822caa980d6120971269df637334e6d367853fd1c3ac49985.metadata.json"
+  }
+]

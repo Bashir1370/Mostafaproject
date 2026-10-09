@@ -1,0 +1,31 @@
+{
+  "status": "INCOMPLETE_ACQUISITION_REVIEWED_NOT_ACCEPTED_FOR_SITE_MAPPING",
+  "source_commit": "ed5ae356e169d2ae5be5b657bbce5130de582bc6",
+  "files_planned": 2638,
+  "files_downloaded": 2121,
+  "files_failed": 517,
+  "kind_status_counts": {
+    "alphafold_confidence": {
+      "downloaded": 731
+    },
+    "alphafold_mmcif": {
+      "downloaded": 731
+    },
+    "alphafold_pae": {
+      "downloaded": 221,
+      "failed": 510
+    },
+    "pdb_mmcif": {
+      "downloaded": 438,
+      "failed": 7
+    }
+  },
+  "failure_counts": {
+    "pdb_mmcif | URLError | <urlopen error _ssl.c:1015: The handshake operation timed out>": 6,
+    "pdb_mmcif | IncompleteRead | IncompleteRead(92487704 bytes read)": 1,
+    "alphafold_pae | HTTPError | HTTP Error 400: Bad Request": 498,
+    "alphafold_pae | HTTPError | HTTP Error 502: Bad Gateway": 12
+  },
+  "manifest_sha256": "b6edf71db5ea6b59827ead2a7a22503c4b01a7d4e4e95335d11d095bd5ed3e47",
+  "observed_limit": "HTTP 400 response bodies were not retained by version 1.0.0; workstation origin/root cause unresolved"
+}
