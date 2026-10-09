@@ -1,0 +1,11 @@
+"sample_id","(Intercept)","conditionoxaliplatin"
+"DRG_control_rep5",1,0
+"DRG_10mg_rep5",1,1
+"DRG_control_rep4",1,0
+"DRG_10mg_rep4",1,1
+"DRG_control_rep3",1,0
+"DRG_10mg_rep3",1,1
+"DRG_control_rep2",1,0
+"DRG_10mg_rep2",1,1
+"DRG_control_rep1",1,0
+"DRG_10mg_rep1",1,1

@@ -1,0 +1,3 @@
+role,source_url,local_file,sha256,bytes,audited_utc,retrieval_mode,protocol_version
+soft,https://ftp.ncbi.nlm.nih.gov/geo/series/GSE286nnn/GSE286387/soft/GSE286387_family.soft.gz,GSE286387_family.soft.gz,9b0f9519a6483d8d79445979249064d89003531f5d56b82f8d970d621e06ec32,3377,2026-10-08T18:08:20.154198+00:00,fresh_download,0.1.0
+counts,https://ftp.ncbi.nlm.nih.gov/geo/series/GSE286nnn/GSE286387/suppl/GSE286387_DRG_raw_counts.txt.gz,GSE286387_DRG_raw_counts.txt.gz,78af09742e28ed43c3d72f83dcf25c684e703998b813a73a442a4a90435df58e,876229,2026-10-08T18:08:24.395441+00:00,fresh_download,0.1.0
