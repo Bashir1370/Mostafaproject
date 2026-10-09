@@ -139,3 +139,14 @@ For the incomplete first bulk run, pull revision 1.0.1 and use --probe --retry-p
 ## Canonical Cys / structure mapping
 
 Follow STEP_05B2.md to create the subproject .venv, install the Gemmi 0.7.5 binary wheel and run 05b2_map_cysteines_GSE286387.py. Existing raw files are used offline and every accepted byte hash is rechecked. Do not run this script with the unconfigured base Python. Send results/05b2_cysteine_mapping/mapping_report.md after execution; SUCCESS.txt means generated/review-pending only.
+
+## Step 05b3: existing environment, offline local confidence
+
+```bash
+cd /home/bashir/Desktop/Mostafaproject
+git pull --ff-only
+oipn-cysteine-structural-screening/.venv/bin/python oipn-cysteine-structural-screening/scripts/05b3_local_quality_GSE286387.py
+cat oipn-cysteine-structural-screening/results/05b3_local_quality/quality_report.md
+```
+
+No new dependency/download is required. Keep original raw caches. Commit results/05b3_local_quality after successful completion; see STEP_05B3.md for local gate versus final structural approval.

@@ -60,6 +60,14 @@ Source b2205ac65ebf0881653dd985ee279aef2f9fa994 is reviewed: all 2,638 files hav
 
 Offline Gemmi 0.7.5 mapper verifies every accepted raw file/sidecar before parsing, separates canonical/label/author numbering, checks exact predicted sequences or strict deposited/unique-exact reference correspondence, and preserves every candidate model/subchain. Expected ambiguity and unavailable SG/residues are explicitly audited. All 760 proteins / 10,799 sites remain represented; metadata held/excluded records remain in the 1,872-row candidate audit. Validation: 73 full regression tests and all 14 mapping tests (including an additional end-to-end representative integration) pass. Real accepted-byte examples include 11gl chains A/B and AF-A0A087WRH0-F1; the complete 1,176-file workstation run remains pending. See docs/STEP_05B2.md and docs/audits/Structure_mapping_validation.
 
+## Step 05b2 workstation mapping accepted
+
+Actual source 7dd9d5dde4e2a887a3af46f5c6e0c7b90889641c is reviewed. All nine output Git hashes and complete frozen input checksums pass. Reconstructed 10,799-site audit matches exactly; every candidate/raw association and 2,638 raw/sidecar ledger hashes reconcile. 9,741 unique sites in 731 proteins have mapped SG options (all have AlphaFold; 394 additionally have experimental options). 265 sites remain mapping-unresolved; 793 lack metadata-eligible structures. See docs/audits/ubuntu_cysteine_mapping_2026-10-09/REVIEW.md. Raw byte verification/full parsing occurred on Ubuntu; full raw bodies remain local. This accepts mapping only.
+
+## Step 05b3 local-confidence implementation
+
+An offline local-confidence/target-completeness gate now uses the frozen >=90 target / >=70 modeled-neighbor within 6 A criteria, checks JSON/CIF confidence, retains every mapped experimental option as held for manual local validation, and audits all canonical sites. PAE is descriptive with no new cutoff; neighbor >=90 remains a sensitivity flag. Local pass does not approve assemblies, native/fragment context, neighbor completeness or chemical state. Validation: 90 full regression tests plus a final rerun of all 16 local-quality tests; real 35-site sample and full-universe representative integration pass. See docs/STEP_05B3.md.
+
 ## Next
 
-Install the pinned structure requirements in the subproject .venv and run scripts/05b2_map_cysteines_GSE286387.py with that Python. Review actual mapping/coverage and held reasons, then implement local-confidence/completeness, mutation/assembly context and experimental local-validation eligibility. SG/sequence mapping is not structural approval; no score is computed. Frozen scientific criteria and completed raw acquisition remain unchanged.
+Run scripts/05b3_local_quality_GSE286387.py with the existing subproject .venv Python and upload results/05b3_local_quality. Review actual model/site confidence distributions and holds, then continue experimental local validation, assembly/native/mutation/fragment and neighbor-completeness context. No final Step 05 pass, features or score has been issued.

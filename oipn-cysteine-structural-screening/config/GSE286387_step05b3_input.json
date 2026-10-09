@@ -1,0 +1,24 @@
+{
+  "protocol_version": "0.1.0",
+  "status": "STEP05B2_MAPPING_ACCEPTED_FOR_LOCAL_CONFIDENCE",
+  "source_commit": "7dd9d5dde4e2a887a3af46f5c6e0c7b90889641c",
+  "mapping_snapshot_directory": "docs/audits/ubuntu_cysteine_mapping_2026-10-09",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "input_mapping_records": 25026,
+  "mapped_options": 14310,
+  "input_sha256": {
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/REVIEW.md": "2b30be3c2fcbe79016e834c3a4b902c049c8d609a454e922c86cc491c75c7e7a",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/SUCCESS.txt": "af77446d4c709869d79d8f8ca1cf83ab1235baca72b7c37f4f0ca581210b2063",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/candidate_mapping_audit.csv": "3d00ca2ec72c8a835ebc7c336e5d8bc29a100f79bb469187d249fc6aa45f2639",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/input_checksums.csv": "24b8c4b4010b5600efc6cf691c30a401f739336d2bcfee9d0204c3141ec7a1cc",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/mapping_report.md": "27cf431cc1c2da036fa8d2050950f1efb9c50c7a96159525c1db4170eb9ff893",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/protein_mapping_coverage.csv": "b47623f8e4655806d9156ab47e80d4acbb2b99886c9f7d6e2b653d53008cd535",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/raw_file_checksums.csv": "b44ed281bb179b97045e1c8a9975b26d3785260b1f163d73b68d48cfd977b895",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/site_step_audit.csv": "05ec4a19bbeffd03c9160a51bbddc08887a04fcae7c777cfe997977346e4d6e1",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/site_structure_mapping.csv": "897399aa6721323d6e8821e75854a181d9a74dd56febbc2eab1c35489a09efb0",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/snapshot_checksums.sha256": "921a8b650f4e2a67e589edc0300b19af0de1d08d1e55ee7b1e352f038cc0792e",
+    "docs/audits/ubuntu_cysteine_mapping_2026-10-09/summary.json": "88fe596ded5945a147c4fbcf946a13645665cd5b49c62f9568d6a4fda95caa06",
+    "config/GSE286387_step05b2_input.json": "3e4d13f5f3def02e04f554a3a0ca429dfd64e05af0531331e7ff06ba652695d2"
+  }
+}

@@ -127,3 +127,5 @@ There are **exactly ten scientific steps**. Environment preparation is operation
 ## Audit and amendment rules
 
 For each step record n_input, n_pass, n_excluded, n_held and n_unassessable, with disjoint statuses at the relevant object level. Site and protein counts are separate. Freeze selected dataset, sample list, reference releases, tool versions and structure-selection implementation before the corresponding inference. Amendments receive a version and a reason; v0.1.0 outputs are not overwritten by a redesigned score.
+
+Implementation checkpoints for Step 05 are documented in STEP_05A.md, STEP_05B1.md, STEP_05B2.md and STEP_05B3.md. Local predicted-confidence pass in Step 05b3 is an intermediate gate; remaining context and experimental validation are required before final structural inclusion.

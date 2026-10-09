@@ -147,3 +147,7 @@ The reviewed Step 05a snapshot drives scripts/05b1_download_GSE286387.py. Start 
 ## Step 05b2 — canonical Cys mapping
 
 Install requirements-structure.txt in the subproject .venv, then run scripts/05b2_map_cysteines_GSE286387.py with that environment's Python. See docs/STEP_05B2.md for the complete Ubuntu commands, strict reference/sequence/atom gates and coverage audits. Mapping is offline after the one-time Gemmi installation; local-quality and assembly acceptance remain pending.
+
+## Step 05b3 — local predicted confidence
+
+The actual Ubuntu mapping is reviewed and frozen. Run scripts/05b3_local_quality_GSE286387.py with the existing subproject .venv Python; it uses existing raw files offline. See [criteria, scope and Ubuntu commands](docs/STEP_05B3.md). A local-confidence pass remains held for structural/chemical context; experimental alternatives await manual local validation.
