@@ -150,3 +150,15 @@ cat oipn-cysteine-structural-screening/results/05b3_local_quality/quality_report
 ```
 
 No new dependency/download is required. Keep original raw caches. Commit results/05b3_local_quality after successful completion; see STEP_05B3.md for local gate versus final structural approval.
+
+## Step 05b4: context and official XML reports
+
+```bash
+cd /home/bashir/Desktop/Mostafaproject
+git pull --ff-only
+oipn-cysteine-structural-screening/.venv/bin/python oipn-cysteine-structural-screening/scripts/05b4_context_GSE286387.py --probe-validation &&
+oipn-cysteine-structural-screening/.venv/bin/python oipn-cysteine-structural-screening/scripts/05b4_context_GSE286387.py --download-validation --workers 2 &&
+cat oipn-cysteine-structural-screening/results/05b4_structure_context/context_report.md
+```
+
+No new package is required. Original coordinate caches stay unchanged. New reports require HTTPS files.wwpdb.org; retries reuse verified successful caches. Probe outputs/markers are separate. Read failure_context.json and validation_download_manifest.csv on failure. Commit compact results after successful execution; full raw report/sidecar caches remain under data/. See STEP_05B4.md.

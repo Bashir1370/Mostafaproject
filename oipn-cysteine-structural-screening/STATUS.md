@@ -78,6 +78,10 @@ The initial terminal site aggregation lost held upstream mapping/metadata altern
 
 Source 1c850c52db0f8e9523e65073ce30496fb48635ce is reviewed: all nine output blob hashes and all 80 input hashes pass. Full terminal site audit reproduces exactly, including the expected 2,042 excluded-to-held corrections. All five unchanged option/model/protein/raw/success files are byte-identical to the initial run; 4,580 local-pass sites / 667 proteins remain unchanged. Final site counts: 6,964 held, 3,042 excluded, 793 unassessable. See docs/audits/ubuntu_local_quality_2026-10-09/REVIEW.md. config/GSE286387_step05b4_input.json binds the accepted corrected snapshot for context review only; no final structural or chemical approval exists.
 
+## Step 05b4 context evidence implementation
+
+New offline/context parser and optional official XML acquisition are implemented. All 1,176 coordinate contexts and 445 unique experimental report URLs remain prospective workstation input. Target coherent conformers, observed modeled-neighbor name gaps, partners, canonical mutation differences, assembly recipes/operators/source annotations and report/model/author/insert matches are recorded without selecting an assembly or imposing new experimental cutoffs. All inherited site uncertainties stay intact. Validation: 109 full tests; 17 context tests rerun, plus a real successful official 11gl XML probe and eight target report matches. See docs/STEP_05B4.md and docs/audits/Structure_context_validation.
+
 ## Next
 
-Implement subsequent experimental local-validation acquisition and assembly/native/mutation/interdomain/neighbor-completeness context review from the accepted Step 05b3 binding. The frozen source priority remains suitable experimental mouse first, quality-eligible predicted mouse fallback. Do not select feature-ready models or calculate SASA/pKa/oxidation scores before remaining context and chemical-state gates.
+Run scripts/05b4_context_GSE286387.py --probe-validation, then --download-validation --workers 2 using the existing .venv. Upload results/05b4_structure_context after completion. Review actual context/validation evidence before generating/selecting assemblies and issuing native/experimental context eligibility. No final structural, chemical or feature-ready pass exists; no score is computed.

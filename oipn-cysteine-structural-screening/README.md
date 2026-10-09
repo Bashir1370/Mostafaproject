@@ -151,3 +151,7 @@ Install requirements-structure.txt in the subproject .venv, then run scripts/05b
 ## Step 05b3 — local predicted confidence
 
 The actual Ubuntu mapping is reviewed and frozen. Run scripts/05b3_local_quality_GSE286387.py with the existing subproject .venv Python; it uses existing raw files offline. See [criteria, scope and Ubuntu commands](docs/STEP_05B3.md). A local-confidence pass remains held for structural/chemical context; experimental alternatives await manual local validation.
+
+## Step 05b4 — structural context and official experimental validation
+
+Run scripts/05b4_context_GSE286387.py --probe-validation, then --download-validation --workers 2 with the existing .venv Python. Existing coordinates are reused; new official wwPDB XML reports are cached with raw hashes/provenance. See [Ubuntu commands, evidence scope and validation](docs/STEP_05B4.md). This inventories ASU/assembly recipes, partners, conformers, mutation differences and experimental report evidence; it does not approve or select a biological assembly for scoring.

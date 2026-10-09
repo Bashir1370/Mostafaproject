@@ -125,3 +125,7 @@ Initial source 7bb88bf0b17542d6218454c0c098f1b75fd476db verifies all 4,580/667 l
 ## 2026-10-09 — corrected Step 05b3 workstation acceptance
 
 Source 1c850c5 exactly reproduces the expected implementation 1.0.1 site-audit correction; all nine output hashes and 80 input hashes pass. Accept 4,580 local-confidence sites in 667 proteins for context review, retaining all 10,799 sites and all pending experimental/metadata/mapping evidence. Freeze the corrected snapshot in config/GSE286387_step05b4_input.json. Acceptance does not select assemblies or approve chemical state/features.
+
+## 2026-10-09 — prospective context evidence inventory
+
+Implement Step 05b4 with inherited corrected local-quality evidence and all canonical uncertainties. Inventory deposited ASU neighborhoods/assembly recipes rather than assuming or selecting a biological assembly. Plan 445 official wwPDB XML reports from frozen experimental IDs; preserve raw metrics/flags and revision provenance for manual local validation, with no new RSRZ/RSCC/resolution/PAE cutoff. Do not union alternate conformers, repair atoms, silently rescue mappings or choose models by score. Full workstation generation/review remains pending.
