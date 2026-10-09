@@ -1,0 +1,42 @@
+[
+  {
+    "name": "11gl",
+    "accession": "Q3TBT3",
+    "chain": "A",
+    "rows": 11,
+    "statuses": {
+      "unassessable": 7,
+      "mapped": 4
+    },
+    "reasons": {
+      "CANONICAL_SITE_OUTSIDE_CHECKED_SEGMENTS": 7,
+      "CYS_SG_MAPPED_QUALITY_PENDING": 4
+    }
+  },
+  {
+    "name": "11gl",
+    "accession": "Q3TBT3",
+    "chain": "B",
+    "rows": 11,
+    "statuses": {
+      "unassessable": 7,
+      "mapped": 4
+    },
+    "reasons": {
+      "CANONICAL_SITE_OUTSIDE_CHECKED_SEGMENTS": 7,
+      "CYS_SG_MAPPED_QUALITY_PENDING": 4
+    }
+  },
+  {
+    "name": "AF-A0A087WRH0-F1",
+    "accession": "A0A087WRH0",
+    "chain": "A",
+    "rows": 35,
+    "statuses": {
+      "mapped": 35
+    },
+    "reasons": {
+      "CYS_SG_MAPPED_QUALITY_PENDING": 35
+    }
+  }
+]

@@ -1,0 +1,3 @@
+# Canonical Cys mapping implementation validation
+
+Gemmi 0.7.5 / Python 3.11 validation, offline processing of representative raw CIFs whose hashes match the accepted Ubuntu acquisition ledger. The 73-test full regression suite passed; all 14 mapping tests, including an added end-to-end sample integration, passed. The representative fixture retains 760 proteins / 10,799 site audits and maps 39 unique sites (43 candidate/model options) across two structures. This is not actual complete Ubuntu mapping; no structural quality pass or score is generated. Full 1,176-file execution remains pending. See STEP_05B2.md for exact acceptance/hold rules and validation limits.

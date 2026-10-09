@@ -54,7 +54,7 @@ There are **exactly ten scientific steps**. Environment preparation is operation
 
 ## 05 — Structure retrieval, mapping and local quality
 
-**Input:** canonical sequences and Cys inventory. The reviewed Ubuntu inventory is bound in config/GSE286387_step05_input.json. [Step 05a](STEP_05A.md) implements a candidate-metadata catalogue; coordinate retrieval, residue mapping and local-quality acceptance remain separate work within Step 05b. Metadata candidates are not structural passes.
+**Input:** canonical sequences and Cys inventory. The reviewed Ubuntu inventory is bound in config/GSE286387_step05_input.json. [Step 05a](STEP_05A.md) implements a candidate-metadata catalogue; [05b1](STEP_05B1.md) implements raw acquisition and [05b2](STEP_05B2.md) implements canonical Cys correspondence. Local-quality/context acceptance remains separate work within Step 05b. Metadata candidates are not structural passes.
 
 **Priority:** suitable experimental mouse structure first; otherwise predicted mouse structure. Human/rat ortholog structures do not silently substitute in the primary analysis. Resolve isoform and residue numbering by explicit alignment. Select structures by mapping, local completeness, native sequence/context and quality before scoring; never choose the highest-scoring conformation.
 

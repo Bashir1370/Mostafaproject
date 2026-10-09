@@ -109,3 +109,7 @@ Review actual 2,638-row manifest and 517 failures at ed5ae356e169d2ae5be5b657bbc
 ## 2026-10-09 — Complete Ubuntu raw acquisition manifests accepted
 
 Review b2205ac65ebf0881653dd985ee279aef2f9fa994: all 2,638 requests successful, all 53 input hashes correct, exact frozen plan/links reproduced and original 2,121 cache histories preserved. Bind immutable complete manifests/receipt separately from mutable results/. Remote provenance review does not inspect workstation archive/raw bodies; Step 05b2 must enforce the accepted local file/sidecar hash gate before parsing. Preserve all 760 proteins / 10,799 Cys sites. No structural or scoring acceptance is inferred from acquisition.
+
+## 2026-10-09 — Strict offline canonical Cys mapping implementation
+
+Use pinned Gemmi 0.7.5 with the accepted complete raw-file binding. Resolve label/author chains and retain all deposited models. Accept positional correspondence only from exact predicted intervals, fully checked UNP segments with explicit substitutions, or a unique exact contiguous polymer sequence when no deposited UNP association exists; ambiguous/gapped/contradictory correspondence remains held. Select SG records by positive occupancy and deterministic altloc tie rule without preparing other atoms or approving quality. Preserve all canonical sites/proteins and offered metadata records. Validate representative accepted-byte PDB/AlphaFold files, synthetic numbering/mutation/missing/altloc cases and an end-to-end sample audit; full workstation run remains pending.

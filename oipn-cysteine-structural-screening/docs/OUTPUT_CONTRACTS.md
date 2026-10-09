@@ -1,6 +1,6 @@
 # Output contracts and provenance
 
-Steps 01–04 and the Step 05a metadata catalogue have executable implementations; raw coordinate acquisition Step 05b1 is implemented; residue mapping/local-quality Step 05b and Steps 06–10 remain future implementations. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
+Steps 01–04 and the Step 05a metadata catalogue have executable implementations; raw coordinate acquisition Step 05b1 is implemented; canonical residue mapping Step 05b2 is implemented; local-quality Step 05b and Steps 06–10 remain future implementations. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
 
 | Step | Main output | Required fields/content |
 |---|---|---|
@@ -55,4 +55,8 @@ Revision 1.0.1 download_manifest.csv additionally retains error_headers (allowli
 
 ## Step 05b2 accepted raw-file input
 
-config/GSE286387_step05b2_input.json binds the complete actual Ubuntu download snapshot, archive receipt/manifest, frozen file-plan SHA256, local raw-file directory and preceding Step 05b binding. Status STEP05B1_MANIFEST_ACCEPTED_FOR_STEP05B2 accepts manifest/provenance consistency only. The future mapper must verify each raw body and metadata sidecar against the accepted acquisition/archive hashes before parsing. It must preserve the entire canonical protein/site universe and distinguish absent/ambiguous mapped residues from acquisition/identity errors. No mapper executable or site eligibility result exists yet.
+config/GSE286387_step05b2_input.json binds the complete actual Ubuntu download snapshot, archive receipt/manifest, frozen file-plan SHA256, local raw-file directory and preceding Step 05b binding. Status STEP05B1_MANIFEST_ACCEPTED_FOR_STEP05B2 accepts manifest/provenance consistency only. The mapper verifies each raw body and metadata sidecar against the accepted acquisition/archive hashes before parsing. It must preserve the entire canonical protein/site universe and distinguish absent/ambiguous mapped residues from acquisition/identity errors. Step 05b2 mapping is implemented; no local-quality/site eligibility approval exists yet.
+
+## Step 05b2 mapping outputs
+
+site_structure_mapping.csv retains canonical site ID/position, candidate row/source, author and label chains, deposited model, label/auth residue IDs/insertion code, mapping method/status/reason, deposited/observed components, SG existence/alternate/occupancy/coordinates/raw B factor, atom-name gaps, declared sequence-change positions and frozen raw-file ID/hash/path. All structural_eligibility and local_quality_status remain not_assessed. candidate_mapping_audit.csv includes every offered row; site_step_audit.csv and protein_mapping_coverage.csv retain the full canonical universe, including metadata ambiguities and no-candidate cases. raw_file_checksums.csv records all verified raw body/sidecar hashes. Input/environment/summary/report/marker contracts distinguish correspondence generation from downstream structural acceptance.

@@ -143,3 +143,7 @@ Step 05a can run without API connectivity using `python3 oipn-cysteine-structura
 ## Step 05b1 — raw structures
 
 The reviewed Step 05a snapshot drives scripts/05b1_download_GSE286387.py. Start with --probe, then --workers 4 --archive. See docs/STEP_05B1.md for resumable downloads, raw-file provenance and verified local tar.gz archival. No local structural quality decision is made in this acquisition substep.
+
+## Step 05b2 — canonical Cys mapping
+
+Install requirements-structure.txt in the subproject .venv, then run scripts/05b2_map_cysteines_GSE286387.py with that environment's Python. See docs/STEP_05B2.md for the complete Ubuntu commands, strict reference/sequence/atom gates and coverage audits. Mapping is offline after the one-time Gemmi installation; local-quality and assembly acceptance remain pending.
