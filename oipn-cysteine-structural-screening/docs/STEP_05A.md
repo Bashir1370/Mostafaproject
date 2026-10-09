@@ -97,3 +97,7 @@ The 629,151-byte archive contains exactly 1,520 query response/metadata pairs ca
 Reference bytes live in a separate data/raw/structure_catalogue/reference/<archive SHA256> namespace; partial workstation/network caches remain separate. This option forces offline execution, including when --offline is omitted. summary.json and the report explicitly identify frozen_reference metadata and the archive checksum; input_checksums.csv includes the descriptor/archive/source ledger. source_manifest.csv retains the original upstream acquisition timestamps. These are reused public reference responses, not new downloads on the workstation. A later database update requires a separately documented reference revision.
 
 This resolves reproducibility of Step 05a only. It does not fix the workstation HTTPS connection, download coordinates, approve structures, or score oxidative susceptibility. The existing structural/identity gates and frozen scientific protocol are unchanged. Successful output still requires SUCCESS.txt and review before Step 05b.
+
+## Actual Ubuntu reproduction accepted
+
+The uploaded Python 3.13.13 execution at f8a1a4e8c60593101425ebc09ba55c2081393bba passes the full input and output review. See audits/ubuntu_catalogue_2026-10-09/REVIEW.md. Its complete immutable snapshot and checksum manifest are bound in ../config/GSE286387_step05b_input.json. Metadata-only acceptance does not change structural inclusion gates or claim fresh API acquisition.

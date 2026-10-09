@@ -93,3 +93,7 @@ Diagnostic revision validation: all 44 regression tests pass; final cache replay
 ## 2026-10-09 — Step 05a frozen reference reproduction
 
 After workstation HTTP 403 and SSL EOF failures, add explicit --reference-cache mode with all 1,520 public API responses from the previously completed validation run. Preserve original acquisition times/hashes, verify the full sequence/query universe and archive, and import into a separate namespace. Force offline execution and label source reuse in summary/report/input provenance. Do not disable TLS or infer network errors as absent structures. Historical validation records and all frozen scientific inputs remain unchanged.
+
+## 2026-10-09 — Actual Ubuntu Step 05a catalogue accepted
+
+Review source commit f8a1a4e8c60593101425ebc09ba55c2081393bba: eight complete outputs, all 42 input checksums and four byte-identical reference-reproduced tables pass. Freeze actual workstation snapshot with a separate Step 05b input binding. Acceptance concerns catalogue provenance and coverage only, not structure or site eligibility. Retain 29 no-eligible-metadata proteins (27 unassessable, two held with unresolved records) in downstream audits. Coordinate acquisition and local-quality implementation are still pending.

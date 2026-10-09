@@ -42,3 +42,7 @@ The reviewed mapping snapshot is checksum-bound in config/GSE286387_step04_input
 ## Step 05a provisional catalogue
 
 structure_candidates.csv is a service-metadata inventory, distinct from the final structure_manifest.csv/site_structure_mapping.csv after coordinate validation. Its structural_eligibility is always not_assessed. protein_structure_inventory.csv and step_audit.csv cover all 760 accepted accessions, while source_manifest.csv covers both queries per accession. Pending candidates and unresolved offered records are held; no eligible record without an unresolved offered option is unassessable, never zero susceptibility. No site-level structural decision is emitted. See STEP_05A.md for current/legacy field handling and provenance/error gates.
+
+## Step 05b input binding
+
+config/GSE286387_step05b_input.json records STEP05A_SNAPSHOT_ACCEPTED_FOR_STEP05B and binds all actual Ubuntu catalogue snapshot files, their checksum manifest and the Step 05 input binding. Future coordinate scripts must verify that chain and use the frozen candidate/source/protein files, while retaining the canonical 760-protein / 10,799-site universe from the prior binding. The catalogue has no structural eligibility approvals. Step 05b executable implementation remains pending.

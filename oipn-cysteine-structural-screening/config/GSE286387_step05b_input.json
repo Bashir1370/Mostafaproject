@@ -1,0 +1,25 @@
+{
+  "status": "STEP05A_SNAPSHOT_ACCEPTED_FOR_STEP05B",
+  "protocol_version": "0.1.0",
+  "species_taxid": 10090,
+  "source_commit": "f8a1a4e8c60593101425ebc09ba55c2081393bba",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "metadata_mode": "frozen_reference",
+  "reference_bundle_sha256": "f486decef5424cfe215a523d0df3e64dfe0171646401d573f484985f7743a2e3",
+  "candidate_file": "docs/audits/ubuntu_catalogue_2026-10-09/structure_candidates.csv",
+  "protein_file": "docs/audits/ubuntu_catalogue_2026-10-09/protein_structure_inventory.csv",
+  "source_file": "docs/audits/ubuntu_catalogue_2026-10-09/source_manifest.csv",
+  "input_sha256": {
+    "docs/audits/ubuntu_catalogue_2026-10-09/SUCCESS.txt": "ea85e2cf31582c684dae12dba581a1a92836ea6b25ecc08c4fc9ff330940ecf6",
+    "docs/audits/ubuntu_catalogue_2026-10-09/catalogue_report.md": "a0c36e9934f27e302eed8e6ff235c5af4265e3b9652576c58f91fe9c38c0e84b",
+    "docs/audits/ubuntu_catalogue_2026-10-09/input_checksums.csv": "9b6606be7784cd43e069c105af4ce4ab5d7c8e25a24b284c37f0274c03d593c4",
+    "docs/audits/ubuntu_catalogue_2026-10-09/protein_structure_inventory.csv": "663f0535fcca9d45fb65d8b8bb5c0ddb65b200a201f75e5f53c1f35711b84187",
+    "docs/audits/ubuntu_catalogue_2026-10-09/source_manifest.csv": "d6a0a310df8617a56fab429fa3be8556f7feab12af5d5b45bacd20dcf8b39580",
+    "docs/audits/ubuntu_catalogue_2026-10-09/step_audit.csv": "3d984e61ed85ebfa402ef1c7299dedab9cebc6e366c56d3cacece03c4b1ec1d4",
+    "docs/audits/ubuntu_catalogue_2026-10-09/structure_candidates.csv": "8028a792f189157b96870dd7ba531b97a5c6628d3fffd1b9b883c8cc1a9964df",
+    "docs/audits/ubuntu_catalogue_2026-10-09/summary.json": "c7b7f824880b0520097fa23b59feef82541d94f2ee3619e1be8d7c122417ae6b",
+    "docs/audits/ubuntu_catalogue_2026-10-09/snapshot_checksums.sha256": "dfc116cb7baf282466a1192b14bb3a854cefe0b61969d20d8c1292e0ab47e8d0",
+    "config/GSE286387_step05_input.json": "cca4756fb6dd3ce5cf7c8fca1b8ad16acff9e78ef27257c7d89dbe19c18c265a"
+  }
+}
