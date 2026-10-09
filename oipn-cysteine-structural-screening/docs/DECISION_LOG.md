@@ -83,3 +83,9 @@ User explicitly requested that results/ be committed. Remove only the results/ i
 - Historical structural thresholds/score weights remain unchanged; no coordinate extraction, chemical-state analysis or susceptibility score is run in 05a. Actual Ubuntu reproduction follows implementation validation.
 
 Live implementation validation and final cache replay complete all 1,520 queries: 94 proteins with mouse PDBe candidates, 731 with exact-full-sequence AlphaFold candidates, 94 with both, 29 without metadata-eligible candidates (27 unassessable, two with unresolved offered metadata held). All 42 regression tests pass. No coordinates or local-quality approval are implied; Ubuntu reproduction remains pending.
+
+## 2026-10-09 — Workstation Step 05a HTTP 403 diagnostic revision
+
+User reports HTTP 403 before a final catalogue. Original exception handling lost endpoint context. Add diagnostic implementation revision 1.0.1: fatal HTTP errors retain requested URL/status and a bounded, allowlisted failure_context.json. Preserve HTTPError compatibility, 404 handling, existing caches, all successful catalogue tables and scientific inputs. Do not classify the workstation failure as absent structures or claim that access is repaired. Same initial endpoints return expected responses in validation; actual workstation endpoint/response evidence is pending.
+
+Diagnostic revision validation: all 44 regression tests pass; final cache replay reproduces all four complete catalogue/query/protein-audit tables byte-for-byte. Workstation 403 cause and resolution remain pending.

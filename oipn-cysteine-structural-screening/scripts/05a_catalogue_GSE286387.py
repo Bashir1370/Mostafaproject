@@ -3,6 +3,7 @@
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import importlib.util
+import io
 import json
 import math
 from pathlib import Path
@@ -20,9 +21,32 @@ import urllib.request
 SPEC = importlib.util.spec_from_file_location('inventory', Path(__file__).with_name('04_inventory_GSE286387.py'))
 I = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(I)
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 PDBE = 'https://www.ebi.ac.uk/pdbe/api/mappings/best_structures/'
 AFDB = 'https://alphafold.ebi.ac.uk/api/prediction/'
+
+
+class CatalogueHTTPError(urllib.error.HTTPError):
+    """Retain the requested endpoint and a bounded access-error diagnostic."""
+
+    def __init__(self, requested_url, original):
+        raw = original.read(1025)
+        excerpt = raw[:1024]
+        headers = original.headers or {}
+        super().__init__(original.geturl(), original.code, original.reason,
+                         original.headers, io.BytesIO(excerpt))
+        self.details = dict(
+            status='HTTP_REQUEST_FAILED', requested_url=requested_url,
+            response_url=original.geturl(), http_status=original.code,
+            reason=str(original.reason)[:200],
+            response_headers={key: str(headers.get(key, ''))[:256] for key in
+                              ('Server', 'Content-Type', 'Retry-After', 'Via', 'X-Mitmproxy-Blocked-Reason')},
+            response_excerpt=excerpt.decode('utf-8', errors='replace'),
+            excerpt_truncated=len(raw) > 1024,
+            retrieved_utc=datetime.now(timezone.utc).isoformat())
+
+    def __str__(self):
+        return f'HTTP {self.code}: {self.reason}; requested_url={self.details["requested_url"]}'
 
 
 def load_input(project):
@@ -81,7 +105,7 @@ def fetch(url, cache, offline=False):
                     raw, code, headers = error.read(), 404, error.headers
                     break
                 if error.code not in (429, 500, 502, 503, 504) or attempt == 3:
-                    raise
+                    raise CatalogueHTTPError(url, error) from error
                 retry = error.headers.get('Retry-After', '')
                 time.sleep(min(30, int(retry)) if retry.isdigit() else 2 ** attempt)
             except (urllib.error.URLError, TimeoutError):
@@ -235,6 +259,7 @@ def run(project, offline=False, workers=8):
     out = project / 'results/05a_structure_catalogue'
     out.mkdir(parents=True, exist_ok=True)
     (out / 'SUCCESS.txt').unlink(missing_ok=True)
+    (out / 'failure_context.json').unlink(missing_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='catalogue_stage_', dir=out))
     try:
         I.require(1 <= workers <= 16, 'Workers must be between 1 and 16')
@@ -316,6 +341,8 @@ def run(project, offline=False, workers=8):
         return summary
     except Exception as error:
         (out / 'FAILURE.txt').write_text(str(error) + '\n')
+        if isinstance(error, CatalogueHTTPError):
+            (out / 'failure_context.json').write_text(json.dumps(error.details, indent=2) + '\n')
         raise
     finally:
         shutil.rmtree(stage)

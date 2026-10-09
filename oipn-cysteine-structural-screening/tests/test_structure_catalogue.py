@@ -87,6 +87,38 @@ class CatalogueIdentity(unittest.TestCase):
 
 
 class CatalogueCache(unittest.TestCase):
+    def test_forbidden_names_endpoint_and_is_not_cached_or_retried(self):
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp); url = C.AFDB + 'P12345'
+            error = urllib.error.HTTPError(url, 403, 'Forbidden',
+                                          {'Server': 'example', 'Set-Cookie': 'must-not-log'},
+                                          io.BytesIO(b'access denied'))
+            with patch.object(C.urllib.request, 'urlopen', side_effect=error) as request:
+                with self.assertRaises(C.CatalogueHTTPError) as captured:
+                    C.fetch(url, cache)
+            self.assertEqual(request.call_count, 1)
+            self.assertIn(url, str(captured.exception))
+            self.assertEqual(captured.exception.details['response_excerpt'], 'access denied')
+            self.assertNotIn('Set-Cookie', captured.exception.details['response_headers'])
+            self.assertFalse(list(cache.iterdir()))
+
+    def test_http_failure_writes_diagnostic_and_invalidates_success(self):
+        with tempfile.TemporaryDirectory() as temp:
+            project = Path(temp)
+            original = urllib.error.HTTPError(C.PDBE + 'P12345', 403, 'Forbidden', {}, io.BytesIO(b'denied'))
+            error = C.CatalogueHTTPError(C.PDBE + 'P12345', original)
+            out = project / 'results/05a_structure_catalogue'
+            out.mkdir(parents=True)
+            (out / 'SUCCESS.txt').write_text('old success')
+            with patch.object(C, 'load_input', side_effect=error):
+                with self.assertRaises(C.CatalogueHTTPError):
+                    C.run(project)
+            self.assertFalse((out / 'SUCCESS.txt').exists())
+            self.assertTrue((out / 'FAILURE.txt').exists())
+            diagnostic = json.loads((out / 'failure_context.json').read_text())
+            self.assertEqual(diagnostic['http_status'], 403)
+            self.assertEqual(diagnostic['requested_url'], C.PDBE + 'P12345')
+
     def test_cached_404_is_not_a_network_error_and_corruption_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             cache = Path(temp); url = C.AFDB + 'P12345'; key = C.I.sha(url.encode()); raw = b'not found'

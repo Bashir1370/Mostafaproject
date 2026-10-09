@@ -1,6 +1,6 @@
 # Step 05a — structural candidate catalogue
 
-Protocol 0.1.0; implementation 1.0.0. This is the metadata-catalogue substep of scientific Step 05. It does not add an eleventh scientific step or replace site-level structure review.
+Protocol 0.1.0; implementation 1.0.1 (diagnostic revision). This is the metadata-catalogue substep of scientific Step 05. It does not add an eleventh scientific step or replace site-level structure review.
 
 ## Reviewed input
 
@@ -70,3 +70,13 @@ Step 05b remains to be implemented: coordinate/assembly and local-validation ret
 The complete 1,520-query run and final offline replay cover all 760 proteins. Results: 94 with mouse PDBe candidates, 731 with exact-full-sequence AlphaFold candidates, 94 with both, 29 without a metadata-eligible candidate. Candidate rows total 1,872 (1,533 metadata candidates, 324 held, 15 nonmouse-chain exclusions). All 10,799 Cys sites remain prospective input; none is structurally approved here. The response/model versions and input/script hashes are recorded under docs/audits/Structure_catalogue_validation. Actual Ubuntu Step 05a reproduction remains pending.
 
 Validation: all 42 regression tests passed, including eleven structure-catalogue identity/cache/error/real-output checks and all earlier input/QC/DE/mapping/inventory tests.
+
+## HTTP access diagnostics — revision 1.0.1
+
+The user reported HTTP 403 on Ubuntu before a catalogue was generated. The initial exception text omitted the failing endpoint; the report does not establish whether PDBe, AlphaFold, a proxy or another network component rejected the request. The same initial service queries succeed (expected PDBe 404 / AlphaFold 200) from the validation environment, so workstation access failure is not independently reproduced.
+
+Fatal HTTP errors now include the exact requested URL and write failure_context.json beside FAILURE.txt, with status, response URL, allowlisted diagnostic headers and a bounded 1,024-byte response excerpt. Cookies and unrelated headers are not collected. Error responses are never added to the accepted metadata cache or converted into missing-structure results. The request endpoints, headers, identity gates and success-output tables remain unchanged. Existing historical validation files retain their original executable checksum/version.
+
+After pulling the revision, rerun the normal command and provide failure_context.json if the request fails. A missing catalogue_report.md after failure is a consequence of the incomplete run. No network workaround or root cause is claimed until the endpoint/response evidence is available.
+
+Diagnostic revision validation: all 44 regression tests pass; final cache replay reproduces all four complete catalogue/query/protein-audit tables byte-for-byte. Workstation 403 cause and resolution remain pending.

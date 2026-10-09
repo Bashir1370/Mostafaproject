@@ -42,4 +42,4 @@ Metadata catalogue queries both PDBe/SIFTS and AlphaFold DB for every accepted p
 
 ## Next
 
-Pull and execute scripts/05a_catalogue_GSE286387.py on Ubuntu; send catalogue_report.md and commit actual outputs under results/ after completion. Review the catalogue before Step 05b coordinate and local-quality work. No mapping is forced and no oxidation probability is claimed.
+The first Ubuntu Step 05a attempt failed with HTTP 403; no final catalogue was generated. Diagnostic revision 1.0.1 records the failing endpoint and bounded response in failure_context.json. Pull and rerun scripts/05a_catalogue_GSE286387.py; send the diagnostic file if it fails, or catalogue_report.md if successful. Root cause of workstation access rejection remains pending. Commit actual successful outputs under results/ after completion. Review the catalogue before Step 05b coordinate and local-quality work. No mapping is forced and no oxidation probability is claimed.
