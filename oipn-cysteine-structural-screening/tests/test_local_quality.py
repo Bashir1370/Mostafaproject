@@ -122,6 +122,28 @@ class LocalQuality(unittest.TestCase):
         self.assertEqual([r['status'] for r in result], ['held', 'held', 'unassessable'])
         self.assertEqual(result[1]['structural_eligibility'], 'held')
 
+    def test_failed_predicted_option_cannot_exclude_unresolved_experimental_mapping(self):
+        audit = Q.M.site_audit({'P': 'CC'}, [dict(site_id='P:C1', mapping_status='mapped'),
+                                           dict(site_id='P:C1', mapping_status='held')])
+        options = [dict(site_id='P:C1', local_gate_status='excluded')]
+        reviews, metadata = Q.upstream_reviews({'P': 'CC'}, [],
+                                               [dict(site_id='P:C1', mapping_status='held')])
+        result = Q.aggregate_sites(audit, options, reviews, metadata)
+        self.assertEqual(result[0]['status'], 'held')
+        self.assertEqual(result[0]['unresolved_mapping_options'], 1)
+
+    def test_failed_predicted_option_retains_unresolved_offered_metadata(self):
+        audit = Q.M.site_audit({'P': 'C', 'Q': 'C'},
+                              [dict(site_id='P:C1', mapping_status='mapped'),
+                               dict(site_id='Q:C1', mapping_status='mapped')], {'P'})
+        options = [dict(site_id='P:C1', local_gate_status='excluded'),
+                   dict(site_id='Q:C1', local_gate_status='excluded')]
+        reviews, metadata = Q.upstream_reviews({'P': 'C', 'Q': 'C'},
+                                               [dict(protein_accession='P', candidate_status='held')], [])
+        result = Q.aggregate_sites(audit, options, reviews, metadata)
+        self.assertEqual([r['status'] for r in result], ['held', 'excluded'])
+        self.assertTrue(result[0]['unresolved_metadata_review'])
+
     def test_full_frozen_mapping_binding_and_all_raw_hash_gate(self):
         values = Q.load_input(PROJECT)
         self.assertEqual(len(values[6]), 25026)

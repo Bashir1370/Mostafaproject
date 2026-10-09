@@ -1,0 +1,5 @@
+# Terminal audit correction validation
+
+Full regression: 92 tests passed in 45.061 seconds. Two added tests reproduce failed predicted options combined with unresolved experimental mapping or offered metadata, and verify that fully resolved failing sites remain excluded. Existing local-confidence boundaries, raw hash gates, geometry checks, end-to-end full-universe preservation and upstream R/Python workflow tests still pass.
+
+The uploaded 25,026 mapping records and 1,872 offered candidates were independently cross-referenced to the initial 10,799-site audit. 44 initially excluded sites retain held residue-mapping evidence; 2,034 retain offered metadata uncertainty; their union is 2,042. Updated aggregation reclassifies only those initial exclusions to held. All 4,580 local-pass sites / 667 protein counts and per-option confidence decisions remain unchanged. expected_audit_summary.json lists the source-bound corrected counts and affected stable site IDs. These are offline audit-reconstruction expectations, not a new full raw-file workstation run.

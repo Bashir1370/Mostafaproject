@@ -16,7 +16,7 @@ SPEC = importlib.util.spec_from_file_location('mapping', Path(__file__).with_nam
 M = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(M)
 I = M.I
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 ROUNDING_TOLERANCE = 0.011  # CIF and confidence JSON may independently round to 2 decimals.
 CYS_ATOMS = {'N', 'CA', 'C', 'O', 'CB', 'SG'}
 
@@ -243,7 +243,18 @@ def evaluate_model(block, candidate, seq, mapping, confidence_data, pae_data, fi
         return out
 
 
-def aggregate_sites(audit, rows):
+def upstream_reviews(sequences, candidates, mapped):
+    """Keep unresolved offered metadata and per-option mapping evidence visible downstream."""
+    mapping_reviews = Counter(r['site_id'] for r in mapped if r['mapping_status'] == 'held')
+    accessions = {c['protein_accession'] for c in candidates if c['candidate_status'] == 'held'}
+    metadata_reviews = {f'{accession}:C{n}' for accession in accessions
+                        for n, residue in enumerate(sequences[accession], 1) if residue == 'C'}
+    return mapping_reviews, metadata_reviews
+
+
+def aggregate_sites(audit, rows, mapping_reviews=None, metadata_reviews=None):
+    mapping_reviews = mapping_reviews or {}
+    metadata_reviews = metadata_reviews or set()
     groups = defaultdict(list)
     for r in rows:
         groups[r['site_id']].append(r)
@@ -253,7 +264,9 @@ def aggregate_sites(audit, rows):
         passing = sum(r['local_gate_status'] == 'pass' for r in options)
         if passing:
             status, reason = 'held', 'LOCAL_CONFIDENCE_OPTIONS_CONTEXT_PENDING'
-        elif any(r['local_gate_status'] == 'held' for r in options) or site['reason_code'] == 'MAPPING_EVIDENCE_UNRESOLVED':
+        elif (any(r['local_gate_status'] == 'held' for r in options) or
+              site['reason_code'] == 'MAPPING_EVIDENCE_UNRESOLVED' or
+              mapping_reviews.get(site['object_id'], 0) or site['object_id'] in metadata_reviews):
             status, reason = 'held', 'LOCAL_OR_MAPPING_REVIEW_PENDING'
         elif options:
             status, reason = 'excluded', 'ALL_MAPPED_OPTIONS_FAIL_LOCAL_CONFIDENCE'
@@ -262,7 +275,10 @@ def aggregate_sites(audit, rows):
         out.append(dict(step_id='05b3', object_level='site', object_id=site['object_id'],
                         protein_accession=site['protein_accession'], canonical_cys_position=site['canonical_cys_position'],
                         status=status, reason_code=reason, assessed_mapping_options=len(options),
-                        local_confidence_pass_options=passing, structural_eligibility='held' if status == 'held' else status,
+                        local_confidence_pass_options=passing,
+                        unresolved_mapping_options=mapping_reviews.get(site['object_id'], 0),
+                        unresolved_metadata_review=site['object_id'] in metadata_reviews,
+                        structural_eligibility='held' if status == 'held' else status,
                         protocol_version='0.1.0'))
     return out
 
@@ -317,7 +333,8 @@ def run(project):
                 print(f'  Predicted models checked: {number}/{len(groups)}', flush=True)
         rows.sort(key=lambda r: (r['site_id'], int(r['candidate_row']), r['label_asym_id'], r['model_id']))
         I.require(len(rows) == sum(r['mapping_status'] == 'mapped' for r in mapped), 'Mapped-option accounting lost')
-        sites = aggregate_sites(audit, rows)
+        mapping_reviews, metadata_reviews = upstream_reviews(seqs, candidates, mapped)
+        sites = aggregate_sites(audit, rows, mapping_reviews, metadata_reviews)
         proteins = []
         for accession in sorted(seqs):
             subset = [r for r in sites if r['protein_accession'] == accession]
@@ -336,6 +353,7 @@ def run(project):
                        predicted_models_checked=len(groups), mapped_options=len(rows),
                        local_gate_status_counts=dict(Counter(r['local_gate_status'] for r in rows)),
                        reason_counts=dict(Counter(r['reason_code'] for r in rows)),
+                       site_status_counts=dict(Counter(r['status'] for r in sites)),
                        sites_with_local_confidence_options=sum(r['local_confidence_pass_options'] > 0 for r in sites),
                        proteins_with_local_confidence_options=sum(r['sites_with_local_confidence_options'] > 0 for r in proteins),
                        final_structural_passes=0, python=platform.python_version(), gemmi=g.__version__,
@@ -348,11 +366,13 @@ def run(project):
                             '- Local gate statuses: ' + str(summary['local_gate_status_counts']),
                             f'- Sites with local-confidence options: {summary["sites_with_local_confidence_options"]}',
                             f'- Proteins with local-confidence options: {summary["proteins_with_local_confidence_options"]}', '',
+                            '- Canonical site audit statuses: ' + str(summary['site_status_counts']), '',
                             'Frozen gate: target pLDDT >=90; every modeled non-H/D neighbor residue within 6 A of SG >=70.',
                             'The target residue is excluded from neighbor counts. JSON/CIF agreement and coherent CYS heavy atoms are required.',
                             'Neighbor >=90 is a sensitivity flag only. PAE is descriptive; no new PAE threshold is introduced.',
                             'Experimental mapped options remain held for manual local validation and assembly/mutation context.',
                             'Every original canonical site is retained, including mapping-unresolved and no-structure cases.',
+                            'Unresolved offered metadata/mapping options remain held even if the mapped predicted option fails.',
                             'Local gate pass is not final structural approval: assembly, native/fragment context and chemical state remain pending.',
                             'No model selection, SASA, pKa or oxidation score is generated.', ''])
         (stage / 'quality_report.md').write_text(report)

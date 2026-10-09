@@ -47,3 +47,11 @@ A real accepted-hash AF-A0A087WRH0-F1 sample maps 35 sites: 21 pass the local ga
 - AlphaFold DB file formats, pLDDT/PAE distinction: https://github.com/google-deepmind/alphafold/blob/main/afdb/README.md
 - AlphaFold confidence JSON serializer: https://github.com/google-deepmind/alphafold/blob/main/alphafold/common/confidence.py
 - pLDDT and limits of interdomain confidence: https://www.ebi.ac.uk/training/online/courses/alphafold/inputs-and-outputs/evaluating-alphafolds-predicted-structures-using-confidence-scores/plddt-understanding-local-confidence/
+
+## Revision 1.0.1 — preserve all upstream uncertainty in the site audit
+
+Actual initial Ubuntu output at 7bb88bf0b17542d6218454c0c098f1b75fd476db passes option confidence/provenance checks: 4,580 predicted sites in 667 proteins pass the local gate; 5,036 options fail target confidence and 125 fail neighbor confidence. The initial site aggregator considered mapped options only and a prior reason code prioritizing mapped evidence. It could classify a site as excluded despite unresolved original experimental mapping or offered metadata.
+
+The complete frozen mapped/unmapped candidate evidence now supplies unresolved_mapping_options and unresolved_metadata_review to site_step_audit.csv. A failed predicted option cannot exclude the whole site while such evidence is pending. On the uploaded data, 2,042 original excluded sites must become held; predicted local-gate decisions and the 4,580/667 counts do not change. Expected terminal counts after rerun: 6,964 held, 3,042 excluded, 793 unassessable. This is an audit-state correction, not a changed threshold or rescued/scored structure.
+
+All 92 regression tests passed, including two specific regressions for failed predicted options with held experimental mappings or unresolved metadata. Initial actual output is preserved in docs/audits/ubuntu_local_quality_initial_2026-10-09 with correction-required review. Rerun the same Ubuntu command to generate consistent version 1.0.1 outputs before downstream binding.

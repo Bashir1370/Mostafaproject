@@ -68,6 +68,12 @@ Actual source 7dd9d5dde4e2a887a3af46f5c6e0c7b90889641c is reviewed. All nine out
 
 An offline local-confidence/target-completeness gate now uses the frozen >=90 target / >=70 modeled-neighbor within 6 A criteria, checks JSON/CIF confidence, retains every mapped experimental option as held for manual local validation, and audits all canonical sites. PAE is descriptive with no new cutoff; neighbor >=90 remains a sensitivity flag. Local pass does not approve assemblies, native/fragment context, neighbor completeness or chemical state. Validation: 90 full regression tests plus a final rerun of all 16 local-quality tests; real 35-site sample and full-universe representative integration pass. See docs/STEP_05B3.md.
 
+## Step 05b3 actual initial run and audit correction
+
+Source 7bb88bf0b17542d6218454c0c098f1b75fd476db contains a successful 731-model Ubuntu run. All nine uploaded files, all 80 input hashes, complete mapped-option/protein/site accounting and raw ledgers pass. The 4,580 predicted local-pass sites / 667 proteins are verified; 5,036 options fail target pLDDT, 125 fail neighboring pLDDT and 4,569 experimental mapped options remain held. All predicted PAE parsed; all predicted options are full canonical intervals.
+
+The initial terminal site aggregation lost held upstream mapping/metadata alternatives when a predicted mapped option failed. Revision 1.0.1 restores explicit per-site pending mapping counts and metadata flags. 2,042 initial excluded sites must remain held; option-level confidence decisions and candidate counts are unchanged. The 92-test full suite passes, including both regressions. See docs/audits/ubuntu_local_quality_initial_2026-10-09/REVIEW.md and docs/audits/Local_quality_audit_fix_validation. No downstream Step 05b3 input is bound until corrected workstation reproduction/review.
+
 ## Next
 
-Run scripts/05b3_local_quality_GSE286387.py with the existing subproject .venv Python and upload results/05b3_local_quality. Review actual model/site confidence distributions and holds, then continue experimental local validation, assembly/native/mutation/fragment and neighbor-completeness context. No final Step 05 pass, features or score has been issued.
+Pull and rerun scripts/05b3_local_quality_GSE286387.py with the existing .venv Python, then commit updated results/05b3_local_quality. Review the corrected site audit, then continue experimental local validation and assembly/native/mutation/fragment/neighbor-completeness context. No final structural pass, features or oxidation score has been issued.

@@ -117,3 +117,7 @@ Use pinned Gemmi 0.7.5 with the accepted complete raw-file binding. Resolve labe
 ## 2026-10-09 — actual mapping accepted and prospective local-confidence gate
 
 Source 7dd9d5d mapping/provenance is accepted for confidence assessment: 9,741 mapped unique sites, 265 mapping-unresolved, 793 without metadata-eligible structures. Freeze the nine actual output files and preceding binding in config/GSE286387_step05b3_input.json. Implement only the already specified predicted local-confidence/target-atom gate; keep experimental mapped alternatives held for manual local validation/context. PAE is descriptive with no added threshold; no score-based structure selection or protocol weight change. Local pass remains distinct from final structural inclusion.
+
+## 2026-10-09 — Step 05b3 terminal audit correction (implementation 1.0.1)
+
+Initial source 7bb88bf0b17542d6218454c0c098f1b75fd476db verifies all 4,580/667 local-pass counts and confidence/provenance decisions. The site aggregator had dropped original held mapping/metadata alternatives from terminal exclusion decisions. Carry explicit unresolved per-site mapping counts and metadata flags through aggregation; keep 2,042 affected sites held. Numeric gates, weights, source priority and scoring are unchanged. Preserve initial actual evidence and require corrected workstation outputs before binding. Full 92-test regression passed.
