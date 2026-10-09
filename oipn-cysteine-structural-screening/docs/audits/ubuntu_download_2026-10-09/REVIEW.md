@@ -1,0 +1,13 @@
+# Actual Ubuntu complete acquisition review
+
+Status: STEP05B1_MANIFEST_ACCEPTED_FOR_STEP05B2
+
+Source commit: b2205ac65ebf0881653dd985ee279aef2f9fa994. Executable 1.0.1, protocol 0.1.0; one worker, 120-second timeout and four transient attempts. All ten output snapshot files are copied byte-for-byte and their Git blob hashes match the uploaded commit. The failure marker is absent, SUCCESS.txt is correct and failure_context.json is empty.
+
+All 53 input checksums match the accepted references/executable. The complete 2,638-file plan and 1,872 candidate/file association rows reproduce the frozen catalogue exactly. Every planned file has HTTP 200/downloaded status: 445 deposited PDB asymmetric-unit mmCIFs, 731 AlphaFold mmCIFs, 731 confidence JSONs and 731 PAE JSONs; 1,176 coordinate files in total. No auxiliary evidence gap remains in acquisition. The original plan/cache namespace is unchanged. All 2,121 earlier successful downloads retain identical hashes, sizes, acquisition timestamps, response URLs, ETags, Last-Modified and local paths.
+
+The archive manifest contains 5,337 unique paths plus its own archive-manifest member, consistent with the receipt's 5,338 members. Every raw-file hash/size reconciles with the download manifest, and every sidecar hash reconciles with the exact serialized acquisition metadata. All included input files and output manifests reconcile. Archive receipt: data/archives/step05b1_0c6c72738f4a739b.tar.gz, 447,690,451 bytes, SHA256 4dcf45caaa4bf79c03977f3f81895241dcd8e23aa269820fa8fa7468f983fef4.
+
+Scope: this review accepts complete acquisition manifests/provenance for subsequent workstation mapping. The actual archive and raw bodies are local to Ubuntu and were not remotely inspected. The executable's successful archive path includes full read-back checks, but remote review of its receipt is not independent verification of archive bytes. config/GSE286387_step05b2_input.json therefore requires rechecking every local raw-file and sidecar hash before parsing; keep the archive as backup, with its receipt as the expected hash reference.
+
+No structure/chain/assembly/native-sequence or Cys/local-quality acceptance follows from this review. PDB files are deposited asymmetric units with all deposited partners/annotations; biological-assembly/context and experimental local validation remain future Step 05b work. Preserve all 760 proteins and 10,799 canonical Cys sites, including 29 proteins without metadata-eligible candidates, in downstream coverage/status accounting. No SASA, pKa, oxidation probability or structural score has been computed. Earlier HTTP 400 cause was not established; successful recovery does not retrospectively identify it.

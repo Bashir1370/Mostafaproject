@@ -105,3 +105,7 @@ Implement coordinate acquisition as a separate substep before residue mapping/lo
 ## 2026-10-09 — Diagnose incomplete acquisition and add evidence-preserving retry
 
 Review actual 2,638-row manifest and 517 failures at ed5ae356e169d2ae5be5b657bbce5130de582bc6. Add missing IncompleteRead/remote-disconnect retries, explicit request timeout/attempt controls and bounded HTTP diagnostics. Do not infer HTTP 400 source without its response body; two exact failed PAE URLs work elsewhere. Probe a recorded failed URL per kind before bulk retry; use one worker for workstation continuation. Preserve successful caches and all frozen identity/scientific gates. All 60 regression tests pass; the partial archive receipt is not remotely validated archive content.
+
+## 2026-10-09 — Complete Ubuntu raw acquisition manifests accepted
+
+Review b2205ac65ebf0881653dd985ee279aef2f9fa994: all 2,638 requests successful, all 53 input hashes correct, exact frozen plan/links reproduced and original 2,121 cache histories preserved. Bind immutable complete manifests/receipt separately from mutable results/. Remote provenance review does not inspect workstation archive/raw bodies; Step 05b2 must enforce the accepted local file/sidecar hash gate before parsing. Preserve all 760 proteins / 10,799 Cys sites. No structural or scoring acceptance is inferred from acquisition.

@@ -56,3 +56,7 @@ python3 oipn-cysteine-structural-screening/scripts/05b1_download_GSE286387.py --
 ```
 
 If the failed-URL probe still fails, inspect failure_context.json; the bulk command is not run by this conditional shell sequence. Original successful caches/metadata are preserved; a completed archive replaces the previous plan archive only after read-back checksum verification. Partial archive reports remain explicitly incomplete. Validation: all 60 tests passed plus full JSON downloads of two previously failed PAE URLs from the validation environment. Workstation recovery is not claimed.
+
+## Actual Ubuntu completion accepted
+
+Source b2205ac65ebf0881653dd985ee279aef2f9fa994 completes all 2,638 planned files and all 1,176 coordinates. Full input, frozen-plan, acquisition-history and archive-manifest reconciliation passes; see audits/ubuntu_download_2026-10-09/REVIEW.md. The receipt binds the local 447,690,451-byte tar.gz. config/GSE286387_step05b2_input.json freezes complete actual manifests and requires local byte-hash verification before mapping. The archive/raw bodies were not remotely inspected; residue mapping/context/quality implementations remain pending.
