@@ -1,6 +1,6 @@
 {
-  "status": "STEP05B1_INCOMPLETE",
-  "implementation_version": "1.0.0",
+  "status": "STEP05B1_GENERATED_REVIEW_PENDING",
+  "implementation_version": "1.0.1",
   "protocol_version": "0.1.0",
   "source_commit": "f8a1a4e8c60593101425ebc09ba55c2081393bba",
   "input_proteins": 760,
@@ -15,14 +15,16 @@
     "alphafold_pae": 731
   },
   "file_status_counts": {
-    "downloaded": 2121,
-    "failed": 517
+    "downloaded": 2638
   },
   "required_coordinates": 1176,
-  "coordinates_downloaded": 1169,
+  "coordinates_downloaded": 1176,
   "auxiliary_unavailable": 0,
   "offline": false,
   "probe": false,
-  "workers": 4,
-  "generated_utc": "2026-10-09T10:41:54.242301+00:00"
+  "retry_probe": false,
+  "workers": 1,
+  "timeout_seconds": 120,
+  "max_attempts": 4,
+  "generated_utc": "2026-10-09T12:20:23.703686+00:00"
 }

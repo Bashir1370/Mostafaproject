@@ -1,9 +1,9 @@
 # Step 05b1 — raw structure acquisition
 
-Status: STEP05B1_INCOMPLETE
+Status: STEP05B1_GENERATED_REVIEW_PENDING
 
-- Required coordinates: 1169/1176
-- File statuses: {'downloaded': 2121, 'failed': 517}
+- Required coordinates: 1176/1176
+- File statuses: {'downloaded': 2638}
 - Auxiliary files unavailable (404): 0
 
 Raw mmCIF is preserved; PDB entries are complete deposited asymmetric units, not selected chains or generated biological assemblies.
