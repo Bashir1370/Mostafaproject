@@ -121,3 +121,7 @@ Source 7dd9d5d mapping/provenance is accepted for confidence assessment: 9,741 m
 ## 2026-10-09 — Step 05b3 terminal audit correction (implementation 1.0.1)
 
 Initial source 7bb88bf0b17542d6218454c0c098f1b75fd476db verifies all 4,580/667 local-pass counts and confidence/provenance decisions. The site aggregator had dropped original held mapping/metadata alternatives from terminal exclusion decisions. Carry explicit unresolved per-site mapping counts and metadata flags through aggregation; keep 2,042 affected sites held. Numeric gates, weights, source priority and scoring are unchanged. Preserve initial actual evidence and require corrected workstation outputs before binding. Full 92-test regression passed.
+
+## 2026-10-09 — corrected Step 05b3 workstation acceptance
+
+Source 1c850c5 exactly reproduces the expected implementation 1.0.1 site-audit correction; all nine output hashes and 80 input hashes pass. Accept 4,580 local-confidence sites in 667 proteins for context review, retaining all 10,799 sites and all pending experimental/metadata/mapping evidence. Freeze the corrected snapshot in config/GSE286387_step05b4_input.json. Acceptance does not select assemblies or approve chemical state/features.

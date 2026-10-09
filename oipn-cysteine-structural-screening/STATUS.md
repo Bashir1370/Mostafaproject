@@ -74,6 +74,10 @@ Source 7bb88bf0b17542d6218454c0c098f1b75fd476db contains a successful 731-model 
 
 The initial terminal site aggregation lost held upstream mapping/metadata alternatives when a predicted mapped option failed. Revision 1.0.1 restores explicit per-site pending mapping counts and metadata flags. 2,042 initial excluded sites must remain held; option-level confidence decisions and candidate counts are unchanged. The 92-test full suite passes, including both regressions. See docs/audits/ubuntu_local_quality_initial_2026-10-09/REVIEW.md and docs/audits/Local_quality_audit_fix_validation. No downstream Step 05b3 input is bound until corrected workstation reproduction/review.
 
+## Corrected Step 05b3 workstation accepted for context review
+
+Source 1c850c52db0f8e9523e65073ce30496fb48635ce is reviewed: all nine output blob hashes and all 80 input hashes pass. Full terminal site audit reproduces exactly, including the expected 2,042 excluded-to-held corrections. All five unchanged option/model/protein/raw/success files are byte-identical to the initial run; 4,580 local-pass sites / 667 proteins remain unchanged. Final site counts: 6,964 held, 3,042 excluded, 793 unassessable. See docs/audits/ubuntu_local_quality_2026-10-09/REVIEW.md. config/GSE286387_step05b4_input.json binds the accepted corrected snapshot for context review only; no final structural or chemical approval exists.
+
 ## Next
 
-Pull and rerun scripts/05b3_local_quality_GSE286387.py with the existing .venv Python, then commit updated results/05b3_local_quality. Review the corrected site audit, then continue experimental local validation and assembly/native/mutation/fragment/neighbor-completeness context. No final structural pass, features or oxidation score has been issued.
+Implement subsequent experimental local-validation acquisition and assembly/native/mutation/interdomain/neighbor-completeness context review from the accepted Step 05b3 binding. The frozen source priority remains suitable experimental mouse first, quality-eligible predicted mouse fallback. Do not select feature-ready models or calculate SASA/pKa/oxidation scores before remaining context and chemical-state gates.

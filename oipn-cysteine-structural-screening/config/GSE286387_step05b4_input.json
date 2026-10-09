@@ -1,0 +1,27 @@
+{
+  "protocol_version": "0.1.0",
+  "status": "STEP05B3_LOCAL_CONFIDENCE_ACCEPTED_FOR_CONTEXT_REVIEW",
+  "source_commit": "1c850c52db0f8e9523e65073ce30496fb48635ce",
+  "local_quality_snapshot_directory": "docs/audits/ubuntu_local_quality_2026-10-09",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "mapped_options": 14310,
+  "local_confidence_pass_sites": 4580,
+  "local_confidence_pass_proteins": 667,
+  "experimental_mapped_options_pending": 4569,
+  "final_structural_passes": 0,
+  "input_sha256": {
+    "docs/audits/ubuntu_local_quality_2026-10-09/REVIEW.md": "3c9e0ca7f8b27ea3f5fe823abce2ca1a56c7092703f7559844d66aa9ce0fb0d5",
+    "docs/audits/ubuntu_local_quality_2026-10-09/SUCCESS.txt": "af0e157004b9df615b343d640f6a4904c35d17f36834f15bcf5e63a8a7e5f893",
+    "docs/audits/ubuntu_local_quality_2026-10-09/input_checksums.csv": "1dbcba3e56e1e501de0685d930f522210dae31df7c02cb5c0123bb25021f6885",
+    "docs/audits/ubuntu_local_quality_2026-10-09/predicted_model_audit.csv": "15368953112783594dad608e8f28991ce2b8a8e94b05c6419af4eeec4c166cb2",
+    "docs/audits/ubuntu_local_quality_2026-10-09/protein_quality_coverage.csv": "0170dec58acf7a042c38257905a07e895d5dcabfd229c8a570ab51667f25d9eb",
+    "docs/audits/ubuntu_local_quality_2026-10-09/quality_report.md": "5ab80ac8ccdb4c8d73208bf8889585f467d21dca706c434c327894edece82fdf",
+    "docs/audits/ubuntu_local_quality_2026-10-09/raw_file_checksums.csv": "b44ed281bb179b97045e1c8a9975b26d3785260b1f163d73b68d48cfd977b895",
+    "docs/audits/ubuntu_local_quality_2026-10-09/site_local_quality.csv": "73a2f4a1514fad68de92fb09ca2420dad13e328a8e839e028c1e66ace488d4ab",
+    "docs/audits/ubuntu_local_quality_2026-10-09/site_step_audit.csv": "180a3c4f199f40fe536859a1e67d27a1cafc68edbf7be12fcc8d6dfe4391fde2",
+    "docs/audits/ubuntu_local_quality_2026-10-09/snapshot_checksums.sha256": "363c06469d54c63e0dc86ad24996a84462f5c132e5c3d26cd2af9e18fe9fda37",
+    "docs/audits/ubuntu_local_quality_2026-10-09/summary.json": "c23cd4850498216af7a79870bcb99ee869c4a4cf63cf1aa63676ae54cfa404a0",
+    "config/GSE286387_step05b3_input.json": "967b1a4749e726d9b1a6322ce92187827d10bf64e9e180c7868a83b10adf2cc2"
+  }
+}
