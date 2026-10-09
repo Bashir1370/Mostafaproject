@@ -73,3 +73,13 @@ Real-input validation resolves 504 additional genes: 789 / 854 (92.4%), 787 uniq
 ## 2026-10-09 — Track results directly in Git
 
 User explicitly requested that results/ be committed. Remove only the results/ ignore rule; raw data, caches, environments and logs retain their ignore rules. Update execution documentation to require explicit add/commit/push after runs. Preserve existing reviewed snapshots and checksum-bound scientific inputs. This is a version-control change, with no scientific parameter or analysis-script change. The user uploads their actual workstation results; validation files are not relabeled or uploaded as workstation output.
+
+## 2026-10-09 — Step 04 workstation acceptance and Step 05a
+
+- Accept actual Ubuntu Step 04 snapshot at e419a4e98e8b51368a0d5123b08fc128415eee1c after all nine snapshot / 27 upstream hashes and complete sequence/site/audit reproduction checks. Bind 760 C-positive accessions and 10,799 unique sites without modifying older scientific inputs.
+- Split implementation of scientific Step 05 into metadata catalogue (05a) and subsequent coordinates/residue/assembly/local-quality work (05b); the study still has exactly ten scientific steps.
+- Query both PDBe/SIFTS and AlphaFold for every accession. Retain all offered records; no first/best-resolution/global-confidence selection. Exact mouse/accession/canonical-sequence metadata gates are predeclared before examining candidate identities. Partial and mismatched/alternate-isoform models retain explicit audit reasons.
+- Use API-provided model URLs/versions and current field names with conflict-checked legacy fallback. Cache SHA256-bound response bytes including 404s; network errors fail rather than become missing structures. Metadata does not certify Cys/SG coverage or quality.
+- Historical structural thresholds/score weights remain unchanged; no coordinate extraction, chemical-state analysis or susceptibility score is run in 05a. Actual Ubuntu reproduction follows implementation validation.
+
+Live implementation validation and final cache replay complete all 1,520 queries: 94 proteins with mouse PDBe candidates, 731 with exact-full-sequence AlphaFold candidates, 94 with both, 29 without metadata-eligible candidates (27 unassessable, two with unresolved offered metadata held). All 42 regression tests pass. No coordinates or local-quality approval are implied; Ubuntu reproduction remains pending.

@@ -1,0 +1,43 @@
+{
+  "status": "STEP05A_GENERATED_REVIEW_PENDING",
+  "implementation_version": "1.0.0",
+  "protocol_version": "0.1.0",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "candidate_records": 1872,
+  "query_records": 1520,
+  "proteins_with_mouse_pdbe_candidates": 94,
+  "proteins_with_exact_sequence_alphafold": 731,
+  "proteins_with_both": 94,
+  "proteins_without_metadata_eligible_candidate": 29,
+  "protein_status_counts": {
+    "held": 733,
+    "unassessable": 27
+  },
+  "candidate_status_counts": {
+    "candidate": 1533,
+    "held": 324,
+    "excluded": 15
+  },
+  "candidate_reason_counts": {
+    "EXACT_FULL_SEQUENCE_LOCAL_QUALITY_PENDING": 731,
+    "ALPHAFOLD_ACCESSION_DIFFERS_FROM_CANONICAL": 304,
+    "MOUSE_SIFTS_CANDIDATE_LOCAL_REVIEW_PENDING": 802,
+    "ALPHAFOLD_MOUSE_TAXONOMY_NOT_CONFIRMED": 19,
+    "NON_MOUSE_PDB_CHAIN": 15,
+    "ALPHAFOLD_SEQUENCE_DIFFERS_FROM_FROZEN_CANONICAL": 1
+  },
+  "alphafold_model_versions": [
+    1,
+    6
+  ],
+  "http_status_counts": {
+    "200": 827,
+    "404": 693
+  },
+  "workers": 8,
+  "offline": true,
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "generated_utc": "2026-10-09T07:33:11.187372+00:00"
+}

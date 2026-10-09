@@ -101,3 +101,14 @@ Python standard library suffices. No new R package, external download or structu
 ## Track workstation results — 2026-10-09
 
 At the user's request, results/ is no longer ignored. Run git add oipn-cysteine-structural-screening/results/ followed by git commit and git push after a run. Git does not automatically upload new outputs. Existing reviewed docs/audits snapshots remain immutable provenance; tracked results can change on rerun and do not automatically become accepted downstream inputs. These files must come from the user's workstation; validation-environment results are not substituted.
+
+## Step 05a catalogue
+
+After pulling the reviewed Step 04 snapshot/input binding, run:
+
+```bash
+python3 oipn-cysteine-structural-screening/scripts/05a_catalogue_GSE286387.py
+cat oipn-cysteine-structural-screening/results/05a_structure_catalogue/catalogue_report.md
+```
+
+Python standard library suffices; first run queries PDBe and AlphaFold metadata over HTTPS and may take longer than the offline Cys inventory. Progress is reported every 25 proteins. Completed responses are cached for resume/replay; --offline requires a complete cache. Errors stop the run rather than become missing structures. Commit actual completed outputs under results/ after checking SUCCESS.txt and absence of FAILURE.txt. No coordinate files or local-quality passes are produced at this substep.

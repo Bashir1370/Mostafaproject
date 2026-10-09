@@ -16,3 +16,11 @@ Sources supporting the design; retrieval/annotation/software releases will be lo
 | DATA02 | [GSE125002](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE125002) | Candidate complementary short/local mouse DRG dataset; distinct biological design |
 
 Repository context reviewed before registration: root NEC–FPT workflow; ferroptosis-only workspace; cipn-ferroptosis-screening mouse metadata, loaders and shared functions. They are not validation datasets for this structural index merely because they contain ROS/ferroptosis signatures.
+
+## Structure service documentation used for Step 05a (accessed 2026-10-09)
+
+- PDBe REST APIs: https://www.ebi.ac.uk/pdbe/pdbe-rest-api ; SIFTS: https://www.ebi.ac.uk/pdbe/api/doc/sifts.html
+- AlphaFold prediction API field changes: https://www.ebi.ac.uk/pdbe/news/breaking-changes-afdb-predictions-api
+- AlphaFold release/model-file guidance: https://www.ebi.ac.uk/pdbe/news/alphafold-database-release-notes
+
+API model/version metadata are recorded per response; the catalogue does not assume the sequence and structure databases share a release or that a model's existence establishes local eligibility.

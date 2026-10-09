@@ -1,6 +1,6 @@
 # Output contracts and provenance
 
-Steps 01–04 now have executable implementations; Steps 05–10 remain output schemas for future work. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
+Steps 01–04 and the Step 05a metadata catalogue have executable implementations; coordinate/quality Step 05b and Steps 06–10 remain future implementations. Implementation-validation outputs and user-workstation outputs are distinguished in STATUS.md. CSV uses UTF-8, one header, explicit missing values and stable IDs. Each output records protocol version; large files retain a checksum/source manifest.
 
 | Step | Main output | Required fields/content |
 |---|---|---|
@@ -38,3 +38,7 @@ results/03b_mapping_resolution/gene_protein_mapping.csv retains all Step 03 fiel
 ## Step 04 details
 
 The reviewed mapping snapshot is checksum-bound in config/GSE286387_step04_input.json. protein_inventory.csv and protein step_audit.csv include every accepted input accession, including zero-C exclusions. cysteine_inventory.csv deduplicates accession/1-based canonical position, retains gene associations, sequence hash/release and descriptive count/percentage. gene_step_audit.csv retains all discovery genes and inherited upstream held/unassessable cases. Cys-positive FASTA preserves the full displayed sequences. Provenance, summary/report and generation markers follow STEP_04.md. No-Cys exclusion is method-specific; count/density are not score terms.
+
+## Step 05a provisional catalogue
+
+structure_candidates.csv is a service-metadata inventory, distinct from the final structure_manifest.csv/site_structure_mapping.csv after coordinate validation. Its structural_eligibility is always not_assessed. protein_structure_inventory.csv and step_audit.csv cover all 760 accepted accessions, while source_manifest.csv covers both queries per accession. Pending candidates and unresolved offered records are held; no eligible record without an unresolved offered option is unassessable, never zero susceptibility. No site-level structural decision is emitted. See STEP_05A.md for current/legacy field handling and provenance/error gates.

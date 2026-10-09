@@ -12,8 +12,9 @@ Approved study design recorded on 2026-10-08. Target workstation: **Ubuntu Linux
 - Primary dataset: GSE286387 **Step 01 accepted after user QC and study-method review**; all ten samples retained with documented metadata limitations.
 - Complementary dataset: GSE125002 **candidate; analyzed separately**.
 - Step 02: **Ubuntu reproduction and uploaded snapshot reviewed**; 854 coding DEGs (477 up / 377 down), exact selected IDs match validation. [Review and limits](docs/audits/ubuntu_DE_2026-10-08/REVIEW.md); Step 03 input is checksum-bound in config/GSE286387_step03_input.json.
-- Step 03: user reports successful first pass; Step 03b evidence-based resolution implemented and tested. Validation covers **789 / 854 genes (92.4%)**, 787 unique proteins; workstation Step 03b and full snapshot review pending.
-- Structure retrieval and biological validation: **not run**.
+- Step 03/03b: actual Ubuntu snapshots reviewed; **789 / 854 genes (92.4%)**, 787 unique proteins accepted; unresolved mappings remain audited.
+- Step 04: actual Ubuntu inventory snapshot reviewed; **760 C-positive proteins / 10,799 canonical sites** bound for Step 05.
+- Step 05a: candidate metadata catalogue implemented; coordinate retrieval/local-quality Step 05b and biological validation remain pending.
 
 ## Ten steps
 
@@ -126,4 +127,13 @@ python3 oipn-cysteine-structural-screening/scripts/04_inventory_GSE286387.py
 cat oipn-cysteine-structural-screening/results/04_cysteine_inventory/inventory_report.md
 ```
 
-This offline step verifies reviewed inputs, records every 1-based canonical Cys position, and audits proteins without Cys. Implementation validation finds 760 C-positive proteins and 10,799 unique sites; Ubuntu reproduction is pending. See [criteria and outputs](docs/STEP_04.md). Cys count/density are descriptive; structural features and scores are not calculated here.
+This offline step verifies reviewed inputs, records every 1-based canonical Cys position, and audits proteins without Cys. Ubuntu reproduction and snapshot review confirm 760 C-positive proteins and 10,799 unique sites. See [criteria and outputs](docs/STEP_04.md). Cys count/density are descriptive; structural features and scores are not calculated here.
+
+## Step 05a — structural candidate catalogue
+
+```bash
+python3 oipn-cysteine-structural-screening/scripts/05a_catalogue_GSE286387.py
+cat oipn-cysteine-structural-screening/results/05a_structure_catalogue/catalogue_report.md
+```
+
+Query PDBe/SIFTS and AlphaFold DB for all 760 reviewed C-positive accessions, retain every offered candidate, check mouse/accession/sequence metadata and cache response provenance. No coordinate/quality approval occurs yet; structure/site validation follows within Step 05b. See [criteria, API schema, outputs and scope](docs/STEP_05A.md). No new R/Python package is required. Commit actual workstation outputs under results/ after the completed run.

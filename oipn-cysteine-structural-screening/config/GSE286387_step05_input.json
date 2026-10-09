@@ -1,0 +1,26 @@
+{
+  "status": "STEP04_SNAPSHOT_ACCEPTED_FOR_STEP05",
+  "protocol_version": "0.1.0",
+  "species_taxid": 10090,
+  "source_commit": "e419a4e98e8b51368a0d5123b08fc128415eee1c",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "fasta_file": "docs/audits/ubuntu_cysteine_2026-10-09/cysteine_positive_sequences.fasta",
+  "site_file": "docs/audits/ubuntu_cysteine_2026-10-09/cysteine_inventory.csv",
+  "protein_file": "docs/audits/ubuntu_cysteine_2026-10-09/protein_inventory.csv",
+  "input_sha256": {
+    "config/GSE286387_step04_input.json": "35f178c7fb4d6d0ec9400faff3f8f379741440a0f65fda2df944c11862c044e9",
+    "config/analysis_parameters.json": "2520ba74d0470cff39f2477fad193eef607804e8d555c33f2df2969e62e5a6f0",
+    "docs/audits/ubuntu_cysteine_2026-10-09/SUCCESS.txt": "ecf9f43f71a156aaccbbc8fe3b06690e77931dbffd37e1eeb4a632ddbc47db78",
+    "docs/audits/ubuntu_cysteine_2026-10-09/cysteine_inventory.csv": "86cd74f289028d3eff96debc592811ccb4d54438b84ac54c47394153043933ae",
+    "docs/audits/ubuntu_cysteine_2026-10-09/cysteine_positive_sequences.fasta": "f174572ae025ddbedf438c2828117efd49a89c0030631be5949cc783793e1296",
+    "docs/audits/ubuntu_cysteine_2026-10-09/gene_step_audit.csv": "e4195747346ea8c7462f42d6d4896fddd44a67c497c44b38894507fc0fdd89d0",
+    "docs/audits/ubuntu_cysteine_2026-10-09/input_checksums.csv": "df8b2b21faa0439084bd44e8b547c8525b3e38a53a304ad2a72ce108c9cce296",
+    "docs/audits/ubuntu_cysteine_2026-10-09/inventory_report.md": "6326f35c806ebf9f52d91f9a4119d773fc94bb26c055dd89001c560cfaa0fa33",
+    "docs/audits/ubuntu_cysteine_2026-10-09/protein_inventory.csv": "bcac76ab08cad6dc647f5a711baa9a89551dbeaa3aeb0fd7700708b315975797",
+    "docs/audits/ubuntu_cysteine_2026-10-09/snapshot_checksums.sha256": "70cc257e913689155412d59c6f3666a700e8d54260dcadfb81b79833912f2a32",
+    "docs/audits/ubuntu_cysteine_2026-10-09/step_audit.csv": "4420395cb73d0045a60c98e2d034409a868af67eebdd2929ce8b9a6ec273bf82",
+    "docs/audits/ubuntu_cysteine_2026-10-09/summary.json": "9f552e7e10d53a942192d453c11246d167a6dac550353b2b5abba57e0cf8fc48",
+    "scripts/04_inventory_GSE286387.py": "2fcc6891b0d6916cd95b8b83d5ead57543169b09cd80ff8e2d7980c63ff10068"
+  }
+}
