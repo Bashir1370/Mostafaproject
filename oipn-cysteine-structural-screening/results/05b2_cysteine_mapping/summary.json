@@ -1,0 +1,37 @@
+{
+  "status": "STEP05B2_GENERATED_REVIEW_PENDING",
+  "implementation_version": "1.0.0",
+  "protocol_version": "0.1.0",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "coordinate_files": 1176,
+  "offered_candidate_rows": 1872,
+  "metadata_candidate_chains": 1533,
+  "verified_raw_files": 2638,
+  "mapping_records": 25026,
+  "mapping_record_status_counts": {
+    "mapped": 14310,
+    "unassessable": 10028,
+    "held": 688
+  },
+  "mapping_reason_counts": {
+    "CYS_SG_MAPPED_QUALITY_PENDING": 14310,
+    "CANONICAL_SITE_OUTSIDE_CHECKED_SEGMENTS": 9835,
+    "RESIDUE_UNOBSERVED": 122,
+    "REFERENCE_SEQUENCE_DIFFERENCE_UNRESOLVED": 262,
+    "DEPOSITED_UNP_ASSOCIATION_UNRESOLVED": 196,
+    "TARGET_SUBSTITUTED_OR_MODIFIED": 13,
+    "REFERENCE_GAPPED_OR_OUT_OF_RANGE_ALIGNMENT": 203,
+    "CYS_SG_UNOBSERVED": 71,
+    "EXACT_SEQUENCE_PLACEMENT_MISSING_OR_AMBIGUOUS": 14
+  },
+  "site_status_counts": {
+    "held": 10006,
+    "unassessable": 793
+  },
+  "sites_with_mapped_SG_options": 9741,
+  "proteins_with_mapped_SG_options": 731,
+  "python": "3.13.13",
+  "gemmi": "0.7.5",
+  "generated_utc": "2026-10-09T13:48:53.799626+00:00"
+}
