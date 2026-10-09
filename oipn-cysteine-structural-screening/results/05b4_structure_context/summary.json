@@ -1,0 +1,34 @@
+{
+  "status": "STEP05B4_GENERATED_REVIEW_PENDING",
+  "implementation_version": "1.0.0",
+  "protocol_version": "0.1.0",
+  "input_proteins": 760,
+  "input_sites": 10799,
+  "mapped_options": 14310,
+  "coordinate_files": 1176,
+  "context_options_assessed": 9149,
+  "validation_plan_sha256": "700eafbd7505bb6f535c1ff5ad61ed3be49725d10bb45f405678b2d213528020",
+  "validation_report_status_counts": {
+    "downloaded": 445
+  },
+  "experimental_target_validation_status_counts": {
+    "matched_for_manual_review": 4563,
+    "not_reported": 6
+  },
+  "inherited_site_status_counts": {
+    "excluded": 3042,
+    "held": 6964,
+    "unassessable": 793
+  },
+  "review_queue_rows": 1624,
+  "final_structural_passes": 0,
+  "python": "3.13.13",
+  "gemmi": "0.7.5",
+  "execution_arguments": {
+    "download_validation": true,
+    "workers": 2,
+    "timeout": 120,
+    "attempts": 4
+  },
+  "generated_utc": "2026-10-09T19:14:49.085891+00:00"
+}
