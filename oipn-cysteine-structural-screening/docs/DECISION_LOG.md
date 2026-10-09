@@ -69,3 +69,7 @@ Real-input validation resolves 504 additional genes: 789 / 854 (92.4%), 787 uniq
 - Freeze Step 04 inputs in a new binding without changing historical analysis_parameters.json, Step 03 input or previous scripts/results. Use the committed reviewed snapshot offline.
 - Count only canonical C using 1-based full-sequence numbering, preserve precursor regions and U/O, deduplicate by accession/site, audit zero-C exclusions and all upstream unresolved genes. Counts/percentages remain descriptive.
 - Validation execution yields 760 C-positive proteins, 27 zero-C proteins and 10,799 sites. User Ubuntu reproduction is pending; no structural interpretation is inferred.
+
+## 2026-10-09 — Track results directly in Git
+
+User explicitly requested that results/ be committed. Remove only the results/ ignore rule; raw data, caches, environments and logs retain their ignore rules. Update execution documentation to require explicit add/commit/push after runs. Preserve existing reviewed snapshots and checksum-bound scientific inputs. This is a version-control change, with no scientific parameter or analysis-script change. The user uploads their actual workstation results; validation files are not relabeled or uploaded as workstation output.

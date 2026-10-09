@@ -64,7 +64,7 @@ python3 oipn-cysteine-structural-screening/scripts/01_audit_GSE286387.py
 cat oipn-cysteine-structural-screening/results/01_dataset_audit/qc_report.md
 ```
 
-Python 3.8+ standard library only; no pip packages or R packages required for this download/integrity step. R sample QC is now implemented; DE testing follows only after QC/design review. See [Step 01 execution and findings](docs/STEP_01.md). Generated data/results are ignored by git. The committed audit snapshot is under `docs/audits/` and records the actual source checksums.
+Python 3.8+ standard library only; no pip packages or R packages required for this download/integrity step. R sample QC is now implemented; DE testing follows only after QC/design review. See [Step 01 execution and findings](docs/STEP_01.md). Raw downloads/caches under data/ remain ignored by Git. Outputs under results/ are tracked after explicit git add/commit/push. Reviewed audit snapshots under docs/audits/ retain frozen source checksums.
 
 ## Step 01b: R sample QC
 
@@ -97,7 +97,7 @@ Or in RStudio:
 source("/home/bashir/Desktop/Mostafaproject/oipn-cysteine-structural-screening/scripts/02_DE_GSE286387.R")
 ```
 
-See [Step 02 inputs, outputs and validation](docs/STEP_02.md). A complete run requires SUCCESS.txt and absence of FAILURE.txt. Generated results remain ignored by Git; review and commit a deliberately selected snapshot after local reproduction.
+See [Step 02 inputs, outputs and validation](docs/STEP_02.md). A complete run requires SUCCESS.txt and absence of FAILURE.txt. Generated results can be committed directly under results/ after local reproduction. Reviewed snapshots under docs/audits/ remain the frozen downstream input until explicitly reviewed and rebound.
 
 ## Step 03: canonical mouse protein mapping
 

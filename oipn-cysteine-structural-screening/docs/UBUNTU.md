@@ -60,7 +60,7 @@ The JSON command checks syntax only. The ten biological analysis scripts will be
 ## Directory and execution conventions
 
 - Execute analysis from the repository root or use scripts resolving their own root; no dependence on a hard-coded personal home path.
-- Config/docs are versioned. Runtime downloads, environments, caches and bulky results are excluded from Git within this workspace.
+- Config/docs and results/ are versionable. Runtime downloads under data/, environments, logs and caches remain excluded from Git within this workspace.
 - Keep future data under data/raw, data/processed and data/structures; outputs under results/01 through results/10; logs under logs.
 - Logs record input checksums, commands, software versions and protocol version. Downloads must be validated before use and resumed/retried without overwriting a valid file silently.
 - No existing ferroptosis script is executed as part of this structural workflow. Its loaders are historical context only; this workflow needs its own audited mapping and outputs.
@@ -97,3 +97,7 @@ cat oipn-cysteine-structural-screening/results/04_cysteine_inventory/inventory_r
 ```
 
 Python standard library suffices. No new R package, external download or structure tool is required. SUCCESS.txt must exist and FAILURE.txt must be absent. Send the report before proceeding to Step 05.
+
+## Track workstation results — 2026-10-09
+
+At the user's request, results/ is no longer ignored. Run git add oipn-cysteine-structural-screening/results/ followed by git commit and git push after a run. Git does not automatically upload new outputs. Existing reviewed docs/audits snapshots remain immutable provenance; tracked results can change on rerun and do not automatically become accepted downstream inputs. These files must come from the user's workstation; validation-environment results are not substituted.

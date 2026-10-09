@@ -1,7 +1,6 @@
 .venv/
 .r-library/
 data/
-results/
 logs/
 cache/
 __pycache__/
